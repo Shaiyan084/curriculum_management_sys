@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
+const Admission = require('../../models/Admission');
 
 // @route  POST /api/users/admin
 // @desc   Register a admin
@@ -62,6 +63,10 @@ router.post(
       user.type = 0;
 
       await user.save();
+
+      const admission = new Admission();
+
+      await admission.save();
 
       res.json({ msg: 'Admin created successfully' });
     } catch (err) {
