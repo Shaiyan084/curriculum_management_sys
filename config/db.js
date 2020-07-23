@@ -9,11 +9,12 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     });
+
     console.log('MongoDB connected');
   } catch (err) {
-    console.log(message);
+    console.log(err.message);
     process.exit(1);
   }
 };
