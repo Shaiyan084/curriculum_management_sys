@@ -1,33 +1,39 @@
 const mongoose = require('mongoose');
 
 const ApplicantSchema = mongoose.Schema({
+  // To keep track who is the actual user account associated with application object
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  },
+  // To keep track of what type of applicant the user is i.e. Bachelors or Masters
+  type: {
+    type: Number,
+  },
   personalDetails: {
     name: {
       type: String,
-      required: true
     },
     fathersName: {
       type: String,
-      required: true
     },
-    cnicNumber: {
-      type: String,
-      required: true
-    },
-    cnicFrontPicture: {
-      type: String,
-      required: true
-    },
-    cnicBackPicture: {
-      type: String,
-      required: true
+    // CNIC should remain like previous
+    cnic: {
+      number: {
+        type: String,
+      },
+      frontPicture: {
+        type: String,
+      },
+      backPicture: {
+        type: String,
+      },
     },
     address: {
       type: String,
-      required: true
     },
     avatar: {
-      type: String
+      type: String,
     },
     // email: {
     //   type: String,
@@ -39,103 +45,169 @@ const ApplicantSchema = mongoose.Schema({
     // },
     placeOfBirth: {
       type: String,
-      required: true
     },
     dateOfBirth: {
       type: Date,
-      required: true
     },
     phoneNumber: {
       type: String,
-      required: true
     },
     domicile: {
-      type: String
-    }
+      type: String,
+    },
   },
   incomeDetails: {
     monthlyIncome: {
-      type: Number
+      type: Number,
     },
     minimumYearlyIncome: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   educationDetails: {
-    school: {
-      type: String,
-      required: true
-    },
-    college: {
-      type: String,
-      required: true
-    },
-    university: {
-      type: String
-    },
-    fieldOfStudy: {
-      //pre-end/pre-med
-      type: Number,
-      required: true
-    },
-    from: {
-      type: Date,
-      required: true
-    },
-    to: {
-      type: Date
-    },
-    description: {
-      type: String
-    },
-    gradeDetails: {
-      oLevelMarks: {
+    // Here is the details of the secondary education
+    secondaryEducationDetails: {
+      type: {
         type: Number,
-        required: true
       },
-      aLevelMarks: {
-        type: Number,
-        required: true
-      },
-      matricMarks: {
-        type: Number,
-        required: true
-      },
-      fscMarks: {
-        type: Number,
-        required: true
-      },
-      bachelorsCGPA: {
-        type: String
-      },
-      entryTestPercentage: {
-        type: Number,
-        required: true
-      },
-      ntsPercentage: {
-        type: Number,
-        required: true
-      },
-      picture: {
+      institute: {
         type: String,
-        required: true
+      },
+      fieldOfStudy: {
+        type: String,
+      },
+      from: {
+        type: Date,
+      },
+      to: {
+        type: Date,
+        default: Date.now(),
+      },
+      obtainedMarks: {
+        type: Number,
       },
       totalMarks: {
+        type: Number,
+      },
+    },
+    // Here is the details of the intermediate education
+    intermediateEducationDetails: {
+      type: {
+        type: Number,
+      },
+      institute: {
         type: String,
-        required: true
-      }
-    }
+      },
+      fieldOfStudy: {
+        type: String,
+      },
+      from: {
+        type: Date,
+      },
+      to: {
+        type: Date,
+        default: Date.now(),
+      },
+      obtainedMarks: {
+        type: Number,
+      },
+      totalMarks: {
+        type: Number,
+      },
+    },
+    // Here is the details of the bachelor education
+    bachelorEducationDetails: {
+      institute: {
+        type: String,
+      },
+      fieldOfStudy: {
+        type: String,
+      },
+      from: {
+        type: Date,
+      },
+      to: {
+        type: Date,
+        default: Date.now(),
+      },
+      cgpa: {
+        type: Number,
+      },
+    },
+    // school: {
+    //   type: String,
+    //
+    // },
+    // college: {
+    //   type: String,
+    //
+    // },
+    // university: {
+    //   type: String,
+    // },
+    // fieldOfStudy: {
+    //   //pre-end/pre-med
+    //   type: Number,
+    //
+    // },
+    // from: {
+    //   type: Date,
+    //
+    // },
+    // to: {
+    //   type: Date,
+    // },
+    // description: {
+    //   type: String,
+    // },
+    // gradeDetails: {
+    //   oLevelMarks: {
+    //     type: Number,
+    //
+    //   },
+    //   aLevelMarks: {
+    //     type: Number,
+    //
+    //   },
+    //   matricMarks: {
+    //     type: Number,
+    //
+    //   },
+    //   fscMarks: {
+    //     type: Number,
+    //
+    //   },
+    //   bachelorsCGPA: {
+    //     type: String,
+    //   },
+    //   entryTestPercentage: {
+    //     type: Number,
+    //
+    //   },
+    //   ntsPercentage: {
+    //     type: Number,
+    //
+    //   },
+    //   picture: {
+    //     type: String,
+    //
+    //   },
+    //   totalMarks: {
+    //     type: String,
+    //
+    //   },
+    // },
   },
-  appliedPrograms: {
-    program: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'programme'
-    }
-  },
-  Date: {
+  // appliedPrograms: {
+  //   program: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'programme'
+  //   }
+  // },
+  timeStamp: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 module.exports = Applicant = mongoose.model('applicant', ApplicantSchema);
