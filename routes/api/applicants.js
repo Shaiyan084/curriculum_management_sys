@@ -66,22 +66,30 @@ router.put(
     personalDetails.fatherName = fatherName;
     personalDetails.placeOfBirth = placeOfBirth;
     personalDetails.dateOfBirth = dateOfBirth;
-    personalDetails.cnicNumber = cnicNumber;
-    personalDetails.cnicFrontPicture = cnicFrontPicture;
-    personalDetails.cnicBackPicture = cnicBackPicture;
+    // personalDetails.cnicNumber = cnicNumber;
+    // personalDetails.cnicFrontPicture = cnicFrontPicture;
+    // personalDetails.cnicBackicture = cnicBackicture;
     personalDetails.address = address;
     personalDetails.phoneNumber = phoneNumber;
     personalDetails.domicile = domicile;
 
+    const cnic = {
+      number: cnicNumber,
+      frontPicture: cnicFrontPicture,
+      backPicture: cnicBackPicture
+    };
+
+    personalDetails.cnic = cnic;
+
     try {
-      const application = await Applicant.findOneAndUpdate(
+      const applicant = await Applicant.findOneAndUpdate(
         { user: req.user.id },
         { $set: { personalDetails } },
         { new: true }
       );
 
-      await application.save();
-      res.json(application);
+      await applicant.save();
+      res.json(applicant);
     } catch (err) {
       console.log(err.message);
       return res.status(500).send('Server Error');
@@ -112,14 +120,14 @@ router.put(
     incomeDetails.minimumYearlyIncome = MinimumYearlyIncome;
 
     try {
-      const application = await Applicant.findOneAndUpdate(
+      const applicant = await Applicant.findOneAndUpdate(
         { user: req.user.id },
         { $set: { incomeDetails } },
         { new: true }
       );
 
-      await application.save();
-      res.json(application);
+      await applicant.save();
+      res.json(applicant);
     } catch (err) {
       console.log(err.message);
       return res.status(400).send('Server Error');
@@ -134,13 +142,8 @@ router.put(
   '/education-details',
   [
     auth,
-    check('school', 'School is required')
-      .not()
-      .isEmpty(),
-    check('college', 'College is required')
-      .not()
-      .isEmpty(),
-    check('university', 'University is required')
+    check('type', 'Type of education is required').isInt(),
+    check('institute', 'Institute is required')
       .not()
       .isEmpty(),
     check('fieldOfStudy', 'Field of study is required')
@@ -152,7 +155,10 @@ router.put(
     check('to', 'To date is required')
       .not()
       .isEmpty(),
-    check('description', 'Description is required')
+    check('obtainedMarks', 'Obtained marks are required').isInt(),
+    check('totalMarks', 'Total marks are required').isInt(),
+    check('cgpa', 'CGPA is required').isInt(),
+    check('picture', 'Picture is required')
       .not()
       .isEmpty()
   ],
@@ -161,38 +167,68 @@ router.put(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
     const {
-      school,
-      college,
-      university,
+      type,
+      institute,
       fieldOfStudy,
       from,
       to,
-      description
+      obtainedMarks,
+      totalMarks,
+      picture
     } = req.body;
 
-    let educationDetails = {};
+    const secondaryEducationDetails = {
+      type: type,
+      institute: institute,
+      fieldOfStudy: fieldOfStudy,
+      from: from,
+      to: to,
+      obtainedMarks: obtainedMarks,
+      totalMarks: totalMarks,
+      picture: picture
+    };
 
-    educationDetails.school = school;
-    educationDetails.college = college;
-    educationDetails.university = university;
-    educationDetails.fieldOfStudy = fieldOfStudy;
-    educationDetails.from = from;
-    educationDetails.to = to;
-    educationDetails.description = description;
+    educationDetails.secondaryEducationDetails = secondaryEducationDetails;
+
+    const intermediateEducationDetails = {
+      type: type,
+      institute: institute,
+      fieldOfStudy: fieldOfStudy,
+      from: from,
+      to: to,
+      obtainedMarks: obtainedMarks,
+      totalMarks: totalMarks,
+      picture: picture
+    };
+
+    educationDetails.intermediateEducationDetails = intermediateEducationDetails;
+
+    const bachelorEducationDetails = {
+      type: type,
+      institute: institute,
+      fieldOfStudy: fieldOfStudy,
+      from: from,
+      to: to,
+      cgpa: cgpa,
+      picture: picture
+    };
+
+    educationDetails.bachelorEducationDetails = bachelorEducationDetails;
 
     try {
-      const application = await Application.findOneAndUpdate(
+      const applicant = await Applicant.findOneAndUpdate(
         { user: req.user.id },
         { $set: { educationDetails } },
         { new: true }
       );
 
-      await application.save();
-      res.json(application);
+      await applicant.save();
+      res.json(applicant);
     } catch (err) {
       console.log(err.message);
-      return res.status(400).send('Server Error');
+      return res.status(500).send('Server Error');
     }
   }
 );
