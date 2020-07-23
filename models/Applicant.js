@@ -10,19 +10,17 @@ const ApplicantSchema = mongoose.Schema({
       type: String,
       required: true
     },
-    cnic: {
-      number: {
-        type: String,
-        required: true
-      },
-      frontPicture: {
-        type: String,
-        required: true
-      },
-      backPicture: {
-        type: String,
-        required: true
-      }
+    cnicNumber: {
+      type: String,
+      required: true
+    },
+    cnicFrontPicture: {
+      type: String,
+      required: true
+    },
+    cnicBackPicture: {
+      type: String,
+      required: true
     },
     address: {
       type: String,

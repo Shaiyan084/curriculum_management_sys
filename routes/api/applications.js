@@ -17,7 +17,15 @@ router.put(
     check('fathersName', "Father's name is required")
       .not()
       .isEmpty(),
-    check('cnic', 'CNIC is required').isJSON(),
+    check('cnicNumber', 'Cnic number is required')
+      .not()
+      .isEmpty(),
+    check('cnicFrontPicture', 'Cnic front picture is required')
+      .not()
+      .isEmpty(),
+    check('cnicBackPicture', 'Cnic back picture is required')
+      .not()
+      .isEmpty(),
     check('address', 'Address is required')
       .not()
       .isEmpty(),
@@ -44,7 +52,9 @@ router.put(
       fatherName,
       dateOfBirth,
       placeOfBirth,
-      cnic,
+      cnicNumber,
+      cnicFrontPicture,
+      cnicBackPicture,
       address,
       phoneNumber,
       domicile
@@ -56,7 +66,9 @@ router.put(
     personalDetails.fatherName = fatherName;
     personalDetails.placeOfBirth = placeOfBirth;
     personalDetails.dateOfBirth = dateOfBirth;
-    personalDetails.cnic = cnic;
+    personalDetails.cnicNumber = cnicNumber;
+    personalDetails.cnicFrontPicture = cnicFrontPicture;
+    personalDetails.cnicBackPicture = cnicBackPicture;
     personalDetails.address = address;
     personalDetails.phoneNumber = phoneNumber;
     personalDetails.domicile = domicile;
