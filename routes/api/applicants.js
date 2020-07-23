@@ -176,6 +176,7 @@ router.put(
       to,
       obtainedMarks,
       totalMarks,
+      cgpa,
       picture
     } = req.body;
 
@@ -206,7 +207,6 @@ router.put(
     educationDetails.intermediateEducationDetails = intermediateEducationDetails;
 
     const bachelorEducationDetails = {
-      type: type,
       institute: institute,
       fieldOfStudy: fieldOfStudy,
       from: from,
