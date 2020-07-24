@@ -32,7 +32,7 @@ router.put(
 
     try {
       const department = await Department.findOneAndUpdate(
-        { user: req.user.id },
+        { _id: req.params.id },
         { $set: departmentFields },
         { new: true }
       );
@@ -51,9 +51,9 @@ router.put(
 // @access Private
 router.get('/', auth, async (req, res) => {
   try {
-    const department = await Department.find();
+    const departments = await Department.find();
 
-    res.json(department);
+    res.json(departments);
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');
