@@ -11,36 +11,16 @@ router.put(
   '/personal-detils',
   [
     auth,
-    check('name', 'Name is required')
-      .not()
-      .isEmpty(),
-    check('fathersName', "Father's name is required")
-      .not()
-      .isEmpty(),
-    check('cnicNumber', 'Cnic number is required')
-      .not()
-      .isEmpty(),
-    check('cnicFrontPicture', 'Cnic front picture is required')
-      .not()
-      .isEmpty(),
-    check('cnicBackPicture', 'Cnic back picture is required')
-      .not()
-      .isEmpty(),
-    check('address', 'Address is required')
-      .not()
-      .isEmpty(),
-    check('placeOfBirth', 'Place of birth is required')
-      .not()
-      .isEmpty(),
-    check('dateOfBirth', 'Date of birth is required')
-      .not()
-      .isEmpty(),
-    check('phoneNumber', 'Phone number is required')
-      .not()
-      .isEmpty(),
-    check('domicile', 'Domicile is required')
-      .not()
-      .isEmpty()
+    check('name', 'Name is required').not().isEmpty(),
+    check('fathersName', "Father's name is required").not().isEmpty(),
+    check('cnicNumber', 'Cnic number is required').not().isEmpty(),
+    check('cnicFrontPicture', 'Cnic front picture is required').not().isEmpty(),
+    check('cnicBackPicture', 'Cnic back picture is required').not().isEmpty(),
+    check('address', 'Address is required').not().isEmpty(),
+    check('placeOfBirth', 'Place of birth is required').not().isEmpty(),
+    check('dateOfBirth', 'Date of birth is required').not().isEmpty(),
+    check('phoneNumber', 'Phone number is required').not().isEmpty(),
+    check('domicile', 'Domicile is required').not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -57,7 +37,7 @@ router.put(
       cnicBackPicture,
       address,
       phoneNumber,
-      domicile
+      domicile,
     } = req.body;
 
     let personalDetails = {};
@@ -73,7 +53,7 @@ router.put(
     const cnic = {
       number: cnicNumber,
       frontPicture: cnicFrontPicture,
-      backPicture: cnicBackPicture
+      backPicture: cnicBackPicture,
     };
 
     personalDetails.cnic = cnic;
@@ -102,7 +82,7 @@ router.put(
   [
     auth,
     check('monthlyIncome', 'Monthly income is required').isInt(),
-    check('minimumYearlyIncome', 'Minimum yearly income is required').isInt()
+    check('minimumYearlyIncome', 'Minimum yearly income is required').isInt(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -217,28 +197,6 @@ router.put(
     )
       .not()
       .isEmpty(),
-    check(
-      'bachelorEducationInstitue',
-      ' Bachelors Education institute is required'
-    )
-      .not()
-      .isEmpty(),
-    check(
-      'bachelorEducationFieldOfStudy',
-      'Bachelors field of study is required'
-    )
-      .not()
-      .isEmpty(),
-    check('bachelorEducationFrom', 'Bachelors from date is required')
-      .not()
-      .isEmpty(),
-    check('bachelorEducationTo', 'Bachelors to date is required')
-      .not()
-      .isEmpty(),
-    check('cgpa', 'Cgpa is required').isInt(),
-    check('bachelorEducationPicture', 'Bachelor Education picture is required')
-      .not()
-      .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -269,7 +227,7 @@ router.put(
       bachelorEducationFrom,
       bachelorEducationTo,
       bachelorEducationPicture,
-      cgpa
+      cgpa,
     } = req.body;
 
     const educationDetails = {};
@@ -282,7 +240,7 @@ router.put(
       to: secondaryEducationTo,
       obtainedMarks: secondaryEducationObtainedMarks,
       totalMarks: secondaryEducationTotalMarks,
-      picture: secondaryEducationPicture
+      picture: secondaryEducationPicture,
     };
 
     educationDetails.secondaryEducationDetails = secondaryEducationDetails;
@@ -295,7 +253,7 @@ router.put(
       to: intermediateEducationTo,
       obtainedMarks: intermediateEducationObtainedMarks,
       totalMarks: intermediateEducationTotalMarks,
-      picture: intermediateEducationPicture
+      picture: intermediateEducationPicture,
     };
 
     educationDetails.intermediateEducationDetails = intermediateEducationDetails;
@@ -310,7 +268,7 @@ router.put(
         from: bachelorEducationFrom,
         to: bachelorEducationTo,
         picture: bachelorEducationPicture,
-        cgpa: cgpa
+        cgpa: cgpa,
       };
 
       educationDetails.bachelorEducationDetails = bachelorEducationDetails;
