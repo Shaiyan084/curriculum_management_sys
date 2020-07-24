@@ -32,9 +32,6 @@ const ApplicantSchema = mongoose.Schema({
     address: {
       type: String,
     },
-    avatar: {
-      type: String,
-    },
     placeOfBirth: {
       type: String,
     },
@@ -136,14 +133,14 @@ const ApplicantSchema = mongoose.Schema({
       },
     },
   },
-  // appliedPrograms: [
-  //   {
-  //     program: {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: 'programme',
-  //     },
-  //   },
-  // ],
+  appliedPrograms: [
+    {
+      programme: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'programme',
+      },
+    },
+  ],
   timeStamp: {
     type: Date,
     default: Date.now(),

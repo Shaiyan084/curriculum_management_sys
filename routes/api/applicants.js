@@ -3,8 +3,9 @@ const router = express.Router();
 const Applicant = require('../../models/Applicant');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const Programme = require('../../models/Programme');
 
-// @route  PUT /api/applications
+// @route  PUT /api/applicants/personal-details
 // @desc   Add/Update applicants personal details
 // @access Private
 router.put(
@@ -74,7 +75,7 @@ router.put(
   }
 );
 
-// @route  PUT /api/applications
+// @route  PUT /api/applicants/income-details
 // @desc   Add/Update applicants income details
 // @access Private
 router.put(
@@ -112,7 +113,7 @@ router.put(
   }
 );
 
-// @route  PUT /api/applications
+// @route  PUT /api/applicants/education-details
 // @desc   Add/Update applicants education details
 // @access Private
 router.put(
@@ -289,5 +290,67 @@ router.put(
     }
   }
 );
+
+// @route  PUT /api/applicants/apply/:id
+// @desc   Apply for a program
+// @access Private
+router.put('/apply/:id', auth, async (req, res) => {
+  try {
+    const programme = await Programme.findById(req.params.id);
+
+    if (!programme) {
+      return res.status(400).json({ msg: 'Programme not found' });
+    }
+
+    const applicant = await Applicant.findOne({ user: req.user.id });
+
+    if (
+      applicant.appliedPrograms
+        .map((programme) => programme.programme)
+        .indexOf(req.params.id) !== -1
+    ) {
+      return res.status(400).json({ msg: 'Already applied for program' });
+    }
+
+    applicant.appliedPrograms.push({ programme: programme.id });
+
+    await applicant.save();
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  PUT /api/applicants/remove/:id
+// @desc   Remove a program
+// @access Private
+router.put('/remove/:id', auth, async (req, res) => {
+  try {
+    const programme = await Programme.findById(req.params.id);
+
+    if (!programme) {
+      return res.status(400).json({ msg: 'Programme not found' });
+    }
+
+    const applicant = await Applicant.findOne({ user: req.user.id });
+
+    const removeIndex = applicant.appliedPrograms
+      .map((programme) => programme.programme)
+      .indexOf(req.params.id);
+
+    if (removeIndex === -1) {
+      return res.status(400).json({ msg: 'Program already removed' });
+    }
+
+    applicant.appliedPrograms.splice(removeIndex, 1);
+
+    await applicant.save();
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
