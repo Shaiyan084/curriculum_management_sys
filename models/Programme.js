@@ -3,42 +3,42 @@ const mongoose = require('mongoose');
 const ProgrammeSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   duration: {
     yearly: {
       type: Number,
-      default: 0
+      default: 0,
     },
     semester: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   feePerSemester: {
     type: Number,
-    required: true
+    required: true,
   },
   criteria: {
     minPercentageOfEquivalence: {
-      type: Number
+      type: Number,
     },
     categoryOfDegree: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   department: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'department'
+    ref: 'department',
   },
   status: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 
-module.exports = Programme = mongoose.modle('programme', ProgrammeSchema);
+module.exports = Programme = mongoose.model('programme', ProgrammeSchema);
