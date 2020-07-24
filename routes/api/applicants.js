@@ -66,9 +66,6 @@ router.put(
     personalDetails.fatherName = fatherName;
     personalDetails.placeOfBirth = placeOfBirth;
     personalDetails.dateOfBirth = dateOfBirth;
-    // personalDetails.cnicNumber = cnicNumber;
-    // personalDetails.cnicFrontPicture = cnicFrontPicture;
-    // personalDetails.cnicBackicture = cnicBackicture;
     personalDetails.address = address;
     personalDetails.phoneNumber = phoneNumber;
     personalDetails.domicile = domicile;
@@ -142,83 +139,185 @@ router.put(
   '/education-details',
   [
     auth,
-    check('type', 'Type of education is required').isInt(),
-    check('institute', 'Institute is required')
+    check(
+      'secondaryEducationType',
+      'Secondary Education type of education is required'
+    ).isInt(),
+    check(
+      'secondaryEducationInstitute',
+      'Secondary Education institute is required'
+    )
       .not()
       .isEmpty(),
-    check('fieldOfStudy', 'Field of study is required')
+    check(
+      'secondaryEducationFieldOfStudy',
+      'Secondary Education field of study is required'
+    )
       .not()
       .isEmpty(),
-    check('from', 'From date is required')
+    check('secondaryEducationFrom', 'Secondary Education from date is required')
       .not()
       .isEmpty(),
-    check('to', 'To date is required')
+    check('secondaryEducationTo', 'Secondary Education to date is required')
       .not()
       .isEmpty(),
-    check('obtainedMarks', 'Obtained marks are required').isInt(),
-    check('totalMarks', 'Total marks are required').isInt(),
-    check('cgpa', 'CGPA is required').isInt(),
-    check('picture', 'Picture is required')
+    check(
+      'secondaryEducationObtainedMarks',
+      'Secondary Education obtained marks are required'
+    ).isInt(),
+    check(
+      'secondaryEducationTotalMarks',
+      'Secondary Education total marks are required'
+    ).isInt(),
+    check(
+      'secondaryEducationPicture',
+      'Secondary Education picture is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'intermediateEducationType',
+      'Intermediate Education type of education is required'
+    ).isInt(),
+    check(
+      'intermediateEducationInstitute',
+      'Intermediate Education institute is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'intermediateEducationFieldOfStudy',
+      'Intermediate Education field of study is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'intermediateEducationFrom',
+      'Intermediate Education from date is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'intermediateEducationTo',
+      'Intermediate Education to date is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'intermediateEducationObtainedMarks',
+      'Intermediate Education obtained marks are required'
+    ).isInt(),
+    check(
+      'intermediateEducationTotalMarks',
+      'Intermediate Education total marks are required'
+    ).isInt(),
+    check(
+      'intermediateEducationPicture',
+      'Intermediate Education picture is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'bachelorEducationInstitue',
+      ' Bachelors Education institute is required'
+    )
+      .not()
+      .isEmpty(),
+    check(
+      'bachelorEducationFieldOfStudy',
+      'Bachelors field of study is required'
+    )
+      .not()
+      .isEmpty(),
+    check('bachelorEducationFrom', 'Bachelors from date is required')
+      .not()
+      .isEmpty(),
+    check('bachelorEducationTo', 'Bachelors to date is required')
+      .not()
+      .isEmpty(),
+    check('cgpa', 'Cgpa is required').isInt(),
+    check('bachelorEducationPicture', 'Bachelor Education picture is required')
       .not()
       .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     const {
-      type,
-      institute,
-      fieldOfStudy,
-      from,
-      to,
-      obtainedMarks,
-      totalMarks,
-      cgpa,
-      picture
+      secondaryEducationType,
+      secondaryEducationInstitute,
+      secondaryEducationFieldOfStudy,
+      secondaryEducationFrom,
+      secondaryEducationTo,
+      secondaryEducationObtainedMarks,
+      secondaryEducationTotalMarks,
+      secondaryEducationPicture,
+      intermediateEducationType,
+      intermediateEducationInstitute,
+      intermediateEducationFieldOfStudy,
+      intermediateEducationFrom,
+      intermediateEducationTo,
+      intermediateEducationObtainedMarks,
+      intermediateEducationTotalMarks,
+      intermediateEducationPicture,
+      bachelorEducationInstitute,
+      bachelorEducationFieldOfStudy,
+      bachelorEducationFrom,
+      bachelorEducationTo,
+      bachelorEducationPicture,
+      cgpa
     } = req.body;
 
+    const educationDetails = {};
+
     const secondaryEducationDetails = {
-      type: type,
-      institute: institute,
-      fieldOfStudy: fieldOfStudy,
-      from: from,
-      to: to,
-      obtainedMarks: obtainedMarks,
-      totalMarks: totalMarks,
-      picture: picture
+      type: secondaryEducationType,
+      institute: secondaryEducationInstitute,
+      fieldOfStudy: secondaryEducationFieldOfStudy,
+      from: secondaryEducationFrom,
+      to: secondaryEducationTo,
+      obtainedMarks: secondaryEducationObtainedMarks,
+      totalMarks: secondaryEducationTotalMarks,
+      picture: secondaryEducationPicture
     };
 
     educationDetails.secondaryEducationDetails = secondaryEducationDetails;
 
     const intermediateEducationDetails = {
-      type: type,
-      institute: institute,
-      fieldOfStudy: fieldOfStudy,
-      from: from,
-      to: to,
-      obtainedMarks: obtainedMarks,
-      totalMarks: totalMarks,
-      picture: picture
+      type: intermediateEducationType,
+      institute: intermediateEducationInstitute,
+      fieldOfStudy: intermediateEducationFieldOfStudy,
+      from: intermediateEducationFrom,
+      to: intermediateEducationTo,
+      obtainedMarks: intermediateEducationObtainedMarks,
+      totalMarks: intermediateEducationTotalMarks,
+      picture: intermediateEducationPicture
     };
 
     educationDetails.intermediateEducationDetails = intermediateEducationDetails;
 
-    const bachelorEducationDetails = {
-      institute: institute,
-      fieldOfStudy: fieldOfStudy,
-      from: from,
-      to: to,
-      cgpa: cgpa,
-      picture: picture
-    };
+    let applicant = await Applicant.findOne({ user: req.user.id });
 
-    educationDetails.bachelorEducationDetails = bachelorEducationDetails;
+    // Add bachelor education details only if the applicant is applying for a Masters degree
+    if (applicant.type === 1) {
+      const bachelorEducationDetails = {
+        institute: bachelorEducationInstitute,
+        fieldOfStudy: bachelorEducationFieldOfStudy,
+        from: bachelorEducationFrom,
+        to: bachelorEducationTo,
+        picture: bachelorEducationPicture,
+        cgpa: cgpa
+      };
+
+      educationDetails.bachelorEducationDetails = bachelorEducationDetails;
+    }
 
     try {
-      const applicant = await Applicant.findOneAndUpdate(
+      applicant = await Applicant.findOneAndUpdate(
         { user: req.user.id },
         { $set: { educationDetails } },
         { new: true }
