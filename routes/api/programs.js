@@ -23,7 +23,7 @@ router.put(
     check('semester', 'Programs semester duration is required')
       .not()
       .isEmpty(),
-    check('feePerSemester', 'Fee per semester duration is required').iInt(),
+    check('feePerSemester', 'Fee per semester duration is required').isInt(),
     check(
       'minPercentageOfEquivalence',
       'Minimum percentage of equivalence'
