@@ -34,6 +34,10 @@ const ProgrammeSchema = mongoose.Schema({
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'department'
+  },
+  status: {
+    type: Boolean,
+    default: true
   }
 });
 
