@@ -14,9 +14,13 @@ const Applicant = require('../../models/Applicant');
 router.post(
   '/admin',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required').isLength({ min: 6 })
     // check('registrationNumber', 'Registration number is required')
     //   .not()
     //   .isEmpty()
@@ -30,7 +34,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       // registrationNumber
     } = req.body;
     try {
@@ -43,14 +47,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registrationNumber
       });
 
@@ -79,9 +83,13 @@ router.post(
 router.post(
   '/coordinator',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required').isLength({ min: 6 })
     // check('registrationNumber', 'Registration number is required')
     //   .not()
     //   .isEmpty()
@@ -95,7 +103,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       //registrationNumber
     } = req.body;
 
@@ -109,14 +117,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registrationNumber
       });
 
@@ -140,9 +148,13 @@ router.post(
 router.post(
   '/faculty',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required').isLength({ min: 6 })
     // check('registrationNumber', 'Registration number is required')
     //   .not()
     //   .isEmpty()
@@ -155,7 +167,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       //registrationNumber
     } = req.body;
     try {
@@ -168,14 +180,14 @@ router.post(
       user.avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registrationNumber
       });
 
@@ -200,10 +212,14 @@ router.put(
   '/applicant',
   [
     auth,
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
     check('password', 'Password is required').isLength({ min: 6 }),
-    check('type', 'Type is required').isInt(),
+    check('type', 'Type is required').isInt()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -215,7 +231,7 @@ router.put(
     const { name, email, password, type } = req.body;
 
     try {
-      const user = await User.findOne({ email });
+      let user = await User.findOne({ email });
 
       if (user) {
         return res.status(400).json({ msg: 'User already exists' });
@@ -224,14 +240,14 @@ router.put(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -243,7 +259,7 @@ router.put(
 
       const applicant = new Applicant({
         user: user.id,
-        type,
+        type
       });
 
       await applicant.save();
@@ -262,9 +278,15 @@ router.put(
 router.post(
   '/student',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required')
+      .not()
+      .isEmpty()
     // check('registraionNumber', 'Registraion number is required')
     //   .not()
     //   .isEmpty()
@@ -277,7 +299,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       //registrationNumber
     } = req.body;
     try {
@@ -290,14 +312,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registraionNumber
       });
 
@@ -386,7 +408,12 @@ router.put(
 // @access Private
 router.put(
   '/profile-picture/upload',
-  [auth, check('image', 'Image is required').not().isEmpty()],
+  [
+    auth,
+    check('image', 'Image is required')
+      .not()
+      .isEmpty()
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -417,7 +444,7 @@ router.put('/profile-picture/remove', auth, async (req, res) => {
     user.avatar = gravatar.url(email, {
       s: '200', //size
       r: 'pg', //rating
-      d: 'mm', //default
+      d: 'mm' //default
     });
 
     await user.save();

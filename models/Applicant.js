@@ -4,147 +4,144 @@ const ApplicantSchema = mongoose.Schema({
   // To keep track who is the actual user account associated with application object
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'user'
   },
   // To keep track of what type of applicant the user is i.e. Bachelors or Masters
   type: {
-    type: Number,
+    type: Number
   },
   personalDetails: {
     name: {
-      type: String,
+      type: String
     },
     fathersName: {
-      type: String,
+      type: String
     },
     // CNIC should remain like previous
     cnic: {
       number: {
-        type: String,
+        type: String
       },
       frontPicture: {
-        type: String,
+        type: String
       },
       backPicture: {
-        type: String,
-      },
+        type: String
+      }
     },
     address: {
-      type: String,
+      type: String
     },
     placeOfBirth: {
-      type: String,
+      type: String
     },
     dateOfBirth: {
-      type: Date,
+      type: Date
     },
     phoneNumber: {
-      type: String,
+      type: String
     },
     domicile: {
-      type: String,
-    },
+      type: String
+    }
   },
   incomeDetails: {
     monthlyIncome: {
-      type: Number,
+      type: Number
     },
     minimumYearlyIncome: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   educationDetails: {
     // Here is the details of the secondary education
     secondaryEducationDetails: {
       type: {
-        type: Number,
+        type: Number
       },
       institute: {
-        type: String,
+        type: String
       },
       fieldOfStudy: {
-        type: String,
+        type: String
       },
       from: {
-        type: Date,
+        type: Date
       },
       to: {
-        type: Date,
-        default: Date.now(),
+        type: Date
       },
       obtainedMarks: {
-        type: Number,
+        type: Number
       },
       totalMarks: {
-        type: Number,
+        type: Number
       },
       picture: {
-        type: String,
-      },
+        type: String
+      }
     },
     // Here is the details of the intermediate education
     intermediateEducationDetails: {
       type: {
-        type: Number,
+        type: Number
       },
       institute: {
-        type: String,
+        type: String
       },
       fieldOfStudy: {
-        type: String,
+        type: String
       },
       from: {
-        type: Date,
+        type: Date
       },
       to: {
-        type: Date,
-        default: Date.now(),
+        type: Date
       },
       obtainedMarks: {
-        type: Number,
+        type: Number
       },
       totalMarks: {
-        type: Number,
+        type: Number
       },
       picture: {
-        type: String,
-      },
+        type: String
+      }
     },
     // Here is the details of the bachelor education
     bachelorEducationDetails: {
       institute: {
-        type: String,
+        type: String
       },
       fieldOfStudy: {
-        type: String,
+        type: String
       },
       from: {
-        type: Date,
+        type: Date
       },
       to: {
-        type: Date,
-        default: Date.now(),
+        type: Date
       },
       cgpa: {
-        type: Number,
+        type: Number
       },
       picture: {
-        type: String,
-      },
-    },
+        type: String
+      }
+    }
   },
   appliedPrograms: [
     {
       programme: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'programme',
-      },
-    },
+        ref: 'programme'
+      }
+    }
   ],
   timeStamp: {
     type: Date,
-    default: Date.now(),
-  },
+    default: Date.now()
+  }
 });
 
 module.exports = Applicant = mongoose.model('applicant', ApplicantSchema);
