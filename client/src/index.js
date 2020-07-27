@@ -1,23 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import App from './App';
+import { ThemeProvider } from '@material-ui/core';
+import theme from './utils/theme';
 
-// core components
-import Admin from './layouts/Admin.js';
-// import RTL from 'layouts/RTL.js';
-
-import './assets/css/material-dashboard-react.css?v=1.9.0';
-
-const hist = createBrowserHistory();
+// import './assets/css/material-dashboard-react.css?v=1.9.0';
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      <Route path='/admin' component={Admin} />
-      {/* <Route path='/rtl' component={RTL} /> */}
-      <Redirect from='/' to='/admin/dashboard' />
-    </Switch>
-  </Router>,
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
