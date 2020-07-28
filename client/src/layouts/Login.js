@@ -7,7 +7,7 @@ const Login = () => {
   const switchRoutes = (
     <Switch>
       <Route path='/login/admin' component={Admin} />
-      {/* <Redirect from='/login' to='/' /> */}
+      <Redirect from='/login' to='/login/admin' />
     </Switch>
   );
 
