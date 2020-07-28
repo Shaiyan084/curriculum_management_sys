@@ -194,25 +194,25 @@ const sidebarStyle = (theme) => ({
     },
   },
   blue: {
-    backgroundColor: infoColor[0],
-    boxShadow:
-      '0 12px 20px -10px rgba(' +
-      hexToRgb(infoColor[0]) +
-      ',.28), 0 4px 20px 0 rgba(' +
-      hexToRgb(blackColor) +
-      ',.12), 0 7px 8px -5px rgba(' +
-      hexToRgb(infoColor[0]) +
-      ',.2)',
+    backgroundColor: '#212121',
+    // boxShadow:
+    //   '0 12px 20px -10px rgba(' +
+    //   hexToRgb(infoColor[0]) +
+    //   ',.28), 0 4px 20px 0 rgba(' +
+    //   hexToRgb(blackColor) +
+    //   ',.12), 0 7px 8px -5px rgba(' +
+    //   hexToRgb(infoColor[0]) +
+    //   ',.2)',
     '&:hover,&:focus': {
-      backgroundColor: infoColor[0],
-      boxShadow:
-        '0 12px 20px -10px rgba(' +
-        hexToRgb(infoColor[0]) +
-        ',.28), 0 4px 20px 0 rgba(' +
-        hexToRgb(blackColor) +
-        ',.12), 0 7px 8px -5px rgba(' +
-        hexToRgb(infoColor[0]) +
-        ',.2)',
+      backgroundColor: '#424242',
+      // boxShadow:
+      //   '0 12px 20px -10px rgba(' +
+      //   hexToRgb(infoColor[0]) +
+      //   ',.28), 0 4px 20px 0 rgba(' +
+      //   hexToRgb(blackColor) +
+      //   ',.12), 0 7px 8px -5px rgba(' +
+      //   hexToRgb(infoColor[0]) +
+      //   ',.2)',
     },
   },
   green: {

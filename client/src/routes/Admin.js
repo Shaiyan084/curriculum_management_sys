@@ -1,5 +1,5 @@
 // @material-ui/icons
-// import Dashboard from '@material-ui/icons/Dashboard';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 // import Person from '@material-ui/icons/Person';
 // import LibraryBooks from '@material-ui/icons/LibraryBooks';
 // import BubbleChart from '@material-ui/icons/BubbleChart';
@@ -8,7 +8,7 @@
 // import Unarchive from '@material-ui/icons/Unarchive';
 // import Language from '@material-ui/icons/Language';
 // // core components/views for Admin layout
-// import DashboardPage from 'views/Dashboard/Dashboard.js';
+import Dashboard from '../views/Dashboard/Dashboard';
 // import UserProfile from 'views/UserProfile/UserProfile.js';
 // import TableList from 'views/TableList/TableList.js';
 // import Typography from 'views/Typography/Typography.js';
@@ -20,14 +20,13 @@
 // import RTLPage from 'views/RTLPage/RTLPage.js';
 
 const routes = [
-  //   {
-  //     path: '/dashboard',
-  //     name: 'Dashboard',
-  //     rtlName: 'لوحة القيادة',
-  //     icon: Dashboard,
-  //     component: DashboardPage,
-  //     layout: '/admin',
-  //   },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    icon: DashboardIcon,
+    component: Dashboard,
+    layout: '/admin',
+  },
   //   {
   //     path: '/user',
   //     name: 'User Profile',
