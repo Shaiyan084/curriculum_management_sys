@@ -136,7 +136,7 @@ const Admin = (props) => {
           {image !== undefined ? (
             <div
               className={classes.background}
-              style={{ backgroundColor: '#101010' }}
+              style={{ backgroundColor: '#2f2f2f' }}
             />
           ) : null}
         </Drawer>

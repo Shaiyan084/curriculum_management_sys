@@ -47,7 +47,7 @@ const Admin = () => {
                   variant='outlined'
                   type='password'
                 />
-                <Link to='/admin'>
+                <Link to='/admin' className='text-decoration-none'>
                   <Button
                     variant='contained'
                     color='primary'

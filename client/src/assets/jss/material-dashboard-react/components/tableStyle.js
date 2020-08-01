@@ -14,7 +14,7 @@ const tableStyle = (theme) => ({
     color: warningColor[0],
   },
   primaryTableHeader: {
-    color: primaryColor[0],
+    color: 'primaryColor[0]',
   },
   dangerTableHeader: {
     color: dangerColor[0],

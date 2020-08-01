@@ -72,3 +72,15 @@
     color: #ffffff !important;
   }
 }
+
+.margin-left-right {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.button {
+  &-info {
+    background-color: #6140bb !important;
+    color: #ffffff !important;
+  }
+}

@@ -194,7 +194,7 @@ const sidebarStyle = (theme) => ({
     },
   },
   blue: {
-    backgroundColor: '#212121',
+    backgroundColor: '#0d47a1',
     // boxShadow:
     //   '0 12px 20px -10px rgba(' +
     //   hexToRgb(infoColor[0]) +
@@ -204,7 +204,7 @@ const sidebarStyle = (theme) => ({
     //   hexToRgb(infoColor[0]) +
     //   ',.2)',
     '&:hover,&:focus': {
-      backgroundColor: '#424242',
+      backgroundColor: '#0d47a1',
       // boxShadow:
       //   '0 12px 20px -10px rgba(' +
       //   hexToRgb(infoColor[0]) +
