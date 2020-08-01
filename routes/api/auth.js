@@ -7,18 +7,18 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 
-// // @route  GET /api/users/auth
-// // @desc   Get current user
-// // @access Public
-// router.get('/', auth, async (req, res) => {
-//   try {
-//     const users = await User.findById(req.user.id).select('-password');
-//     res.json(users);
-//   } catch (err) {
-//     console.log(err.message);
-//     res.status(500).send('Server Error');
-//   }
-// });
+// @route  GET /api/users/auth
+// @desc   Get current user
+// @access Public
+router.get('/me', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // @route  POST /api/auth
 // @desc   Login a user
@@ -26,12 +26,8 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    check('email', 'Email is required')
-      .not()
-      .isEmpty(),
-    check('password', 'Password is required')
-      .not()
-      .isEmpty()
+    check('email', 'Email is required').not().isEmpty(),
+    check('password', 'Password is required').not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -58,8 +54,8 @@ router.post(
 
       const payload = await {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
