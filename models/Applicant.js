@@ -128,6 +128,9 @@ const ApplicantSchema = mongoose.Schema({
       picture: {
         type: String
       }
+    },
+    ntsMarks: {
+      type: Number
     }
   },
   appliedPrograms: [
@@ -141,6 +144,14 @@ const ApplicantSchema = mongoose.Schema({
   timeStamp: {
     type: Date,
     default: Date.now()
+  },
+  applicantVerified: {
+    type: Boolean,
+    default: false
+  },
+  applicantFowaraded: {
+    type: Boolean,
+    default: false
   }
 });
 

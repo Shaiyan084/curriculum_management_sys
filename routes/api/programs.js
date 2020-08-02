@@ -24,6 +24,7 @@ router.post(
       'minPercentageOfEquivalence',
       'Minimum percentage of equivalence is required'
     ).isInt(),
+    check('minCGPA', 'Minimum Cgpa is required').isInt(),
     check('categoryOfDegree', 'Category of degree is required').isInt(),
     check('department', 'Department is required')
       .not()
@@ -61,6 +62,7 @@ router.post(
 
     const criteria = {
       minPercentageOfEquivalence,
+      minCGPA,
       categoryOfDegree
     };
 
@@ -136,6 +138,7 @@ router.put(
 
     const criteria = {
       minPercentageOfEquivalence,
+      minCGPA,
       categoryOfDegree
     };
 
