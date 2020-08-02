@@ -499,7 +499,7 @@ router.put('/forwarded/:id', auth, async (req, res) => {
 });
 
 // @route  PUT /api/ntsMarks
-// @desc   Upload NTS marks
+// @desc   Add/ Update NTS marks
 // @access Private
 router.put(
   '/ntsMarks',
@@ -535,6 +535,22 @@ router.put(
 // @route  GET /api/ntsMarks/:id
 // @desc   Get NTS marks of student by id
 // @access Private
+router.get('/ntsMarks/:id', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findById(req.params.id);
+
+    if (!applicant) {
+      return res.status(400).json({ msg: 'Applicant does not exists' });
+    }
+
+    const ntsMarks = applicant.educationDetails.ntsMarks;
+
+    res.json(ntsMarks);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
 
 // @route  PUT /api/calculate-aggregate/:id
 // @desc   Calculate Aggregate for student
