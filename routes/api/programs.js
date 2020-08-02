@@ -64,8 +64,8 @@ router.post(
     try {
       const programme = new Programme(programFields);
 
-      await program.save();
-      res.json(program);
+      await programme.save();
+      res.json(programme);
     } catch (err) {
       console.log(err.message);
       return res.status(500).send('Server Error');
@@ -131,7 +131,7 @@ router.put(
     programFields.criteria = criteria;
 
     try {
-      const program = await Program.findOneAndUpdate(
+      const program = await Programme.findOneAndUpdate(
         { _id: req.params.id },
         { $set: programFields },
         { new: true }
@@ -150,7 +150,7 @@ router.put(
 // @access Private
 router.get('/', auth, async (req, res) => {
   try {
-    const programs = await Program.find();
+    const programs = await Programme.find().populate('department', ['name']);
 
     res.json(programs);
   } catch (err) {
@@ -164,7 +164,7 @@ router.get('/', auth, async (req, res) => {
 // @access Private
 router.get('/:id', auth, async (req, res) => {
   try {
-    const program = await Program.findById(req.params.id);
+    const program = await Programme.findById(req.params.id);
 
     if (!program) {
       return res.status(400).json({ msg: 'Program not found' });

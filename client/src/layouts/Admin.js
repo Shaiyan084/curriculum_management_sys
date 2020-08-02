@@ -10,6 +10,8 @@ import Alert from '../components/Alert/Alert';
 
 import CreateDepartment from '../views/Admin/CreateDepartment';
 import UpdateDepartment from '../views/Admin/UpdateDepartment';
+import CreateProgram from '../views/Admin/CreateProgram';
+import UpdateProgram from '../views/Admin/UpdateProgram';
 
 import routes from '../routes/Admin';
 
@@ -35,7 +37,9 @@ const switchRoutes = (
       return null;
     })}
     <Route path='/admin/create-department' component={CreateDepartment} />
+    <Route path='/admin/create-program' component={CreateProgram} />
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />
+    <Route path='/admin/update-program/:id' component={UpdateProgram} />
     <Redirect from='/admin' to='/admin/dashboard' />
   </Switch>
 );

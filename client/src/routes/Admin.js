@@ -1,15 +1,8 @@
-// @material-ui/icons
 import DashboardIcon from '@material-ui/icons/Dashboard';
-// import Person from '@material-ui/icons/Person';
-// import LibraryBooks from '@material-ui/icons/LibraryBooks';
-// import BubbleChart from '@material-ui/icons/BubbleChart';
-// import LocationOn from '@material-ui/icons/LocationOn';
-// import Notifications from '@material-ui/icons/Notifications';
-// import Unarchive from '@material-ui/icons/Unarchive';
-// import Language from '@material-ui/icons/Language';
 
 import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
+import ManagePrograms from '../views/Admin/ManagePrograms';
 
 const routes = [
   {
@@ -30,7 +23,7 @@ const routes = [
     path: '/manage-programs',
     name: 'Manage Programs',
     icon: DashboardIcon,
-    component: Dashboard,
+    component: ManagePrograms,
     layout: '/admin',
   },
   {

@@ -9,7 +9,7 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getAllDepartments } from '../../actions/department';
+import { getAllPrograms } from '../../actions/program';
 import { Link } from 'react-router-dom';
 
 const styles = {
@@ -45,28 +45,25 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManageDepartments = ({
-  getAllDepartments,
-  department: { loading, departments },
-}) => {
+const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
   const classes = useStyles();
 
-  const [departmentsList, setDepartmentsList] = useState([]);
+  const [programsList, setProgramsList] = useState([]);
 
-  const getDepartments = () => {
+  const getPrograms = () => {
     let res = [];
     let i = 1;
 
-    departmentsList.forEach((department) => {
+    programsList.forEach((program) => {
       res = [
         ...res,
         [
           `${i}`,
-          department.name,
-          department.description,
+          program.name,
+          program.department.name,
           <Fragment>
             <Link
-              to={`/admin/update-department/${department._id}`}
+              to={`/admin/update-program/${program._id}`}
               className='text-decoration-none'
             >
               <Button
@@ -77,12 +74,6 @@ const ManageDepartments = ({
                 Update
               </Button>
             </Link>
-            <Button
-              variant='contained'
-              className='button-info margin-left-right margin-top-bottom'
-            >
-              Manage programs
-            </Button>
           </Fragment>,
         ],
       ];
@@ -93,46 +84,41 @@ const ManageDepartments = ({
     return res;
   };
 
-  const [getAllDepartmentsCalled, setGetAllDepartmentsCalled] = useState(false);
+  const [getAllProgramsCalled, setGetAllProgramsCalled] = useState(false);
 
   useEffect(() => {
-    if (!getAllDepartmentsCalled) {
-      getAllDepartments();
-      setGetAllDepartmentsCalled(true);
+    if (!getAllProgramsCalled) {
+      getAllPrograms();
+      setGetAllProgramsCalled(true);
     }
 
-    setDepartmentsList(!loading && departments.length > 0 ? departments : []);
-  }, [departments]);
+    setProgramsList(!loading && programs.length > 0 ? programs : []);
+  }, [programs]);
 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color='primary'>
-            <h4 className={classes.cardTitleWhite}>Manage Departments</h4>
+            <h4 className={classes.cardTitleWhite}>Manage Programs</h4>
             <p className={classes.cardCategoryWhite}>
-              Below is a list of all the deparmtents
+              Below is a list of all the programs
             </p>
           </CardHeader>
           <CardBody>
-            <Link
-              to='/admin/create-department'
-              className='text-decoration-none'
-            >
+            <Link to='/admin/create-program' className='text-decoration-none'>
               <Button color='primary' variant='contained'>
-                Add department
+                Add program
               </Button>
             </Link>
-            {departmentsList.length > 0 ? (
+            {programsList.length > 0 ? (
               <Table
                 tableHeaderColor='primary'
-                tableHead={['S.No', 'Name', 'Description', 'Actions']}
-                tableData={getDepartments()}
+                tableHead={['S.No', 'Name', 'Department', 'Actions']}
+                tableData={getPrograms()}
               />
             ) : (
-              <div className='text-center imp-message'>
-                No departments found
-              </div>
+              <div className='text-center imp-message'>No programs found</div>
             )}
           </CardBody>
         </Card>
@@ -141,15 +127,13 @@ const ManageDepartments = ({
   );
 };
 
-ManageDepartments.propTypes = {
-  getAllDepartments: PropTypes.func.isRequired,
-  department: PropTypes.object.isRequired,
+ManagePrograms.propTypes = {
+  getAllPrograms: PropTypes.func.isRequired,
+  program: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  department: state.department,
+  program: state.program,
 });
 
-export default connect(mapStateToProps, { getAllDepartments })(
-  ManageDepartments
-);
+export default connect(mapStateToProps, { getAllPrograms })(ManagePrograms);
