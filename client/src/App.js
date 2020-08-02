@@ -14,6 +14,8 @@ import { Provider } from 'react-redux';
 import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/auth';
 
+import AdminPrivateRoute from './components/Routing/AdminPrivateRoute';
+
 import './assets/scss/App.scss';
 
 if (localStorage.getItem('token')) {
@@ -30,7 +32,7 @@ const App = () => {
       <Provider store={store}>
         <Router>
           <Switch>
-            <Route path='/admin' component={Admin} />
+            <AdminPrivateRoute path='/admin' component={Admin} />
             <Route path='/login' component={Login} />
             <Redirect from='/' to='/login' />
           </Switch>

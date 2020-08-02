@@ -1,6 +1,7 @@
-import { USER_LOADED, AUTH_ERROR } from './types';
+import { USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAILED } from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
+import { setAlert } from './alert';
 
 // Load the current user
 export const loadUser = () => async (dispatch) => {
@@ -17,5 +18,31 @@ export const loadUser = () => async (dispatch) => {
     });
   } catch (err) {
     dispatch({ type: AUTH_ERROR });
+  }
+};
+
+// Login user
+export const loginUser = (formData) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const res = await axios.post('/api/auth', formData, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data.token,
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    dispatch({ type: LOGIN_FAILED });
+
+    if (err.response.status === 400) {
+      dispatch(setAlert('Invalid Credentials'));
+    }
   }
 };
