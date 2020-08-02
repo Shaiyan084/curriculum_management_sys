@@ -42,7 +42,7 @@ export const loginUser = (formData) => async (dispatch) => {
     dispatch({ type: LOGIN_FAILED });
 
     if (err.response.status === 400) {
-      dispatch(setAlert('Invalid Credentials'));
+      dispatch(setAlert('Invalid credentials'));
     }
   }
 };

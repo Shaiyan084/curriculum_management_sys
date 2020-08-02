@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
@@ -7,6 +8,9 @@ import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { getAllDepartments } from '../../actions/department';
+import { Link } from 'react-router-dom';
 
 const styles = {
   cardCategoryWhite: {
@@ -41,8 +45,64 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManageDepartments = () => {
+const ManageDepartments = ({
+  getAllDepartments,
+  department: { loading, departments },
+}) => {
   const classes = useStyles();
+
+  const [departmentsList, setDepartmentsList] = useState([]);
+  const [getAllDepartmentsCalled, setGetAllDepartmentsCalled] = useState(false);
+
+  const getDepartments = () => {
+    let res = [];
+    let i = 1;
+
+    departmentsList.forEach((department) => {
+      res = [
+        ...res,
+        [
+          `${i}`,
+          department.name,
+          department.description,
+          <Fragment>
+            <Link
+              to={`/admin/update-department/${department._id}`}
+              className='text-decoration-none'
+            >
+              <Button
+                color='secondary'
+                variant='contained'
+                className='margin-left-right margin-top-bottom'
+              >
+                Update
+              </Button>
+            </Link>
+            <Button
+              variant='contained'
+              className='button-info margin-left-right margin-top-bottom'
+            >
+              Manage programs
+            </Button>
+          </Fragment>,
+        ],
+      ];
+
+      i++;
+    });
+
+    return res;
+  };
+
+  useEffect(() => {
+    if (!getAllDepartmentsCalled) {
+      getAllDepartments();
+      setGetAllDepartmentsCalled(true);
+    }
+
+    setDepartmentsList(!loading && departments.length > 0 ? departments : []);
+  }, [departments]);
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -54,35 +114,22 @@ const ManageDepartments = () => {
             </p>
           </CardHeader>
           <CardBody>
-            <Button color='primary' variant='contained'>
-              Add department
-            </Button>
-            <Table
-              tableHeaderColor='primary'
-              tableHead={['S.No', 'Name', 'Description', 'Actions']}
-              tableData={[
-                [
-                  '1',
-                  'Computer Science',
-                  'This is the description of Computer Science department',
-                  <Fragment>
-                    <Button
-                      color='secondary'
-                      variant='contained'
-                      className='margin-left-right'
-                    >
-                      Update
-                    </Button>
-                    <Button
-                      variant='contained'
-                      className='button-info margin-left-right'
-                    >
-                      Manage programs
-                    </Button>
-                  </Fragment>,
-                ],
-              ]}
-            />
+            <Link to='/admin/create-department'>
+              <Button color='primary' variant='contained'>
+                Add department
+              </Button>
+            </Link>
+            {departmentsList.length > 0 ? (
+              <Table
+                tableHeaderColor='primary'
+                tableHead={['S.No', 'Name', 'Description', 'Actions']}
+                tableData={getDepartments()}
+              />
+            ) : (
+              <div className='text-center imp-message'>
+                No departments found
+              </div>
+            )}
           </CardBody>
         </Card>
       </GridItem>
@@ -90,4 +137,14 @@ const ManageDepartments = () => {
   );
 };
 
-export default ManageDepartments;
+ManageDepartments.propTypes = {
+  getAllDepartments: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  department: state.department,
+});
+
+export default connect(mapStateToProps, { getAllDepartments })(
+  ManageDepartments
+);

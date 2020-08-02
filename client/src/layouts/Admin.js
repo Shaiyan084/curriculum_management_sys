@@ -6,6 +6,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../components/Navbars/Admin';
 import Footer from '../components/Footer/Footer.js';
 import Sidebar from '../components/Sidebar/Admin';
+import Alert from '../components/Alert/Alert';
+
+import CreateDepartment from '../views/Admin/CreateDepartment';
+import UpdateDepartment from '../views/Admin/UpdateDepartment';
 
 import routes from '../routes/Admin';
 
@@ -30,6 +34,8 @@ const switchRoutes = (
       }
       return null;
     })}
+    <Route path='/admin/create-department' component={CreateDepartment} />
+    <Route path='/admin/update-department/:id' component={UpdateDepartment} />
     <Redirect from='/admin' to='/admin/dashboard' />
   </Switch>
 );
@@ -89,6 +95,7 @@ const Admin = ({ ...rest }) => {
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
+        <Alert />
         <div className={classes.content}>
           <div className={classes.container}>{switchRoutes}</div>
         </div>
