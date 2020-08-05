@@ -72,8 +72,8 @@ router.post(
     try {
       const program = new Programme(programFields);
 
-      await program.save();
-      res.json(program);
+      await programme.save();
+      res.json(programme);
     } catch (err) {
       console.log(err.message);
       return res.status(500).send('Server Error');
@@ -165,7 +165,7 @@ router.put(
 // @access Private
 router.get('/', auth, async (req, res) => {
   try {
-    const programs = await Programme.find();
+    const programs = await Programme.find().populate('department', ['name']);
 
     res.json(programs);
   } catch (err) {
