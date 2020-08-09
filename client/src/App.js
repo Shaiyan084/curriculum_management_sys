@@ -9,6 +9,7 @@ import {
 import Admin from './layouts/Admin.js';
 import Login from './layouts/Login';
 import Register from './layouts/Register';
+import Applicant from './layouts/Applicant';
 
 import store from './utils/store';
 import { Provider } from 'react-redux';
@@ -16,6 +17,7 @@ import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/auth';
 
 import AdminPrivateRoute from './components/Routing/AdminPrivateRoute';
+import ApplicantPrivateRoute from './components/Routing/ApplicantPrivateRoute';
 
 import './assets/scss/App.scss';
 
@@ -34,9 +36,10 @@ const App = () => {
         <Router>
           <Switch>
             <AdminPrivateRoute path='/admin' component={Admin} />
+            <ApplicantPrivateRoute path='/applicant' component={Applicant} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
-            {/* <Redirect from='/' to='/login' /> */}
+            <Redirect from='/' to='/login' />
           </Switch>
         </Router>
       </Provider>

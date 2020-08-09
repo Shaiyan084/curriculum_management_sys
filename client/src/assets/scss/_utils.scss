@@ -23,6 +23,13 @@
   }
 }
 
+.heading {
+  &-primary {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
 .title {
   &-primary {
     font: inherit !important;
@@ -96,4 +103,17 @@
   font-size: 1.3rem !important;
   margin-top: 1rem !important;
   margin-bottom: 1rem !important;
+}
+
+.file-input {
+  label {
+    color: #000000;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100% !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
 }
