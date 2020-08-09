@@ -1,10 +1,19 @@
-import { USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAILED } from './types';
+import {
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
+  ALL_COORDINATORS_LOADED,
+  COORDINATOR_ERROR,
+  REGISTER_SUCCESS,
+  REGISTER_FAILED
+} from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import { setAlert } from './alert';
 
 // Load the current user
-export const loadUser = () => async (dispatch) => {
+export const loadUser = () => async dispatch => {
   if (localStorage.getItem('token')) {
     setAuthToken(localStorage.getItem('token'));
   }
@@ -14,7 +23,7 @@ export const loadUser = () => async (dispatch) => {
 
     dispatch({
       type: USER_LOADED,
-      payload: res.data,
+      payload: res.data
     });
   } catch (err) {
     dispatch({ type: AUTH_ERROR });
@@ -22,11 +31,11 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Login user
-export const loginUser = (formData) => async (dispatch) => {
+export const loginUser = formData => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   };
 
   try {
@@ -34,7 +43,7 @@ export const loginUser = (formData) => async (dispatch) => {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data.token,
+      payload: res.data.token
     });
 
     dispatch(loadUser());
