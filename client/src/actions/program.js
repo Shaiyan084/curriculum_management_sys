@@ -81,7 +81,7 @@ export const updateProgram = (id, formData, history) => async (dispatch) => {
 
     dispatch({ type: PROGRAM_UPDATED });
 
-    dispatch(setAlert('Programs updated'));
+    dispatch(setAlert('Program updated'));
 
     history.goBack();
   } catch (err) {
