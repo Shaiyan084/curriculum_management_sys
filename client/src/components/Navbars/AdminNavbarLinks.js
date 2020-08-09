@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -13,12 +14,14 @@ import {
   Popper,
   Divider,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { logout } from '../../actions/auth';
 
 import styles from '../../assets/jss/material-dashboard-react/components/headerLinksStyle.js';
 
 const useStyles = makeStyles(styles);
 
-const AdminNavbarLinks = () => {
+const AdminNavbarLinks = ({ logout }) => {
   const classes = useStyles();
   const [openProfile, setOpenProfile] = React.useState(null);
 
@@ -88,7 +91,7 @@ const AdminNavbarLinks = () => {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={() => logout()}
                       className={classes.dropdownItem}
                     >
                       Logout
@@ -104,4 +107,8 @@ const AdminNavbarLinks = () => {
   );
 };
 
-export default AdminNavbarLinks;
+AdminNavbarLinks.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
+
+export default connect(null, { logout })(AdminNavbarLinks);

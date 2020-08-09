@@ -10,6 +10,11 @@ const ApplicantSchema = mongoose.Schema({
   type: {
     type: Number,
   },
+  // To keep track of status of applicant form
+  status: {
+    type: Number,
+    default: 0,
+  },
   personalDetails: {
     name: {
       type: String,

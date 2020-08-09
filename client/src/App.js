@@ -8,6 +8,7 @@ import {
 
 import Admin from './layouts/Admin.js';
 import Login from './layouts/Login';
+import Register from './layouts/Register';
 
 import store from './utils/store';
 import { Provider } from 'react-redux';
@@ -34,7 +35,8 @@ const App = () => {
           <Switch>
             <AdminPrivateRoute path='/admin' component={Admin} />
             <Route path='/login' component={Login} />
-            <Redirect from='/' to='/login' />
+            <Route path='/register' component={Register} />
+            {/* <Redirect from='/' to='/login' /> */}
           </Switch>
         </Router>
       </Provider>

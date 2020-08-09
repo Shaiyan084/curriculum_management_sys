@@ -55,7 +55,7 @@ router.post(
           .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
-      const payload = await {
+      const payload = {
         user: {
           id: user.id,
         },

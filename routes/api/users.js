@@ -7,6 +7,8 @@ const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 const Admission = require('../../models/Admission');
 const Applicant = require('../../models/Applicant');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 
 // @route  POST /api/users/admin
 // @desc   Register a admin
@@ -23,6 +25,7 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -196,12 +199,12 @@ router.post(
 // @route  POST /api/users/applicant
 // @desc   Register an Applicant
 // @access Public
-router.put(
+router.post(
   '/applicant',
   [
     auth,
     check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
+    check('email', 'Email is required').isEmail(),
     check('password', 'Password is required').isLength({ min: 6 }),
     check('type', 'Type is required').isInt(),
   ],
@@ -215,7 +218,7 @@ router.put(
     const { name, email, password, type } = req.body;
 
     try {
-      const user = await User.findOne({ email });
+      let user = await User.findOne({ email });
 
       if (user) {
         return res.status(400).json({ msg: 'User already exists' });
@@ -248,7 +251,21 @@ router.put(
 
       await applicant.save();
 
-      res.json({ msg: 'Applicant successfully registered' });
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: 864000000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.log(err.message);
       return res.status(500).send('Server Error');
