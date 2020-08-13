@@ -4,7 +4,7 @@ const Applicant = require('../../models/Applicant');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Programme = require('../../models/Programme');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
 // @route  PUT /api/applicants/personal-details
 // @desc   Add/Update applicants personal details
@@ -13,36 +13,16 @@ router.put(
   '/personal-details',
   [
     auth,
-    check('name', 'Name is required')
-      .not()
-      .isEmpty(),
-    check('fathersName', "Father's name is required")
-      .not()
-      .isEmpty(),
-    check('cnicNumber', 'Cnic number is required')
-      .not()
-      .isEmpty(),
-    check('cnicFrontPicture', 'Cnic front picture is required')
-      .not()
-      .isEmpty(),
-    check('cnicBackPicture', 'Cnic back picture is required')
-      .not()
-      .isEmpty(),
-    check('address', 'Address is required')
-      .not()
-      .isEmpty(),
-    check('placeOfBirth', 'Place of birth is required')
-      .not()
-      .isEmpty(),
-    check('dateOfBirth', 'Date of birth is required')
-      .not()
-      .isEmpty(),
-    check('phoneNumber', 'Phone number is required')
-      .not()
-      .isEmpty(),
-    check('domicile', 'Domicile is required')
-      .not()
-      .isEmpty()
+    check('name', 'Name is required').not().isEmpty(),
+    check('fathersName', "Father's name is required").not().isEmpty(),
+    check('cnicNumber', 'Cnic number is required').not().isEmpty(),
+    check('cnicFrontPicture', 'Cnic front picture is required').not().isEmpty(),
+    check('cnicBackPicture', 'Cnic back picture is required').not().isEmpty(),
+    check('address', 'Address is required').not().isEmpty(),
+    check('placeOfBirth', 'Place of birth is required').not().isEmpty(),
+    check('dateOfBirth', 'Date of birth is required').not().isEmpty(),
+    check('phoneNumber', 'Phone number is required').not().isEmpty(),
+    check('domicile', 'Domicile is required').not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -59,7 +39,7 @@ router.put(
       cnicBackPicture,
       address,
       phoneNumber,
-      domicile
+      domicile,
     } = req.body;
 
     let personalDetails = {};
@@ -75,7 +55,7 @@ router.put(
     const cnic = {
       number: cnicNumber,
       frontPicture: cnicFrontPicture,
-      backPicture: cnicBackPicture
+      backPicture: cnicBackPicture,
     };
 
     personalDetails.cnic = cnic;
@@ -104,7 +84,7 @@ router.put(
   [
     auth,
     check('monthlyIncome', 'Monthly income is required').isInt(),
-    check('minimumYearlyIncome', 'Minimum yearly income is required').isInt()
+    check('minimumYearlyIncome', 'Minimum yearly income is required').isInt(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -218,7 +198,7 @@ router.put(
       'Intermediate Education picture is required'
     )
       .not()
-      .isEmpty()
+      .isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -249,7 +229,7 @@ router.put(
       bachelorEducationFrom,
       bachelorEducationTo,
       bachelorEducationPicture,
-      cgpa
+      cgpa,
     } = req.body;
 
     const educationDetails = {};
@@ -262,7 +242,7 @@ router.put(
       to: secondaryEducationTo,
       obtainedMarks: secondaryEducationObtainedMarks,
       totalMarks: secondaryEducationTotalMarks,
-      picture: secondaryEducationPicture
+      picture: secondaryEducationPicture,
     };
 
     educationDetails.secondaryEducationDetails = secondaryEducationDetails;
@@ -275,7 +255,7 @@ router.put(
       to: intermediateEducationTo,
       obtainedMarks: intermediateEducationObtainedMarks,
       totalMarks: intermediateEducationTotalMarks,
-      picture: intermediateEducationPicture
+      picture: intermediateEducationPicture,
     };
 
     educationDetails.intermediateEducationDetails = intermediateEducationDetails;
@@ -290,7 +270,7 @@ router.put(
         from: bachelorEducationFrom,
         to: bachelorEducationTo,
         picture: bachelorEducationPicture,
-        cgpa: cgpa
+        cgpa: cgpa,
       };
 
       educationDetails.bachelorEducationDetails = bachelorEducationDetails;
@@ -327,7 +307,7 @@ router.put('/apply/:id', auth, async (req, res) => {
 
     if (
       applicant.appliedPrograms
-        .map(programme => programme.programme)
+        .map((programme) => programme.programme)
         .indexOf(req.params.id) !== -1
     ) {
       return res.status(400).json({ msg: 'Already applied for program' });
@@ -357,7 +337,7 @@ router.put('/remove/:id', auth, async (req, res) => {
     const applicant = await Applicant.findOne({ user: req.user.id });
 
     const removeIndex = applicant.appliedPrograms
-      .map(programme => programme.programme)
+      .map((programme) => programme.programme)
       .indexOf(req.params.id);
 
     if (removeIndex === -1) {
@@ -380,7 +360,7 @@ router.put('/remove/:id', auth, async (req, res) => {
 router.get('/check-criteria', auth, async (req, res) => {
   try {
     const applicant = await Applicant.find({
-      user: req.user.id
+      user: req.user.id,
     }).populate('appliedPrograms.programme', ['criteria']);
 
     if (!applicant) {
@@ -390,14 +370,14 @@ router.get('/check-criteria', auth, async (req, res) => {
     const {
       // secondaryEducationDetails,
       intermediateEducationDetails,
-      bachelorEducationDetails
+      bachelorEducationDetails,
     } = applicant.educationDetails;
 
     const { type, obtainedMarks, totalMarks } = intermediateEducationDetails;
 
     let result = [];
 
-    applicant.appliedPrograms.forEach(program => {
+    applicant.appliedPrograms.forEach((program) => {
       if (
         program.criteria.categoryOfDegree === type &&
         (obtainedMarks / totalMarks) * 100 >=
@@ -438,7 +418,7 @@ router.get('/check-criteria', auth, async (req, res) => {
 
       let result = [];
 
-      applicant.appliedPrograms.forEach(program => {
+      applicant.appliedPrograms.forEach((program) => {
         if (
           program.criteria.categoryOfDegree === type &&
           cgpa >= program.criteria.minCGPA
@@ -490,7 +470,7 @@ router.put('/forwarded/:id', auth, async (req, res) => {
 
     await applicant.save();
     res.json(applicant, {
-      msg: 'Your application has been forwarded to the department'
+      msg: 'Your application has been forwarded to the department',
     });
   } catch (err) {
     console.log(err.message);
@@ -567,7 +547,7 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
       secondaryEducationDetails,
       intermediateEducationDetails,
       ntsMarks,
-      bachelorEducationDetails
+      bachelorEducationDetails,
     } = applicant.educationDetails;
 
     let secondaryAggregate =

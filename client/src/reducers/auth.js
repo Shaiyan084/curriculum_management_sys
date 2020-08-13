@@ -6,8 +6,6 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
-  REGISTER_SUCCESS,
-  REGISTER_FAILED,
 } from '../actions/types';
 
 const initialState = {
