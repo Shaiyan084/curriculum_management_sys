@@ -11,8 +11,12 @@ router.post(
   '/',
   [
     auth,
-    check('name', 'Name is required').not().isEmpty(),
-    check('description', 'Description is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('description', 'Description is required')
+      .not()
+      .isEmpty(),
     check('yearly', 'Yearly duration is required').isInt(),
     check('semester', 'Semester duration is required').isInt(),
     check('feePerSemester', 'Fee per semester is required').isInt(),
@@ -20,8 +24,11 @@ router.post(
       'minPercentageOfEquivalence',
       'Minimum percentage of equivalence is required'
     ).isInt(),
+    check('minCGPA', 'Minimum Cgpa is required').isInt(),
     check('categoryOfDegree', 'Category of degree is required').isInt(),
-    check('department', 'Department is required').not().isEmpty(),
+    check('department', 'Department is required')
+      .not()
+      .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -38,7 +45,7 @@ router.post(
       feePerSemester,
       minPercentageOfEquivalence,
       categoryOfDegree,
-      department,
+      department
     } = req.body;
 
     let programFields = {};
@@ -50,19 +57,20 @@ router.post(
 
     const duration = {
       yearly,
-      semester,
+      semester
     };
 
     const criteria = {
       minPercentageOfEquivalence,
-      categoryOfDegree,
+      minCGPA,
+      categoryOfDegree
     };
 
     programFields.duration = duration;
     programFields.criteria = criteria;
 
     try {
-      const programme = new Programme(programFields);
+      const program = new Programme(programFields);
 
       await programme.save();
       res.json(programme);
@@ -80,8 +88,12 @@ router.put(
   '/:id',
   [
     auth,
-    check('name', 'Name is required').not().isEmpty(),
-    check('description', 'Description is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('description', 'Description is required')
+      .not()
+      .isEmpty(),
     check('yearly', 'Yearly duration is required').isInt(),
     check('semester', 'Semester duration is required').isInt(),
     check('feePerSemester', 'Fee per semester is required').isInt(),
@@ -90,7 +102,9 @@ router.put(
       'Minimum percentage of equivalence is required'
     ).isInt(),
     check('categoryOfDegree', 'Category of degree is required').isInt(),
-    check('department', 'Department is required').not().isEmpty(),
+    check('department', 'Department is required')
+      .not()
+      .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -107,7 +121,7 @@ router.put(
       feePerSemester,
       minPercentageOfEquivalence,
       categoryOfDegree,
-      department,
+      department
     } = req.body;
 
     let programFields = {};
@@ -119,12 +133,13 @@ router.put(
 
     const duration = {
       yearly,
-      semester,
+      semester
     };
 
     const criteria = {
       minPercentageOfEquivalence,
-      categoryOfDegree,
+      minCGPA,
+      categoryOfDegree
     };
 
     programFields.duration = duration;
@@ -193,7 +208,7 @@ router.put(
     const { status } = req.body;
 
     try {
-      const program = await Program.findById(req.params.id);
+      const program = await Programme.findById(req.params.id);
 
       program.status = status;
 

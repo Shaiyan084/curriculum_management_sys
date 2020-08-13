@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -9,8 +9,8 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getAllPrograms } from '../../actions/program';
 import { Link } from 'react-router-dom';
+import { loadAllCoordinators } from '../../actions/coordinator';
 
 const styles = {
   cardCategoryWhite: {
@@ -45,80 +45,82 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
+const ManageCoordinators = ({
+  loadAllCoordinators,
+  coordinator: { loading, isAuthenticated, coordinators }
+}) => {
   const classes = useStyles();
 
-  const [programsList, setProgramsList] = useState([]);
+  const [coordinatorList, setCoordinatorList] = useState([]);
 
-  const getPrograms = () => {
+  const getCoordinator = () => {
     let res = [];
     let i = 1;
 
-    programsList.forEach(program => {
+    coordinatorList.forEach(coordinator => {
       res = [
         ...res,
         [
           `${i}`,
-          program.name,
-          program.department.name,
+          coordinator.name,
           <Fragment>
             <Link
-              to={`/admin/update-program/${program._id}`}
+              to={`/admin/update-coordinator/${coordinator._id}`}
               className='text-decoration-none'
+            />
+            <Button
+              color='secondary'
+              variant='contained'
+              className='margin-left-right margin-top-bottom'
             >
-              <Button
-                color='secondary'
-                variant='contained'
-                className='margin-left-right margin-top-bottom'
-              >
-                Update Programs
-              </Button>
-            </Link>
+              Update Coordinator
+            </Button>
           </Fragment>
         ]
       ];
 
       i++;
     });
-
-    return res;
   };
 
-  const [getAllProgramsCalled, setGetAllProgramsCalled] = useState(false);
+  const [getAllCoordinatorsLoaded, setAllCoordinatorsLoaded] = useState(false);
 
   useEffect(() => {
-    if (!getAllProgramsCalled) {
-      getAllPrograms();
-      setGetAllProgramsCalled(true);
+    if (!getAllCoordinatorsLoaded) {
+      loadAllCoordinators();
+      setAllCoordinatorsLoaded(true);
     }
 
-    setProgramsList(!loading && programs.length > 0 ? programs : []);
-  }, [programs]);
+    setCoordinatorList(!loading && coordinators.length > 0 ? coordinators : []);
+  }, [coordinators]);
 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color='primary'>
-            <h4 className={classes.cardTitleWhite}>Manage Programs</h4>
+          <CardHeader>
+            <h2 className={classes.cardTitleWhite}>Manage Coordinators</h2>
             <p className={classes.cardCategoryWhite}>
-              Below is a list of all the Programs
+              Below is the list of all Coordinators
             </p>
           </CardHeader>
           <CardBody>
-            <Link to='/admin/create-program' className='text-decoration-none'>
+            <Link
+              to={'/admin/add-coordinator'}
+              className='text-decoration-none'
+            >
               <Button color='primary' variant='contained'>
-                Add program
+                Add Coordinator
               </Button>
             </Link>
-            {programsList.length > 0 ? (
+            {coordinatorList.length > 0 ? (
               <Table
                 tableHeaderColor='primary'
-                tableHead={['S.No', 'Name', 'Department', 'Actions']}
-                tableData={getPrograms()}
+                tableHead={['S.No', 'Name', 'Email', 'Department', 'Actions']}
+                tableData={getCoordinator()}
               />
             ) : (
-              <div className='text-center imp-message'>No programs found</div>
+              <div class='text-center imp-message'>No coordinators found</div>
             )}
           </CardBody>
         </Card>
@@ -127,13 +129,18 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
   );
 };
 
-ManagePrograms.propTypes = {
-  getAllPrograms: PropTypes.func.isRequired,
-  program: PropTypes.object.isRequired
+ManageCoordinators.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  loadAllCoordinators: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  program: state.program
+  isAuthenticated: state.coordinator.isAuthenticated,
+  coordinator: state.coordinator
 });
 
-export default connect(mapStateToProps, { getAllPrograms })(ManagePrograms);
+export default connect(mapStateToProps, { loadAllCoordinators })(
+  ManageCoordinators
+);

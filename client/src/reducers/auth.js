@@ -1,6 +1,8 @@
 import {
   USER_LOADED,
   AUTH_ERROR,
+  REGISTER_SUCCESS,
+  REGISTER_FAILED,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT,
@@ -13,6 +15,8 @@ const initialState = {
   loading: true,
   isAuthenticated: null,
   token: localStorage.getItem('token'),
+  users: [],
+  errors: null,
 };
 
 export default function (state = initialState, action) {
@@ -46,6 +50,7 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         user: null,
       };
+    case REGISTER_SUCCESS:
     default:
       return state;
   }
