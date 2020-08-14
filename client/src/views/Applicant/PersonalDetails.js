@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -8,10 +8,14 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { createDepartment } from '../../actions/department';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import StatusStepper from './StatusStepper';
+import {
+  getCurrentApplicant,
+  updatePersonalDetails,
+} from '../../actions/applicant';
+import FormImage from './FormImage';
 
 const styles = {
   cardCategoryWhite: {
@@ -46,24 +50,136 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const PersonalDetails = ({ createDepartment, history }) => {
+const PersonalDetails = ({
+  updatePersonalDetails,
+  history,
+  getCurrentApplicant,
+  applicant: { loading, applicant },
+}) => {
   const classes = useStyles();
+
+  const getCurrentDate = () => {
+    let d = new Date(Date.now());
+    d = new Date(Date.now() + d.getTimezoneOffset() * 60000);
+
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    return `${year}-${month < 10 ? '0' : ''}${month}-${
+      date < 10 ? '0' : ''
+    }${date}`;
+  };
+
+  const getFormattedDate = (dateToFormat) => {
+    let d = new Date(dateToFormat);
+
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    return `${year}-${month < 10 ? '0' : ''}${month}-${
+      date < 10 ? '0' : ''
+    }${date}`;
+  };
 
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
+    fatherName: '',
+    cnicNumber: '',
+    cnicFrontPicture: '',
+    cnicBackPicture: '',
+    address: '',
+    placeOfBirth: '',
+    dateOfBirth: '',
+    phoneNumber: '',
+    domicile: '',
   });
 
-  const { name, description } = formData;
+  const {
+    name,
+    fatherName,
+    cnicNumber,
+    cnicFrontPicture,
+    cnicBackPicture,
+    address,
+    placeOfBirth,
+    dateOfBirth,
+    phoneNumber,
+    domicile,
+  } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const onChangeImage = (e) => {
+    const name = e.target.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setFormData({ ...formData, [name]: e.target.result });
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
-    createDepartment(formData, history);
+    updatePersonalDetails(formData, history);
   };
+
+  const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
+    false
+  );
+
+  useEffect(() => {
+    if (!getCurrentApplicantCalled) {
+      getCurrentApplicant();
+      setGetCurrentApplicantCalled(true);
+    }
+
+    setFormData({
+      name:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.name
+          : '',
+      fatherName:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.fatherName
+          : '',
+      cnicNumber:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.cnic.number
+          : '',
+      cnicFrontPicture:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.cnic.frontPicture
+          : '',
+      cnicBackPicture:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.cnic.backPicture
+          : '',
+      address:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.address
+          : '',
+      placeOfBirth:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.placeOfBirth
+          : '',
+      dateOfBirth:
+        !loading && applicant !== null && applicant.personalDetails
+          ? getFormattedDate(applicant.personalDetails.dateOfBirth)
+          : getCurrentDate(),
+      phoneNumber:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.phoneNumber
+          : '',
+      domicile:
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.domicile
+          : '',
+    });
+  }, [applicant]);
 
   return (
     <GridContainer>
@@ -76,10 +192,12 @@ const PersonalDetails = ({ createDepartment, history }) => {
             </p>
           </CardHeader>
           <CardBody>
-            <StatusStepper status={0} />
+            <StatusStepper
+              status={!loading && applicant !== null ? applicant.status : 0}
+            />
             <form onSubmit={(e) => onSubmit(e)}>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     className='form-control'
                     label='Name'
@@ -91,14 +209,14 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     required={true}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     className='form-control'
                     label='Father name'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='fatherName'
+                    value={fatherName}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -109,27 +227,49 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     label='CNIC / B-Form number'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='cnicNumber'
+                    value={cnicNumber}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={3}>
                   <div className='file-input'>
                     <label forHtml='frontPicture'>
                       CNIC / B-Form Front Picture
                     </label>
-                    <input id='frontPicture' type='file' />
+                    <input
+                      id='frontPicture'
+                      type='file'
+                      name='cnicFrontPicture'
+                      onChange={(e) => onChangeImage(e)}
+                    />
                   </div>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={3}>
+                  <FormImage
+                    title='CNIC Front Picture'
+                    picture={cnicFrontPicture}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={3}>
                   <div className='file-input'>
                     <label forHtml='backPicture'>
                       CNIC / B-Form Back Picture
                     </label>
-                    <input id='backPicture' type='file' />
+                    <input
+                      id='backPicture'
+                      type='file'
+                      name='cnicBackPicture'
+                      onChange={(e) => onChangeImage(e)}
+                    />
                   </div>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={3}>
+                  <FormImage
+                    title='CNIC Back Picture'
+                    picture={cnicBackPicture}
+                  />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
@@ -137,8 +277,8 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     label='Address'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='address'
+                    value={address}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -149,8 +289,8 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     label='Contact No.'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='phoneNumber'
+                    value={phoneNumber}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -160,9 +300,9 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     className='form-control'
                     label='Date of Birth'
                     variant='outlined'
-                    type='text'
-                    name='name'
-                    value={name}
+                    type='date'
+                    name='dateOfBirth'
+                    value={dateOfBirth}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -173,8 +313,8 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     label='Place of Birth'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='placeOfBirth'
+                    value={placeOfBirth}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -185,8 +325,8 @@ const PersonalDetails = ({ createDepartment, history }) => {
                     label='Domicile'
                     variant='outlined'
                     type='text'
-                    name='name'
-                    value={name}
+                    name='domicile'
+                    value={domicile}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -211,8 +351,17 @@ const PersonalDetails = ({ createDepartment, history }) => {
 };
 
 PersonalDetails.propTypes = {
-  createDepartment: PropTypes.func.isRequired,
+  updatePersonalDetails: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  getCurrentApplicant: PropTypes.func.isRequired,
+  applicant: PropTypes.object.isRequired,
 };
 
-export default connect(null, { createDepartment })(withRouter(PersonalDetails));
+const mapStateToProps = (state) => ({
+  applicant: state.applicant,
+});
+
+export default connect(mapStateToProps, {
+  updatePersonalDetails,
+  getCurrentApplicant,
+})(withRouter(PersonalDetails));

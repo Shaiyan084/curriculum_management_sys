@@ -6,6 +6,19 @@ const { check, validationResult } = require('express-validator');
 const Programme = require('../../models/Programme');
 // const nodemailer = require('nodemailer');
 
+// @route  GET /api/applicants/me
+// @desc   Get current applicant details
+// @access Private
+router.get('/me', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findOne({ user: req.user.id });
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  PUT /api/applicants/personal-details
 // @desc   Add/Update applicants personal details
 // @access Private
@@ -14,7 +27,7 @@ router.put(
   [
     auth,
     check('name', 'Name is required').not().isEmpty(),
-    check('fathersName', "Father's name is required").not().isEmpty(),
+    check('fatherName', "Father's name is required").not().isEmpty(),
     check('cnicNumber', 'Cnic number is required').not().isEmpty(),
     check('cnicFrontPicture', 'Cnic front picture is required').not().isEmpty(),
     check('cnicBackPicture', 'Cnic back picture is required').not().isEmpty(),
@@ -67,6 +80,10 @@ router.put(
         { new: true }
       );
 
+      if (applicant.status < 1) {
+        applicant.status = 1;
+      }
+
       await applicant.save();
       res.json(applicant);
     } catch (err) {
@@ -104,6 +121,10 @@ router.put(
         { $set: { incomeDetails } },
         { new: true }
       );
+
+      if (applicant.status < 2) {
+        applicant.status = 2;
+      }
 
       await applicant.save();
       res.json(applicant);

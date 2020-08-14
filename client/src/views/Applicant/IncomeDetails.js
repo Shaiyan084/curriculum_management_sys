@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -8,7 +8,10 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { createDepartment } from '../../actions/department';
+import {
+  getCurrentApplicant,
+  updateIncomeDetails,
+} from '../../actions/applicant';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import StatusStepper from './StatusStepper';
@@ -46,15 +49,20 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const IncomeDetails = ({ createDepartment, history }) => {
+const IncomeDetails = ({
+  getCurrentApplicant,
+  updateIncomeDetails,
+  history,
+  applicant: { loading, applicant },
+}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
+    monthlyIncome: '',
+    minimumYearlyIncome: '',
   });
 
-  const { name, description } = formData;
+  const { monthlyIncome, minimumYearlyIncome } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,8 +70,30 @@ const IncomeDetails = ({ createDepartment, history }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createDepartment(formData, history);
+    updateIncomeDetails(formData, history);
   };
+
+  const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
+    false
+  );
+
+  useEffect(() => {
+    if (!getCurrentApplicantCalled) {
+      getCurrentApplicant();
+      setGetCurrentApplicantCalled(true);
+    }
+
+    setFormData({
+      monthlyIncome:
+        !loading && applicant !== null && applicant.incomeDetails
+          ? applicant.incomeDetails.monthlyIncome
+          : '',
+      minimumYearlyIncome:
+        !loading && applicant !== null && applicant.incomeDetails
+          ? applicant.incomeDetails.minimumYearlyIncome
+          : '',
+    });
+  }, [applicant]);
 
   return (
     <GridContainer>
@@ -76,7 +106,9 @@ const IncomeDetails = ({ createDepartment, history }) => {
             </p>
           </CardHeader>
           <CardBody>
-            <StatusStepper status={0} />
+            <StatusStepper
+              status={!loading && applicant !== null ? applicant.status : 0}
+            />
             <form onSubmit={(e) => onSubmit(e)}>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
@@ -85,8 +117,8 @@ const IncomeDetails = ({ createDepartment, history }) => {
                     label='Monthly Income (Rs.)'
                     variant='outlined'
                     type='number'
-                    name='name'
-                    value={name}
+                    name='monthlyIncome'
+                    value={monthlyIncome}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -97,8 +129,8 @@ const IncomeDetails = ({ createDepartment, history }) => {
                     label='Minimum Yearly Income (Rs.)'
                     variant='outlined'
                     type='number'
-                    name='name'
-                    value={name}
+                    name='minimumYearlyIncome'
+                    value={minimumYearlyIncome}
                     onChange={(e) => onChange(e)}
                     required={true}
                   />
@@ -123,8 +155,17 @@ const IncomeDetails = ({ createDepartment, history }) => {
 };
 
 IncomeDetails.propTypes = {
-  createDepartment: PropTypes.func.isRequired,
+  getCurrentApplicant: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  applicant: PropTypes.object.isRequired,
+  updateIncomeDetails: PropTypes.func.isRequired,
 };
 
-export default connect(null, { createDepartment })(withRouter(IncomeDetails));
+const mapStateToProps = (state) => ({
+  applicant: state.applicant,
+});
+
+export default connect(mapStateToProps, {
+  getCurrentApplicant,
+  updateIncomeDetails,
+})(withRouter(IncomeDetails));

@@ -106,6 +106,12 @@
 }
 
 .file-input {
+  margin-bottom: 10px !important;
+
+  img:hover {
+    cursor: pointer !important;
+  }
+
   label {
     color: #000000;
     font-weight: bold;
