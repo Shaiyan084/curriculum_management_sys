@@ -12,7 +12,7 @@ import {
   getCurrentApplicant,
   updateIncomeDetails,
 } from '../../actions/applicant';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import StatusStepper from './StatusStepper';
 
@@ -94,6 +94,10 @@ const IncomeDetails = ({
           : '',
     });
   }, [applicant]);
+
+  if (!loading && applicant !== null && applicant.status < 1) {
+    return <Redirect to='/applicant/personal-details' />;
+  }
 
   return (
     <GridContainer>

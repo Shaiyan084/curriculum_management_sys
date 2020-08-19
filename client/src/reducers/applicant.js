@@ -3,6 +3,7 @@ import {
   APPLICANT_ERROR,
   APPLICANT_PERSONAL_DETAILS_UPDATED,
   APPLICANT_INCOME_DETAILS_UPDATED,
+  APPLICANT_EDUCATION_DETAILS_UPDATED,
 } from '../actions/types';
 
 const initialState = {
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
     case APPLICANT_LOADED:
     case APPLICANT_PERSONAL_DETAILS_UPDATED:
     case APPLICANT_INCOME_DETAILS_UPDATED:
+    case APPLICANT_EDUCATION_DETAILS_UPDATED:
       return {
         ...state,
         loading: false,

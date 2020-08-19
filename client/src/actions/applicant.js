@@ -3,6 +3,7 @@ import {
   APPLICANT_ERROR,
   APPLICANT_PERSONAL_DETAILS_UPDATED,
   APPLICANT_INCOME_DETAILS_UPDATED,
+  APPLICANT_EDUCATION_DETAILS_UPDATED,
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -85,5 +86,34 @@ export const updateIncomeDetails = (formData, history) => async (dispatch) => {
     });
 
     dispatch(setAlert('Error occured'));
+  }
+};
+
+// Update applicant education details
+export const updateEducationDetails = (formData) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const res = await axios.put(
+      '/api/applicants/education-details',
+      formData,
+      config
+    );
+
+    dispatch({
+      type: APPLICANT_EDUCATION_DETAILS_UPDATED,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+
+    dispatch(setAlert('All fields are required'));
   }
 };

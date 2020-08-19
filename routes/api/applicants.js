@@ -304,6 +304,12 @@ router.put(
         { new: true }
       );
 
+      if (applicant.status < 3) {
+        applicant.status = 3;
+      }
+
+      await applicant.save();
+
       await applicant.save();
       res.json(applicant);
     } catch (err) {

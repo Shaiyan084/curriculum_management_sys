@@ -71,10 +71,10 @@ const ApplicantSchema = mongoose.Schema({
         type: String,
       },
       from: {
-        type: Date,
+        type: Number,
       },
       to: {
-        type: Date,
+        type: Number,
       },
       obtainedMarks: {
         type: Number,
@@ -98,10 +98,10 @@ const ApplicantSchema = mongoose.Schema({
         type: String,
       },
       from: {
-        type: Date,
+        type: Number,
       },
       to: {
-        type: Date,
+        type: Number,
       },
       obtainedMarks: {
         type: Number,
@@ -122,10 +122,10 @@ const ApplicantSchema = mongoose.Schema({
         type: String,
       },
       from: {
-        type: Date,
+        type: Number,
       },
       to: {
-        type: Date,
+        type: Number,
       },
       cgpa: {
         type: Number,
