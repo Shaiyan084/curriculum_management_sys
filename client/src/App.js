@@ -10,6 +10,7 @@ import Admin from './layouts/Admin.js';
 import Login from './layouts/Login';
 import Register from './layouts/Register';
 import Applicant from './layouts/Applicant';
+import Coordinator from './layouts/Coordinator';
 
 import store from './utils/store';
 import { Provider } from 'react-redux';
@@ -37,6 +38,7 @@ const App = () => {
           <Switch>
             <AdminPrivateRoute path='/admin' component={Admin} />
             <ApplicantPrivateRoute path='/applicant' component={Applicant} />
+            <Route path='/coordinator' component={Coordinator} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <Redirect from='/' to='/login' />
