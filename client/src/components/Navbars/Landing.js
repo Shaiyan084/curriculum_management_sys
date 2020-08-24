@@ -27,6 +27,11 @@ const LandingNavbar = () => {
               Applicant Register
             </Link>
           </Button>
+          <Button color='inherit' className='text-bold'>
+            <Link to='/login/coordinator' className='text-decoration-none'>
+              Coordinator Login
+            </Link>
+          </Button>
         </Toolbar>
       </AppBar>
     </Fragment>
