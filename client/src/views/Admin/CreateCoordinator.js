@@ -112,7 +112,7 @@ const CreateCoordinator = ({
   }, []);
 
   if (!loading && isAuthenticated && user !== null && user.type === 1) {
-    return <Redirect to='/create-program' />;
+    return <Redirect to='/manage-coordinator' />;
   }
 
   return (
