@@ -1,27 +1,19 @@
 import {
   ALL_COORDINATORS_LOADED,
   COORDINATOR_LOADED,
-  COORDINATOR_REGISTER_SUCCESS,
-  COORDINATOR_REGISTER_FAILED,
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-  LOGOUT,
   COORDINATOR_NAME_UPDATED,
   COORDINATOR_PASSWORD_UPDATED,
   COORDINATOR_PROFILE_PICTURE_UPDATED,
   COORDINATOR_PROFILE_PICTURE_REMOVED,
   COORDINATORS_ERROR,
-  AUTH_ERROR,
   SET_AUTH_COORDINATOR_LOADING,
   UNSET_AUTH_COORDINATOR_LOADING
 } from '../actions/types';
 
 const initialState = {
   coordinator: null,
-  loading: true,
-  isAuthenticated: false,
-  token: localStorage.getItem('token'),
   coordinators: [],
+  loading: true,
   coordinatorLoading: true,
   errors: null
 };
@@ -44,8 +36,7 @@ export default function(state = initialState, action) {
         ...state,
         coordinator: payload,
         loading: false,
-        isAuthenticated: true,
-        coordinatorLoading: true
+        isAuthenticated: true
       };
     case SET_AUTH_COORDINATOR_LOADING:
       return {
@@ -63,29 +54,6 @@ export default function(state = initialState, action) {
         errors: payload,
         coordinators: []
       };
-    case LOGIN_SUCCESS:
-      localStorage.setItem('token');
-      return {
-        ...state,
-        loading: false,
-        isAuthenticated: true,
-        coodinatorLoading: false,
-        token: payload
-      };
-    case AUTH_ERROR:
-    case COORDINATOR_REGISTER_FAILED:
-    case LOGIN_FAILED:
-    case LOGOUT:
-      localStorage.removeItem('token');
-      return {
-        ...state,
-        coordinator: null,
-        loading: false,
-        isAuthenticated: false,
-        coordinatorLoading: false,
-        token: null
-      };
-    case COORDINATOR_REGISTER_SUCCESS:
     case COORDINATOR_PASSWORD_UPDATED:
     default:
       return state;

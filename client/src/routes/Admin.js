@@ -3,6 +3,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
 import ManagePrograms from '../views/Admin/ManagePrograms';
+import ManageCoordinators from '../views/Admin/ManageCoordinators';
 
 const routes = [
   {
@@ -10,29 +11,36 @@ const routes = [
     name: 'Dashboard',
     icon: DashboardIcon,
     component: Dashboard,
-    layout: '/admin',
+    layout: '/admin'
   },
   {
     path: '/manage-departments',
     name: 'Manage Departments',
     icon: DashboardIcon,
     component: ManageDepartments,
-    layout: '/admin',
+    layout: '/admin'
   },
   {
     path: '/manage-programs',
     name: 'Manage Programs',
     icon: DashboardIcon,
     component: ManagePrograms,
-    layout: '/admin',
+    layout: '/admin'
+  },
+  {
+    path: '/manage-coordinators',
+    name: 'Manage Coordinators',
+    icon: DashboardIcon,
+    component: ManageCoordinators,
+    layout: '/admin'
   },
   {
     path: '/settings',
     name: 'Settings',
     icon: DashboardIcon,
     component: Dashboard,
-    layout: '/admin',
-  },
+    layout: '/admin'
+  }
   //   {
   //     path: '/user',
   //     name: 'User Profile',

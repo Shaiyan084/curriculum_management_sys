@@ -91,7 +91,7 @@ const CreateProgram = ({
   const onSubmit = e => {
     e.preventDefault();
     if (categoryOfDegree === '' || department === '') {
-      setAlert('Please fill all the fields');
+      setAlert('Please fill all the fields in order to proceed.');
     } else {
       createProgram(formData, history);
     }

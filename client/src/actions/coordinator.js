@@ -1,11 +1,11 @@
 import {
   ALL_COORDINATORS_LOADED,
   COORDINATOR_LOADED,
-  COORDINATOR_REGISTER_SUCCESS,
-  COORDINATOR_REGISTER_FAILED,
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-  LOGOUT,
+  // REGISTER_SUCCESS,
+  // REGISTER_FAILED,
+  // LOGIN_SUCCESS,
+  // LOGIN_FAILED,
+  // LOGOUT,
   COORDINATOR_NAME_UPDATED,
   COORDINATOR_PASSWORD_UPDATED,
   COORDINATOR_PROFILE_PICTURE_UPDATED,
@@ -38,8 +38,8 @@ export const loadAllCoordinators = () => async dispatch => {
 
 // Load Current Coordinator
 export const loadCoordinator = () => async dispatch => {
-  if (loaclStorage.getItem('token')) {
-    setAuthToken(loaclStorage.getItem('token'));
+  if (localStorage.getItem('token')) {
+    setAuthToken(localStorage.getItem('token'));
   }
   try {
     const res = await axios.get('/api/users/coordinator');
@@ -55,69 +55,69 @@ export const loadCoordinator = () => async dispatch => {
   }
 };
 
-// Register Coordinator
-export const registerCoordinator = formData => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  try {
-    const res = await axios.put('/api/users/coordinator', formData, config);
+// // Register Coordinator
+// export const registerCoordinator = formData => async dispatch => {
+//   const config = {
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   };
+//   try {
+//     const res = await axios.put('/api/users/coordinator', formData, config);
 
-    dispatch({
-      type: COORDINATOR_REGISTER_SUCCESS,
-      payload: res.data
-    });
+//     dispatch({
+//       type: REGISTER_SUCCESS,
+//       payload: res.data
+//     });
 
-    dispatch(setAlert('Coordinator Successfully Registered'));
+//     dispatch(setAlert('Coordinator Successfully Registered'));
 
-    // history.push('/login');
+//     // history.push('/login');
 
-    dispatch(loadUser());
-  } catch (err) {
-    dispatch({
-      type: COORDINATOR_REGISTER_FAILED
-    });
-  }
-};
+//     dispatch(loadCoordinator());
+//   } catch (err) {
+//     dispatch({
+//       type: REGISTER_FAILED
+//     });
+//   }
+// };
 
-// Login Coordinator
-export const loginCoordinator = formData => async dispatch => {
-  try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+// // Login Coordinator
+// export const loginCoordinator = formData => async dispatch => {
+//   try {
+//     const config = {
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     };
 
-    const res = await axios.put('/api/auth/login', formData, config);
+//     const res = await axios.put('/api/auth/login', formData, config);
 
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data
-    });
+//     dispatch({
+//       type: LOGIN_SUCCESS,
+//       payload: res.data
+//     });
 
-    dispatch(loadCoordinator());
-  } catch (err) {
-    dispatch({
-      type: LOGIN_FAILED
-    });
+//     dispatch(loadCoordinator());
+//   } catch (err) {
+//     dispatch({
+//       type: LOGIN_FAILED
+//     });
 
-    const errors = err.response.data.errors;
+//     const errors = err.response.data.errors;
 
-    if (errors) {
-      errors.forEach(error => disaptch(setAlert(error.message, 'danger')));
-    }
-  }
-};
+//     if (errors) {
+//       errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+//     }
+//   }
+// };
 
-// Logout Coordinator
-export const logoutCoordinator = () => async dispatch => {
-  dispatch({
-    type: LOGOUT
-  });
-};
+// // Logout Coordinator
+// export const logoutCoordinator = () => async dispatch => {
+//   dispatch({
+//     type: LOGOUT
+//   });
+// };
 
 // Change Coordinator Name
 export const changeCoordinatorName = formData => async dispatch => {
@@ -260,7 +260,7 @@ export const removeCoordinatorProfilePicture = formData => async dispatch => {
       payload: res.data
     });
 
-    disaptch({
+    dispatch({
       type: UNSET_AUTH_COORDINATOR_LOADING
     });
 
@@ -270,10 +270,7 @@ export const removeCoordinatorProfilePicture = formData => async dispatch => {
       type: UNSET_AUTH_COORDINATOR_LOADING
     });
   }
-
-  const errors = err.response.data.errors;
-
-  if (errors) {
-    errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
-  }
+  dispatch(
+    setAlert('Error occured while removing the profile picture', 'danger')
+  );
 };

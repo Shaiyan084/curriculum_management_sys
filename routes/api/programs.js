@@ -121,7 +121,8 @@ router.put(
       feePerSemester,
       minPercentageOfEquivalence,
       categoryOfDegree,
-      department
+      department,
+      minCGPA
     } = req.body;
 
     let programFields = {};

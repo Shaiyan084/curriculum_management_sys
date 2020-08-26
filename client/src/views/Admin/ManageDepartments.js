@@ -19,11 +19,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0',
+      marginBottom: '0'
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF',
-    },
+      color: '#FFFFFF'
+    }
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -38,16 +38,16 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1',
-    },
-  },
+      lineHeight: '1'
+    }
+  }
 };
 
 const useStyles = makeStyles(styles);
 
 const ManageDepartments = ({
   getAllDepartments,
-  department: { loading, departments },
+  department: { loading, departments }
 }) => {
   const classes = useStyles();
 
@@ -57,7 +57,7 @@ const ManageDepartments = ({
     let res = [];
     let i = 1;
 
-    departmentsList.forEach((department) => {
+    departmentsList.forEach(department => {
       res = [
         ...res,
         [
@@ -83,8 +83,8 @@ const ManageDepartments = ({
             >
               Manage programs
             </Button>
-          </Fragment>,
-        ],
+          </Fragment>
+        ]
       ];
 
       i++;
@@ -143,11 +143,11 @@ const ManageDepartments = ({
 
 ManageDepartments.propTypes = {
   getAllDepartments: PropTypes.func.isRequired,
-  department: PropTypes.object.isRequired,
+  department: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  department: state.department,
+const mapStateToProps = state => ({
+  department: state.department
 });
 
 export default connect(mapStateToProps, { getAllDepartments })(

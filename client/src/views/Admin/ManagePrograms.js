@@ -102,7 +102,7 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
           <CardHeader color='primary'>
             <h4 className={classes.cardTitleWhite}>Manage Programs</h4>
             <p className={classes.cardCategoryWhite}>
-              Below is a list of all the Programs
+              Below is a list of all the programs
             </p>
           </CardHeader>
           <CardBody>

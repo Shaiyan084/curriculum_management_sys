@@ -16,9 +16,13 @@ const jwt = require('jsonwebtoken');
 router.post(
   '/admin',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required').isLength({ min: 6 })
     // check('registrationNumber', 'Registration number is required')
     //   .not()
     //   .isEmpty()
@@ -33,7 +37,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       // registrationNumber
     } = req.body;
     try {
@@ -46,14 +50,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registrationNumber
       });
 
@@ -82,12 +86,19 @@ router.post(
 router.post(
   '/coordinator',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
     check('password', 'Password is required').isLength({ min: 6 }),
     // check('registrationNumber', 'Registration number is required')
     //   .not()
-    //   .isEmpty()
+    //   .isEmpty(),
+    check('department', 'Department is required')
+      .not()
+      .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -99,7 +110,8 @@ router.post(
       name,
       email,
       password,
-      //registrationNumber
+      //registrationNumber,
+      department
     } = req.body;
 
     try {
@@ -112,7 +124,7 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
@@ -120,7 +132,8 @@ router.post(
         email,
         password,
         avatar,
-        // registrationNumber
+        // registrationNumber,
+        department
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -129,7 +142,9 @@ router.post(
       user.type = 1;
 
       await user.save();
-      res.json({ msg: 'User successfully registered' });
+      res.json({
+        msg: `Coordinator successfully registered for ${department} department`
+      });
     } catch (err) {
       console.log(err.message);
       res.status(500).send('Server Error');
@@ -143,9 +158,13 @@ router.post(
 router.post(
   '/faculty',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required').isLength({ min: 6 })
     // check('registrationNumber', 'Registration number is required')
     //   .not()
     //   .isEmpty()
@@ -158,7 +177,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       //registrationNumber
     } = req.body;
     try {
@@ -171,14 +190,14 @@ router.post(
       user.avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registrationNumber
       });
 
@@ -203,10 +222,12 @@ router.post(
   '/applicant',
   [
     auth,
-    check('name', 'Name is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
     check('email', 'Email is required').isEmail(),
     check('password', 'Password is required').isLength({ min: 6 }),
-    check('type', 'Type is required').isInt(),
+    check('type', 'Type is required').isInt()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -227,14 +248,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -246,15 +267,15 @@ router.post(
 
       const applicant = new Applicant({
         user: user.id,
-        type,
+        type
       });
 
       await applicant.save();
 
       const payload = {
         user: {
-          id: user.id,
-        },
+          id: user.id
+        }
       };
 
       jwt.sign(
@@ -279,9 +300,15 @@ router.post(
 router.post(
   '/student',
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').not().isEmpty(),
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
+      .not()
+      .isEmpty(),
+    check('password', 'Password is required')
+      .not()
+      .isEmpty()
     // check('registraionNumber', 'Registraion number is required')
     //   .not()
     //   .isEmpty()
@@ -294,7 +321,7 @@ router.post(
     const {
       name,
       email,
-      password,
+      password
       //registrationNumber
     } = req.body;
     try {
@@ -307,14 +334,14 @@ router.post(
       const avatar = gravatar.url(email, {
         s: '200', //size
         r: 'pg', //rating
-        d: 'mm', //default
+        d: 'mm' //default
       });
 
       user = new User({
         name,
         email,
         password,
-        avatar,
+        avatar
         // registraionNumber
       });
 
@@ -332,62 +359,68 @@ router.post(
   }
 );
 
-// @route  PUT /api/users/department-coordinator
-// @desc   Register a coordinator to a department
-// @access Private
-router.put(
-  '/department-coordinator',
-  [
-    auth,
-    check('name', 'Name is required').not().isEmpty(),
-    check('email', 'Email is required').not().isEmpty(),
-    check('password', 'Password is required').isLength({ min: 6 }),
-    check('department', 'Department is required').not().isEmpty(),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+// // @route  PUT /api/users/department-coordinator
+// // @desc   Register a coordinator to a department
+// // @access Private
+// router.put(
+//   '/department-coordinator',
+//   [
+//     auth,
+//     check('name', 'Name is required')
+//       .not()
+//       .isEmpty(),
+//     check('email', 'Email is required')
+//       .not()
+//       .isEmpty(),
+//     check('password', 'Password is required').isLength({ min: 6 }),
+//     check('department', 'Department is required')
+//       .not()
+//       .isEmpty()
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
 
-    const { name, email, password, department } = req.body;
+//     const { name, email, password, department } = req.body;
 
-    try {
-      const user = await User.findOne({ email });
+//     try {
+//       const user = await User.findOne({ email });
 
-      if (user) {
-        return res.status(400).json({ msg: 'User already exists' });
-      }
+//       if (user) {
+//         return res.status(400).json({ msg: 'User already exists' });
+//       }
 
-      const avatar = gravatar.url(email, {
-        s: '200', //size
-        r: 'pg', //rating
-        d: 'mm', //default
-      });
+//       const avatar = gravatar.url(email, {
+//         s: '200', //size
+//         r: 'pg', //rating
+//         d: 'mm' //default
+//       });
 
-      user = new User({
-        name,
-        email,
-        password,
-        department,
-        avatar,
-      });
+//       user = new User({
+//         name,
+//         email,
+//         password,
+//         department,
+//         avatar
+//       });
 
-      const salt = bcrypt.genSalt(10);
-      user.password = bcrypt.hash(password, salt);
+//       const salt = bcrypt.genSalt(10);
+//       user.password = bcrypt.hash(password, salt);
 
-      user.type = 5;
+//       user.type = 5;
 
-      await user.save();
-      res.json({
-        msg: 'Department Coordinator has been successfully registered',
-      });
-    } catch (err) {
-      console.log(err.message);
-      return res.status(500).send('Server Error');
-    }
-  }
-);
+//       await user.save();
+//       res.json({
+//         msg: 'Department Coordinator has been successfully registered'
+//       });
+//     } catch (err) {
+//       console.log(err.message);
+//       return res.status(500).send('Server Error');
+//     }
+//   }
+// );
 
 // @route  GET /api/users/coordinators
 // @desc   Get all Coordinators
@@ -451,7 +484,12 @@ router.get('/student', auth, async (req, res) => {
 // @access Private
 router.put(
   '/name',
-  [auth, check('name', 'Name is required').not().isEmpty()],
+  [
+    auth,
+    check('name', 'Name is required')
+      .not()
+      .isEmpty()
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -501,12 +539,17 @@ router.put(
   }
 );
 
-// @route  GET /api/users/profile-picture/upload
+// @route  PUT /api/users/profile-picture/upload
 // @desc   Upload a profile picture
 // @access Private
 router.put(
   '/profile-picture/upload',
-  [auth, check('image', 'Image is required').not().isEmpty()],
+  [
+    auth,
+    check('image', 'Image is required')
+      .not()
+      .isEmpty()
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -527,7 +570,7 @@ router.put(
   }
 );
 
-// @route  GET /api/users/profile-picture/remove
+// @route  PUT /api/users/profile-picture/remove
 // @desc   Remove a profile picture
 // @access Private
 router.put('/profile-picture/remove', auth, async (req, res) => {
@@ -537,7 +580,7 @@ router.put('/profile-picture/remove', auth, async (req, res) => {
     user.avatar = gravatar.url(email, {
       s: '200', //size
       r: 'pg', //rating
-      d: 'mm', //default
+      d: 'mm' //default
     });
 
     await user.save();

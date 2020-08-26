@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -9,7 +9,7 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { loadAllCoordinators } from '../../actions/coordinator';
 
 const styles = {
@@ -47,7 +47,7 @@ const useStyles = makeStyles(styles);
 
 const ManageCoordinators = ({
   loadAllCoordinators,
-  coordinator: { loading, isAuthenticated, coordinators }
+  auth: { loading, isAuthenticated, user }
 }) => {
   const classes = useStyles();
 
@@ -81,6 +81,7 @@ const ManageCoordinators = ({
 
       i++;
     });
+    return res;
   };
 
   const [getAllCoordinatorsLoaded, setAllCoordinatorsLoaded] = useState(false);
@@ -91,17 +92,21 @@ const ManageCoordinators = ({
       setAllCoordinatorsLoaded(true);
     }
 
-    setCoordinatorList(!loading && coordinators.length > 0 ? coordinators : []);
-  }, [coordinators]);
+    setCoordinatorList(!loading && user.length > 0 ? user : []);
+  }, [user]);
+
+  if (!loading && isAuthenticated && user !== null && user.type === 1) {
+    return <Redirect to='/login' />;
+  }
 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader>
-            <h2 className={classes.cardTitleWhite}>Manage Coordinators</h2>
+          <CardHeader color='primary'>
+            <h4 className={classes.cardTitleWhite}>Manage Coordinators</h4>
             <p className={classes.cardCategoryWhite}>
-              Below is the list of all Coordinators
+              Below is a list of all the coordinators
             </p>
           </CardHeader>
           <CardBody>
@@ -137,8 +142,8 @@ ManageCoordinators.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.coordinator.isAuthenticated,
-  coordinator: state.coordinator
+  isAuthenticated: state.auth.isAuthenticated,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { loadAllCoordinators })(

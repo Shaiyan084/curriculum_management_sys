@@ -10,37 +10,37 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/auth';
+import { registerApplicant } from '../../actions/auth';
 import { Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 
 const Applicant = ({
-  registerUser,
+  registerApplicant,
   auth: { loading, isAuthenticated, user },
-  setAlert,
+  setAlert
 }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    type: '',
+    type: ''
   });
 
   const { name, email, password, type } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (type === '') {
-      setAlert('All fields are required');
+      setAlert('Please fill in all the feilds in order to proceed.');
     } else {
-      registerUser(formData);
+      registerApplicant(formData);
     }
   };
 
@@ -72,7 +72,7 @@ const Applicant = ({
               </div>
             </Grid>
             <Grid xs={12} sm={12} md={12} item>
-              <form className='form' onSubmit={(e) => onSubmit(e)}>
+              <form className='form' onSubmit={e => onSubmit(e)}>
                 <TextField
                   className='form-control'
                   label='Name'
@@ -80,7 +80,7 @@ const Applicant = ({
                   type='text'
                   name='name'
                   value={name}
-                  onChange={(e) => onChange(e)}
+                  onChange={e => onChange(e)}
                   required={true}
                 />
                 <TextField
@@ -90,7 +90,7 @@ const Applicant = ({
                   type='email'
                   name='email'
                   value={email}
-                  onChange={(e) => onChange(e)}
+                  onChange={e => onChange(e)}
                   required={true}
                 />
                 <TextField
@@ -100,7 +100,7 @@ const Applicant = ({
                   type='password'
                   name='password'
                   value={password}
-                  onChange={(e) => onChange(e)}
+                  onChange={e => onChange(e)}
                   required={true}
                 />
                 <FormControl variant='outlined' className='form-control'>
@@ -112,7 +112,7 @@ const Applicant = ({
                     label='Program applying for'
                     name='type'
                     value={type}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                   >
                     <MenuItem value=''>
                       <em>None</em>
@@ -140,13 +140,15 @@ const Applicant = ({
 };
 
 Applicant.propTypes = {
-  registerUser: PropTypes.func.isRequired,
+  registerApplicant: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
+const mapStateToProps = state => ({
+  auth: state.auth
 });
 
-export default connect(mapStateToProps, { registerUser, setAlert })(Applicant);
+export default connect(mapStateToProps, { registerApplicant, setAlert })(
+  Applicant
+);
