@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-// import { loadAllCoordinators } from '../../actions/coordinator';
 import { getAllDepartments } from '../../actions/department';
 import { registerCoordinator } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
@@ -13,6 +12,7 @@ import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import {
+  Button,
   TextField,
   FormControl,
   InputLabel,
@@ -56,7 +56,7 @@ const useStyles = makeStyles(styles);
 const CreateCoordinator = ({
   //   loadAllCoordinators,
   //   history,
-  department: { loading, department },
+  department: { departments },
   getAllDepartments,
   auth: { loading, isAuthenticated, user },
   setAlert,
@@ -69,10 +69,18 @@ const CreateCoordinator = ({
     email: '',
     password: '',
     cpassword: '',
-    department: ''
+    department: '',
+    description: ''
   });
 
-  const { name, email, password, cpassword, department } = formData;
+  const {
+    name,
+    email,
+    password,
+    cpassword,
+    department,
+    description
+  } = formData;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -85,7 +93,8 @@ const CreateCoordinator = ({
       email === '' ||
       password === '' ||
       cpassword === '' ||
-      department === ''
+      department === '' ||
+      description === ''
     ) {
       setAlert('Please fill in all the feilds in order to proceed.');
     } else {
@@ -160,16 +169,16 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
-                  {/* <TextField
+                  <TextField
                     className='form-control'
-                    label='Department'
+                    label='Description'
                     variant='outlined'
                     type='text'
-                    name='department'
-                    value={department}
+                    name='description'
+                    value={description}
                     onChange={e => onChange(e)}
                     required={true}
-                  /> */}
+                  />
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl variant='outlined' className='form-control'>
                       <InputLabel id='department-label'>Department</InputLabel>
@@ -184,8 +193,8 @@ const CreateCoordinator = ({
                           <em>None</em>
                         </MenuItem>
                         {!loading &&
-                          department.length > 0 &&
-                          department.map(department => (
+                          departments.length > 0 &&
+                          departments.map(department => (
                             <MenuItem value={`${department._id}`}>
                               {department.name}
                             </MenuItem>
@@ -215,9 +224,7 @@ const CreateCoordinator = ({
 
 CreateCoordinator.propTypes = {
   getAllDepartments: PropTypes.func.isRequired,
-  //   loadAllCoordinators: PropTypes.func.isRequired,
   registerCoordinator: PropTypes.func.isRequired,
-  //   history: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   setAlert: PropTypes.func.isRequired
 };
@@ -229,7 +236,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAllDepartments,
-  loadAllCoordinators,
   registerCoordinator,
   setAlert
 })(CreateCoordinator);

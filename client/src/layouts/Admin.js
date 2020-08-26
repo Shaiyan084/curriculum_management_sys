@@ -12,6 +12,7 @@ import CreateDepartment from '../views/Admin/CreateDepartment';
 import UpdateDepartment from '../views/Admin/UpdateDepartment';
 import CreateProgram from '../views/Admin/CreateProgram';
 import UpdateProgram from '../views/Admin/UpdateProgram';
+import CreateCoordinator from '../views/Admin/CreateCoordinator';
 
 import routes from '../routes/Admin';
 
@@ -40,6 +41,7 @@ const switchRoutes = (
     <Route path='/admin/create-program' component={CreateProgram} />
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />
     <Route path='/admin/update-program/:id' component={UpdateProgram} />
+    <Route path='/admin/add-coordinator' component={CreateCoordinator} />
     <Redirect from='/admin' to='/admin/dashboard' />
   </Switch>
 );
@@ -67,7 +69,7 @@ const Admin = ({ ...rest }) => {
     if (navigator.platform.indexOf('Win') > -1) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
-        suppressScrollY: false,
+        suppressScrollY: false
       });
       document.body.style.overflow = 'hidden';
     }

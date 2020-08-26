@@ -98,6 +98,9 @@ router.post(
     //   .isEmpty(),
     check('department', 'Department is required')
       .not()
+      .isEmpty(),
+    check('description', 'Description is required')
+      .not()
       .isEmpty()
   ],
   async (req, res) => {
@@ -111,7 +114,8 @@ router.post(
       email,
       password,
       //registrationNumber,
-      department
+      department,
+      description
     } = req.body;
 
     try {
@@ -133,7 +137,8 @@ router.post(
         password,
         avatar,
         // registrationNumber,
-        department
+        department,
+        description
       });
 
       const salt = await bcrypt.genSalt(10);
