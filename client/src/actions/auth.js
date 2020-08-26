@@ -5,14 +5,14 @@ import {
   LOGIN_FAILED,
   LOGOUT,
   REGISTER_SUCCESS,
-  REGISTER_FAILED
+  REGISTER_FAILED,
 } from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import { setAlert } from './alert';
 
 // Load the current user
-export const loadUser = () => async dispatch => {
+export const loadUser = () => async (dispatch) => {
   if (localStorage.getItem('token')) {
     setAuthToken(localStorage.getItem('token'));
   }
@@ -22,7 +22,7 @@ export const loadUser = () => async dispatch => {
 
     dispatch({
       type: USER_LOADED,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({ type: AUTH_ERROR });
@@ -30,11 +30,11 @@ export const loadUser = () => async dispatch => {
 };
 
 // Login user
-export const loginUser = formData => async dispatch => {
+export const loginUser = (formData) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
@@ -42,7 +42,7 @@ export const loginUser = formData => async dispatch => {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: res.data.token
+      payload: res.data.token,
     });
 
     dispatch(loadUser());
@@ -56,16 +56,16 @@ export const loginUser = formData => async dispatch => {
 };
 
 // Logout
-export const logout = () => async dispatch => {
+export const logout = () => async (dispatch) => {
   dispatch({ type: LOGOUT });
 };
 
 // Register a Applicant
-export const registerApplicant = formData => async dispatch => {
+export const registerApplicant = (formData) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
@@ -73,7 +73,7 @@ export const registerApplicant = formData => async dispatch => {
 
     dispatch({
       type: REGISTER_SUCCESS,
-      payload: res.data.token
+      payload: res.data.token,
     });
 
     dispatch(loadUser());
@@ -87,19 +87,19 @@ export const registerApplicant = formData => async dispatch => {
 };
 
 // Register a Coordinator
-export const registerCoordinator = formData => async dispatch => {
+export const registerCoordinator = (formData) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
-    const res = await axios.put('/api/users/coordinator', formData, config);
+    const res = await axios.post('/api/users/coordinator', formData, config);
 
     dispatch({
       type: REGISTER_SUCCESS,
-      payload: res.data.token
+      payload: res.data.token,
     });
   } catch (err) {
     dispatch({ type: REGISTER_FAILED });
