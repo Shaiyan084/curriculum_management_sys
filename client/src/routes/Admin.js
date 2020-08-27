@@ -1,4 +1,10 @@
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import BusinessIcon from '@material-ui/icons/Business';
+import ViewListIcon from '@material-ui/icons/ViewList';
+import SurroundSoundRoundedIcon from '@material-ui/icons/SurroundSoundRounded';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import FaceIcon from '@material-ui/icons/Face';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
@@ -16,28 +22,42 @@ const routes = [
   {
     path: '/manage-departments',
     name: 'Manage Departments',
-    icon: DashboardIcon,
+    icon: BusinessIcon,
     component: ManageDepartments,
     layout: '/admin'
   },
   {
     path: '/manage-programs',
     name: 'Manage Programs',
-    icon: DashboardIcon,
+    icon: ViewListIcon,
+    component: ManagePrograms,
+    layout: '/admin'
+  },
+  {
+    path: '/manage-announcements',
+    name: 'Manage Announcements',
+    icon: SurroundSoundRoundedIcon,
     component: ManagePrograms,
     layout: '/admin'
   },
   {
     path: '/manage-coordinators',
     name: 'Manage Coordinators',
-    icon: DashboardIcon,
+    icon: SupervisedUserCircleIcon,
+    component: ManageCoordinators,
+    layout: '/admin'
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    icon: FaceIcon,
     component: ManageCoordinators,
     layout: '/admin'
   },
   {
     path: '/settings',
     name: 'Settings',
-    icon: DashboardIcon,
+    icon: SettingsIcon,
     component: Dashboard,
     layout: '/admin'
   }

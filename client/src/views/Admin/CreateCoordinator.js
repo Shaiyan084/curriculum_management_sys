@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAllDepartments } from '../../actions/department';
 import { registerCoordinator } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import Card from '../../components/Card/Card.js';
@@ -54,8 +54,7 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 const CreateCoordinator = ({
-  //   loadAllCoordinators,
-  //   history,
+  history,
   department: { departments },
   getAllDepartments,
   auth: { loading, isAuthenticated, user },
@@ -98,7 +97,7 @@ const CreateCoordinator = ({
     ) {
       setAlert('Please fill in all the feilds in order to proceed.');
     } else {
-      registerCoordinator(formData);
+      registerCoordinator(formData, history);
     }
   };
 
@@ -128,7 +127,7 @@ const CreateCoordinator = ({
           <CardBody>
             <form onSubmit={e => onSubmit(e)}>
               <GridContainer>
-                <GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
                     label='Name'
@@ -139,6 +138,8 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
                     label='Email'
@@ -149,6 +150,8 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
                     label='Password'
@@ -159,6 +162,8 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
                     label='Confirm Password'
@@ -169,6 +174,8 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
                     label='Description'
@@ -179,29 +186,29 @@ const CreateCoordinator = ({
                     onChange={e => onChange(e)}
                     required={true}
                   />
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl variant='outlined' className='form-control'>
-                      <InputLabel id='department-label'>Department</InputLabel>
-                      <Select
-                        labelId='department-label'
-                        label='Department'
-                        name='department'
-                        value={department}
-                        onChange={e => onChange(e)}
-                      >
-                        <MenuItem value=''>
-                          <em>None</em>
-                        </MenuItem>
-                        {!loading &&
-                          departments.length > 0 &&
-                          departments.map(department => (
-                            <MenuItem value={`${department._id}`}>
-                              {department.name}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                  </GridItem>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControl variant='outlined' className='form-control'>
+                    <InputLabel id='department-label'>Department</InputLabel>
+                    <Select
+                      labelId='department-label'
+                      label='Department'
+                      name='department'
+                      value={department}
+                      onChange={e => onChange(e)}
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      {!loading &&
+                        departments.length > 0 &&
+                        departments.map(department => (
+                          <MenuItem value={`${department._id}`}>
+                            {department.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Button
@@ -226,7 +233,8 @@ CreateCoordinator.propTypes = {
   getAllDepartments: PropTypes.func.isRequired,
   registerCoordinator: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -238,4 +246,4 @@ export default connect(mapStateToProps, {
   getAllDepartments,
   registerCoordinator,
   setAlert
-})(CreateCoordinator);
+})(withRouter(CreateCoordinator));
