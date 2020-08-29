@@ -39,7 +39,7 @@ export default function Footer(props) {
             </ListItem>
           </List>
         </div>
-        <p className={classes.right}>
+        {/* <p className={classes.right}>
           <span>
             &copy; {1900 + new Date().getYear()}{' '}
             <a
@@ -51,7 +51,7 @@ export default function Footer(props) {
             </a>
             , made with love for a better web
           </span>
-        </p>
+        </p> */}
       </div>
     </footer>
   );

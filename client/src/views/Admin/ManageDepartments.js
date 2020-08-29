@@ -65,6 +65,18 @@ const ManageDepartments = ({
           department.name,
           department.description,
           <Fragment>
+            <Button
+              variant='contained'
+              className='button-info margin-left-right margin-top-bottom'
+            >
+              Coordinators
+            </Button>
+            <Button
+              variant='contained'
+              className='button-info margin-left-right margin-top-bottom'
+            >
+              Programs
+            </Button>
             <Link
               to={`/admin/update-department/${department._id}`}
               className='text-decoration-none'
@@ -77,12 +89,6 @@ const ManageDepartments = ({
                 Update
               </Button>
             </Link>
-            <Button
-              variant='contained'
-              className='button-info margin-left-right margin-top-bottom'
-            >
-              Manage programs
-            </Button>
           </Fragment>
         ]
       ];

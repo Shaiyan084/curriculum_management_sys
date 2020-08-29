@@ -9,7 +9,7 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getAllPrograms } from '../../actions/program';
+import { getAllUndergraduatePrograms } from '../../actions/program';
 import { Link } from 'react-router-dom';
 
 const styles = {
@@ -45,7 +45,10 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
+const ManagePrograms = ({
+  getAllUndergraduatePrograms,
+  program: { loading, programs }
+}) => {
   const classes = useStyles();
 
   const [programsList, setProgramsList] = useState([]);
@@ -71,7 +74,19 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
                 variant='contained'
                 className='margin-left-right margin-top-bottom'
               >
-                Update Programs
+                Update
+              </Button>
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-function'
+              >
+                Enable
+              </Button>
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-danger'
+              >
+                Remove
               </Button>
             </Link>
           </Fragment>
@@ -88,7 +103,7 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
 
   useEffect(() => {
     if (!getAllProgramsCalled) {
-      getAllPrograms();
+      getAllUndergraduatePrograms();
       setGetAllProgramsCalled(true);
     }
 
@@ -102,7 +117,8 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
           <CardHeader color='primary'>
             <h4 className={classes.cardTitleWhite}>Manage Programs</h4>
             <p className={classes.cardCategoryWhite}>
-              Below is a list of all the programs
+              Below is a list of all the programs offered to undergraduate
+              students
             </p>
           </CardHeader>
           <CardBody>
@@ -128,7 +144,7 @@ const ManagePrograms = ({ getAllPrograms, program: { loading, programs } }) => {
 };
 
 ManagePrograms.propTypes = {
-  getAllPrograms: PropTypes.func.isRequired,
+  getAllUndergraduatePrograms: PropTypes.func.isRequired,
   program: PropTypes.object.isRequired
 };
 
@@ -136,4 +152,6 @@ const mapStateToProps = state => ({
   program: state.program
 });
 
-export default connect(mapStateToProps, { getAllPrograms })(ManagePrograms);
+export default connect(mapStateToProps, { getAllUndergraduatePrograms })(
+  ManagePrograms
+);

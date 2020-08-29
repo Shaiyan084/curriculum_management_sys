@@ -9,7 +9,7 @@ import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { createDepartment } from '../../actions/department';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 
 const styles = {
@@ -19,11 +19,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0',
+      marginBottom: '0'
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF',
-    },
+      color: '#FFFFFF'
+    }
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -38,9 +38,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1',
-    },
-  },
+      lineHeight: '1'
+    }
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -50,16 +50,16 @@ const CreateDepartment = ({ createDepartment, history }) => {
 
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
+    description: ''
   });
 
   const { name, description } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     createDepartment(formData, history);
   };
@@ -75,7 +75,7 @@ const CreateDepartment = ({ createDepartment, history }) => {
             </p>
           </CardHeader>
           <CardBody>
-            <form onSubmit={(e) => onSubmit(e)}>
+            <form onSubmit={e => onSubmit(e)}>
               <TextField
                 className='form-control'
                 label='Name'
@@ -83,7 +83,7 @@ const CreateDepartment = ({ createDepartment, history }) => {
                 type='text'
                 name='name'
                 value={name}
-                onChange={(e) => onChange(e)}
+                onChange={e => onChange(e)}
                 required={true}
               />
               <TextField
@@ -95,17 +95,31 @@ const CreateDepartment = ({ createDepartment, history }) => {
                 multiline
                 name='description'
                 value={description}
-                onChange={(e) => onChange(e)}
+                onChange={e => onChange(e)}
                 required={true}
               />
               <Button
-                color='primary'
+                color='secondary'
                 variant='contained'
                 type='submit'
                 size='large'
               >
                 Submit
               </Button>
+              &nbsp;
+              <Link
+                to={'/admin/manage-departments'}
+                className='text-decoration-none'
+              >
+                <Button
+                  color='primary'
+                  variant='contained'
+                  type='submit'
+                  size='large'
+                >
+                  Back
+                </Button>
+              </Link>
             </form>
           </CardBody>
         </Card>
@@ -116,7 +130,7 @@ const CreateDepartment = ({ createDepartment, history }) => {
 
 CreateDepartment.propTypes = {
   createDepartment: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default connect(null, { createDepartment })(

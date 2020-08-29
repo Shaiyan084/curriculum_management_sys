@@ -5,7 +5,9 @@ import {
   LOGIN_FAILED,
   LOGOUT,
   REGISTER_SUCCESS,
-  REGISTER_FAILED
+  REGISTER_FAILED,
+  REGISTER_COORDINATOR_SUCCESS,
+  REGISTER_COORDINATOR_FAILED
 } from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -87,7 +89,7 @@ export const registerApplicant = formData => async dispatch => {
 };
 
 // Register a Coordinator
-export const registerCoordinator = formData => async dispatch => {
+export const registerCoordinator = (formData, history) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -98,13 +100,15 @@ export const registerCoordinator = formData => async dispatch => {
     const res = await axios.post('/api/users/coordinator', formData, config);
 
     dispatch({
-      type: REGISTER_SUCCESS,
+      type: REGISTER_COORDINATOR_SUCCESS,
       payload: res.data.token
     });
 
+    history.push('/manage-coordinators');
+
     dispatch(loadUser());
   } catch (err) {
-    dispatch({ type: REGISTER_FAILED });
+    dispatch({ type: REGISTER_COORDINATOR_FAILED });
 
     if (err.message.status === 400) {
       dispatch(setAlert('Invalid credentials'));

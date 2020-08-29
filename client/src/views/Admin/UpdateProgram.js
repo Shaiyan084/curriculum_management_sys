@@ -10,14 +10,17 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { getAllDepartments } from '../../actions/department';
 import { setAlert } from '../../actions/alert';
-import { updateProgram, getProgramById } from '../../actions/program';
+import {
+  updateUndergraduateProgram,
+  getProgramById
+} from '../../actions/program';
 import { withRouter } from 'react-router-dom';
 import {
   TextField,
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 
 const styles = {
@@ -27,11 +30,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0',
+      marginBottom: '0'
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF',
-    },
+      color: '#FFFFFF'
+    }
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -46,9 +49,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1',
-    },
-  },
+      lineHeight: '1'
+    }
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -58,10 +61,10 @@ const UpdateProgram = ({
   history,
   department: { loading, departments },
   setAlert,
-  updateProgram,
+  updateUndergraduateProgram,
   getProgramById,
   program: { loading: programLoading, program },
-  match,
+  match
 }) => {
   const classes = useStyles();
 
@@ -73,7 +76,7 @@ const UpdateProgram = ({
     feePerSemester: '',
     minPercentageOfEquivalence: '',
     categoryOfDegree: '',
-    department: '',
+    department: ''
   });
 
   const {
@@ -84,19 +87,19 @@ const UpdateProgram = ({
     feePerSemester,
     minPercentageOfEquivalence,
     categoryOfDegree,
-    department,
+    department
   } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (categoryOfDegree === '' || department === '') {
       setAlert('Please fill all the fields');
     } else {
-      updateProgram(match.params.id, formData, history);
+      updateUndergraduateProgram(match.params.id, formData, history);
     }
   };
 
@@ -132,7 +135,7 @@ const UpdateProgram = ({
         !programLoading && program !== null
           ? program.criteria.categoryOfDegree
           : '',
-      department: !programLoading && program !== null ? program.department : '',
+      department: !programLoading && program !== null ? program.department : ''
     });
   }, [program]);
 
@@ -147,7 +150,7 @@ const UpdateProgram = ({
             </p>
           </CardHeader>
           <CardBody>
-            <form onSubmit={(e) => onSubmit(e)}>
+            <form onSubmit={e => onSubmit(e)}>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
@@ -157,7 +160,7 @@ const UpdateProgram = ({
                     type='text'
                     name='name'
                     value={name}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -169,7 +172,7 @@ const UpdateProgram = ({
                     type='number'
                     name='yearly'
                     value={yearly}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -181,7 +184,7 @@ const UpdateProgram = ({
                     type='number'
                     name='semester'
                     value={semester}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -193,7 +196,7 @@ const UpdateProgram = ({
                     type='number'
                     name='feePerSemester'
                     value={feePerSemester}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -205,7 +208,7 @@ const UpdateProgram = ({
                     type='number'
                     name='minPercentageOfEquivalence'
                     value={minPercentageOfEquivalence}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -217,7 +220,7 @@ const UpdateProgram = ({
                       label='Category of degree'
                       name='categoryOfDegree'
                       value={categoryOfDegree}
-                      onChange={(e) => onChange(e)}
+                      onChange={e => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
@@ -240,14 +243,14 @@ const UpdateProgram = ({
                       label='Department'
                       name='department'
                       value={department}
-                      onChange={(e) => onChange(e)}
+                      onChange={e => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
                       </MenuItem>
                       {!loading &&
                         departments.length > 0 &&
-                        departments.map((department) => (
+                        departments.map(department => (
                           <MenuItem value={`${department._id}`}>
                             {department.name}
                           </MenuItem>
@@ -265,7 +268,7 @@ const UpdateProgram = ({
                     multiline
                     name='description'
                     value={description}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -293,19 +296,19 @@ UpdateProgram.propTypes = {
   history: PropTypes.object.isRequired,
   department: PropTypes.object.isRequired,
   setAlert: PropTypes.func.isRequired,
-  updateProgram: PropTypes.func.isRequired,
+  updateUndergraduateProgram: PropTypes.func.isRequired,
   getProgramById: PropTypes.func.isRequired,
-  program: PropTypes.object.isRequired,
+  program: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   department: state.department,
-  program: state.program,
+  program: state.program
 });
 
 export default connect(mapStateToProps, {
   getAllDepartments,
   setAlert,
-  updateProgram,
-  getProgramById,
+  updateUndergraduateProgram,
+  getProgramById
 })(withRouter(UpdateProgram));

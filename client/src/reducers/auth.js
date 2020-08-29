@@ -4,6 +4,8 @@ import {
   AUTH_ERROR,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
+  REGISTER_COORDINATOR_SUCCESS,
+  REGISTER_COORDINATOR_FAILED,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT
@@ -48,6 +50,7 @@ export default function(state = initialState, action) {
     case LOGOUT:
     case AUTH_ERROR:
     case REGISTER_FAILED:
+    case REGISTER_COORDINATOR_FAILED:
       localStorage.removeItem('token');
       return {
         ...state,
@@ -56,6 +59,7 @@ export default function(state = initialState, action) {
         user: null
       };
     case REGISTER_SUCCESS:
+    case REGISTER_COORDINATOR_SUCCESS:
     default:
       return state;
   }

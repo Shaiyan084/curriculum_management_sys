@@ -47,7 +47,7 @@ const useStyles = makeStyles(styles);
 
 const ManageCoordinators = ({
   loadAllCoordinators,
-  auth: { loading, isAuthenticated, user }
+  coordinator: { loading, coordinators }
 }) => {
   const classes = useStyles();
 
@@ -63,22 +63,36 @@ const ManageCoordinators = ({
         [
           `${i}`,
           coordinator.name,
+          coordinator.email,
+          coordinator.department.name,
           <Fragment>
             <Link
               to={`/admin/update-coordinator/${coordinator._id}`}
               className='text-decoration-none'
             />
             <Button
+              variant='contained'
+              className='button-info margin-left-right margin-top-bottom'
+            >
+              Profile
+            </Button>
+            <Button
               color='secondary'
               variant='contained'
               className='margin-left-right margin-top-bottom'
             >
-              Update Coordinator
+              Update
+            </Button>
+            <Button
+              color='primary'
+              variant='contained'
+              className='margin-left-right margin-top-bottom button-danger'
+            >
+              Remove
             </Button>
           </Fragment>
         ]
       ];
-
       i++;
     });
     return res;
@@ -92,12 +106,8 @@ const ManageCoordinators = ({
       setAllCoordinatorsLoaded(true);
     }
 
-    setCoordinatorList(!loading && user.length > 0 ? user : []);
-  }, [user]);
-
-  if (!loading && isAuthenticated && user !== null && user.type === 1) {
-    return <Redirect to='/login' />;
-  }
+    setCoordinatorList(!loading && coordinators.length > 0 ? coordinators : []);
+  }, [coordinators]);
 
   return (
     <GridContainer>
@@ -118,6 +128,7 @@ const ManageCoordinators = ({
                 Add Coordinator
               </Button>
             </Link>
+            {console.log(coordinatorList.length)}
             {coordinatorList.length > 0 ? (
               <Table
                 tableHeaderColor='primary'
@@ -135,15 +146,14 @@ const ManageCoordinators = ({
 };
 
 ManageCoordinators.propTypes = {
-  isAuthenticated: PropTypes.bool,
   loadAllCoordinators: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  coordinator: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  auth: state.auth
+  coordinator: state.coordinator
 });
 
 export default connect(mapStateToProps, { loadAllCoordinators })(

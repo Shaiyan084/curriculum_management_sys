@@ -10,8 +10,8 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { getAllDepartments } from '../../actions/department';
 import { setAlert } from '../../actions/alert';
-import { createProgram } from '../../actions/program';
-import { withRouter } from 'react-router-dom';
+import { createUndergraduateProgram } from '../../actions/program';
+import { withRouter, Link } from 'react-router-dom';
 import {
   TextField,
   FormControl,
@@ -58,7 +58,7 @@ const CreateProgram = ({
   history,
   department: { loading, departments },
   setAlert,
-  createProgram
+  createUndergraduateProgram
 }) => {
   const classes = useStyles();
 
@@ -69,6 +69,7 @@ const CreateProgram = ({
     semester: '',
     feePerSemester: '',
     minPercentageOfEquivalence: '',
+    // minCGPA: '',
     categoryOfDegree: '',
     department: ''
   });
@@ -80,6 +81,7 @@ const CreateProgram = ({
     semester,
     feePerSemester,
     minPercentageOfEquivalence,
+    // minCGPA,
     categoryOfDegree,
     department
   } = formData;
@@ -93,7 +95,7 @@ const CreateProgram = ({
     if (categoryOfDegree === '' || department === '') {
       setAlert('Please fill all the fields in order to proceed.');
     } else {
-      createProgram(formData, history);
+      createUndergraduateProgram(formData, history);
     }
   };
 
@@ -225,6 +227,18 @@ const CreateProgram = ({
                     </Select>
                   </FormControl>
                 </GridItem>
+                {/* <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='Min CGPA (only for Graduate program or else choose 0)'
+                    variant='outlined'
+                    type='number'
+                    name='minCGPA'
+                    value={minCGPA}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem> */}
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
@@ -241,13 +255,27 @@ const CreateProgram = ({
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Button
-                    color='primary'
+                    color='secondary'
                     variant='contained'
                     type='submit'
                     size='large'
                   >
                     Submit
                   </Button>
+                  &nbsp;
+                  <Link
+                    to={'/admin/manage-programs'}
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Back
+                    </Button>
+                  </Link>
                 </GridItem>
               </GridContainer>
             </form>
@@ -263,7 +291,7 @@ CreateProgram.propTypes = {
   history: PropTypes.object.isRequired,
   department: PropTypes.object.isRequired,
   setAlert: PropTypes.func.isRequired,
-  createProgram: PropTypes.func.isRequired
+  createUndergraduateProgram: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -273,5 +301,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getAllDepartments,
   setAlert,
-  createProgram
+  createUndergraduateProgram
 })(withRouter(CreateProgram));

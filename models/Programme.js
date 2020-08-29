@@ -41,6 +41,9 @@ const ProgrammeSchema = mongoose.Schema({
   status: {
     type: Boolean,
     default: true
+  },
+  type: {
+    type: Number
   }
 });
 

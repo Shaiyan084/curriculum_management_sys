@@ -2,6 +2,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import BusinessIcon from '@material-ui/icons/Business';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import SurroundSoundRoundedIcon from '@material-ui/icons/SurroundSoundRounded';
+import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import FaceIcon from '@material-ui/icons/Face';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -45,6 +46,13 @@ const routes = [
     name: 'Manage Coordinators',
     icon: SupervisedUserCircleIcon,
     component: ManageCoordinators,
+    layout: '/admin'
+  },
+  {
+    path: '/dashboard',
+    name: 'Manage Applicants',
+    icon: AssignmentIndRoundedIcon,
+    component: Dashboard,
     layout: '/admin'
   },
   {

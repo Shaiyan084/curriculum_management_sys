@@ -4,11 +4,11 @@ const Programme = require('../../models/Programme');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
-// @route  POST /api/programs
-// @desc   Create a program
+// @route  POST /api/undergraduate-programs
+// @desc   Create an undergraduate program
 // @access Private
 router.post(
-  '/',
+  '/undergraduate-program',
   [
     auth,
     check('name', 'Name is required')
@@ -24,7 +24,6 @@ router.post(
       'minPercentageOfEquivalence',
       'Minimum percentage of equivalence is required'
     ).isInt(),
-    check('minCGPA', 'Minimum Cgpa is required').isInt(),
     check('categoryOfDegree', 'Category of degree is required').isInt(),
     check('department', 'Department is required')
       .not()
@@ -62,7 +61,6 @@ router.post(
 
     const criteria = {
       minPercentageOfEquivalence,
-      minCGPA,
       categoryOfDegree
     };
 
@@ -72,8 +70,10 @@ router.post(
     try {
       const program = new Programme(programFields);
 
-      await programme.save();
-      res.json(programme);
+      program.type = 0;
+
+      await program.save();
+      res.json(program);
     } catch (err) {
       console.log(err.message);
       return res.status(500).send('Server Error');
@@ -81,11 +81,89 @@ router.post(
   }
 );
 
-// @route  PUT /api/programs/:id
-// @desc   Update a program
+// @route  POST /api/graduate-programs
+// @desc   Create an graduate program
+// @access Private
+router.post(
+  '/graduate-program',
+  [
+    auth,
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('description', 'Description is required')
+      .not()
+      .isEmpty(),
+    check('yearly', 'Yearly duration is required').isInt(),
+    check('semester', 'Semester duration is required').isInt(),
+    check('feePerSemester', 'Fee per semester is required').isInt(),
+    check(
+      'minPercentageOfEquivalence',
+      'Minimum percentage of equivalence is required'
+    ).isInt(),
+    check('minCGPA', 'Minimum CGPA is required').isInt(),
+    check('categoryOfDegree', 'Category of degree is required').isInt(),
+    check('department', 'Department is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      name,
+      description,
+      yearly,
+      semester,
+      feePerSemester,
+      minPercentageOfEquivalence,
+      minCGPA,
+      categoryOfDegree,
+      department
+    } = req.body;
+
+    let programFields = {};
+
+    programFields.name = name;
+    programFields.description = description;
+    programFields.feePerSemester = feePerSemester;
+    programFields.department = department;
+
+    const duration = {
+      yearly,
+      semester
+    };
+
+    const criteria = {
+      minPercentageOfEquivalence,
+      minCGPA,
+      categoryOfDegree
+    };
+
+    programFields.duration = duration;
+    programFields.criteria = criteria;
+    try {
+      const program = new Program(programFields);
+
+      program.type = 1;
+
+      await program.save();
+      res.json(program);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route  PUT /api/undergraduate-programs/:id
+// @desc   Update a undergraduate-program
 // @access Private
 router.put(
-  '/:id',
+  'undergraduate-program/:id',
   [
     auth,
     check('name', 'Name is required')
@@ -121,8 +199,86 @@ router.put(
       feePerSemester,
       minPercentageOfEquivalence,
       categoryOfDegree,
-      department,
-      minCGPA
+      department
+    } = req.body;
+
+    let programFields = {};
+
+    programFields.name = name;
+    programFields.description = description;
+    programFields.feePerSemester = feePerSemester;
+    programFields.department = department;
+
+    const duration = {
+      yearly,
+      semester
+    };
+
+    const criteria = {
+      minPercentageOfEquivalence,
+      categoryOfDegree
+    };
+
+    programFields.duration = duration;
+    programFields.criteria = criteria;
+
+    try {
+      const program = await Programme.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: programFields },
+        { new: true }
+      );
+
+      res.json(program);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route  PUT /api/undergraduate-programs/:id
+// @desc   Update a undergraduate-program
+// @access Private
+router.put(
+  '/graduate-program/:id',
+  [
+    auth,
+    check('name', 'Name is required')
+      .not()
+      .isEmpty(),
+    check('description', 'Description is required')
+      .not()
+      .isEmpty(),
+    check('yearly', 'Yearly duration is required').isInt(),
+    check('semester', 'Semester duration is required').isInt(),
+    check('feePerSemester', 'Fee per semester is required').isInt(),
+    check(
+      'minPercentageOfEquivalence',
+      'Minimum percentage of equivalence is required'
+    ).isInt(),
+    check('minCGPA', 'Minimum CGPA is required').isInt(),
+    check('categoryOfDegree', 'Category of degree is required').isInt(),
+    check('department', 'Department is required')
+      .not()
+      .isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      name,
+      description,
+      yearly,
+      semester,
+      feePerSemester,
+      minPercentageOfEquivalence,
+      minCGPA,
+      categoryOfDegree,
+      department
     } = req.body;
 
     let programFields = {};
@@ -145,7 +301,6 @@ router.put(
 
     programFields.duration = duration;
     programFields.criteria = criteria;
-
     try {
       const program = await Programme.findOneAndUpdate(
         { _id: req.params.id },
@@ -161,12 +316,30 @@ router.put(
   }
 );
 
-// @route  GET /api/programs
-// @desc   Get all programs
+// @route  GET /api/undergraduate-programs
+// @desc   Get all undergraduate programs
 // @access Private
-router.get('/', auth, async (req, res) => {
+router.get('/undergraduate-programs', auth, async (req, res) => {
   try {
-    const programs = await Programme.find().populate('department', ['name']);
+    const programs = await Programme.find({ type: 0 }).populate('department', [
+      'name'
+    ]);
+
+    res.json(programs);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/graduate-programs
+// @desc   Get all graduate programs
+// @access Private
+router.get('/graduate-programs', auth, async (req, res) => {
+  try {
+    const programs = await Programme.find({ type: 1 }).populate('department', [
+      'name'
+    ]);
 
     res.json(programs);
   } catch (err) {
