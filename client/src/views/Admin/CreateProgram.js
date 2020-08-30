@@ -17,7 +17,7 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
 } from '@material-ui/core';
 
 const styles = {
@@ -27,11 +27,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0'
+      marginBottom: '0',
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF'
-    }
+      color: '#FFFFFF',
+    },
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -46,9 +46,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1'
-    }
-  }
+      lineHeight: '1',
+    },
+  },
 };
 
 const useStyles = makeStyles(styles);
@@ -58,7 +58,7 @@ const CreateProgram = ({
   history,
   department: { loading, departments },
   setAlert,
-  createUndergraduateProgram
+  createUndergraduateProgram,
 }) => {
   const classes = useStyles();
 
@@ -71,7 +71,7 @@ const CreateProgram = ({
     minPercentageOfEquivalence: '',
     // minCGPA: '',
     categoryOfDegree: '',
-    department: ''
+    department: '',
   });
 
   const {
@@ -83,14 +83,14 @@ const CreateProgram = ({
     minPercentageOfEquivalence,
     // minCGPA,
     categoryOfDegree,
-    department
+    department,
   } = formData;
 
-  const onChange = e => {
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (categoryOfDegree === '' || department === '') {
       setAlert('Please fill all the fields in order to proceed.');
@@ -119,7 +119,7 @@ const CreateProgram = ({
             </p>
           </CardHeader>
           <CardBody>
-            <form onSubmit={e => onSubmit(e)}>
+            <form onSubmit={(e) => onSubmit(e)}>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
@@ -129,7 +129,7 @@ const CreateProgram = ({
                     type='text'
                     name='name'
                     value={name}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -141,7 +141,7 @@ const CreateProgram = ({
                     type='number'
                     name='yearly'
                     value={yearly}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -153,7 +153,7 @@ const CreateProgram = ({
                     type='number'
                     name='semester'
                     value={semester}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -165,7 +165,7 @@ const CreateProgram = ({
                     type='number'
                     name='feePerSemester'
                     value={feePerSemester}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -177,7 +177,7 @@ const CreateProgram = ({
                     type='number'
                     name='minPercentageOfEquivalence'
                     value={minPercentageOfEquivalence}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -189,7 +189,7 @@ const CreateProgram = ({
                       label='Category of degree'
                       name='categoryOfDegree'
                       value={categoryOfDegree}
-                      onChange={e => onChange(e)}
+                      onChange={(e) => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
@@ -212,14 +212,14 @@ const CreateProgram = ({
                       label='Department'
                       name='department'
                       value={department}
-                      onChange={e => onChange(e)}
+                      onChange={(e) => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
                       </MenuItem>
                       {!loading &&
                         departments.length > 0 &&
-                        departments.map(department => (
+                        departments.map((department) => (
                           <MenuItem value={`${department._id}`}>
                             {department.name}
                           </MenuItem>
@@ -249,7 +249,7 @@ const CreateProgram = ({
                     multiline
                     name='description'
                     value={description}
-                    onChange={e => onChange(e)}
+                    onChange={(e) => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -291,15 +291,15 @@ CreateProgram.propTypes = {
   history: PropTypes.object.isRequired,
   department: PropTypes.object.isRequired,
   setAlert: PropTypes.func.isRequired,
-  createUndergraduateProgram: PropTypes.func.isRequired
+  createUndergraduateProgram: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  department: state.department
+const mapStateToProps = (state) => ({
+  department: state.department,
 });
 
 export default connect(mapStateToProps, {
   getAllDepartments,
   setAlert,
-  createUndergraduateProgram
+  createUndergraduateProgram,
 })(withRouter(CreateProgram));
