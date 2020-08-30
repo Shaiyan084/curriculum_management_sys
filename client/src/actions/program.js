@@ -57,7 +57,7 @@ export const createUndergraduateProgram = (
   };
 
   try {
-    await axios.post('/api/programs/undergaduate-programs', formData, config);
+    await axios.post('/api/programs/undergaduate-program', formData, config);
 
     dispatch({ type: UNDERGRADUATE_PROGRAM_CREATED });
 
@@ -82,7 +82,7 @@ export const createGraduateProgram = (formData, history) => async dispatch => {
     }
   };
   try {
-    await axios.post('/api/programs/graduate-programs', config, formData);
+    await axios.post('/api/programs/graduate-program', config, formData);
 
     dispatch({ type: GRADUATE_PROGRAM_CREATED });
 

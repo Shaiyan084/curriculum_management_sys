@@ -4,7 +4,7 @@ const Programme = require('../../models/Programme');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
-// @route  POST /api/undergraduate-programs
+// @route  POST /api/programs/undergraduate-programs
 // @desc   Create an undergraduate program
 // @access Private
 router.post(
@@ -81,7 +81,7 @@ router.post(
   }
 );
 
-// @route  POST /api/graduate-programs
+// @route  POST /api/programs/graduate-programs
 // @desc   Create an graduate program
 // @access Private
 router.post(
@@ -159,7 +159,7 @@ router.post(
   }
 );
 
-// @route  PUT /api/undergraduate-programs/:id
+// @route  PUT /api/programs/undergraduate-programs/:id
 // @desc   Update a undergraduate-program
 // @access Private
 router.put(
@@ -237,7 +237,7 @@ router.put(
   }
 );
 
-// @route  PUT /api/undergraduate-programs/:id
+// @route  PUT /api/programs/undergraduate-programs/:id
 // @desc   Update a undergraduate-program
 // @access Private
 router.put(
@@ -316,7 +316,7 @@ router.put(
   }
 );
 
-// @route  GET /api/undergraduate-programs
+// @route  GET /api/programs/undergraduate-programs
 // @desc   Get all undergraduate programs
 // @access Private
 router.get('/undergraduate-programs', auth, async (req, res) => {
@@ -332,7 +332,7 @@ router.get('/undergraduate-programs', auth, async (req, res) => {
   }
 });
 
-// @route  GET /api/graduate-programs
+// @route  GET /api/programs/graduate-programs
 // @desc   Get all graduate programs
 // @access Private
 router.get('/graduate-programs', auth, async (req, res) => {
