@@ -134,7 +134,7 @@ router.post(
     programFields.duration = duration;
     programFields.criteria = criteria;
     try {
-      const program = new Program(programFields);
+      let program = new Programme(programFields);
 
       program.type = 1;
 
