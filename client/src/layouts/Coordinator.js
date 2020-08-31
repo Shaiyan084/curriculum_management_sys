@@ -10,7 +10,7 @@ import Alert from '../components/Alert/Alert';
 
 import CreateDepartment from '../views/Admin/CreateDepartment';
 import UpdateDepartment from '../views/Admin/UpdateDepartment';
-import CreateProgram from '../views/Admin/CreateProgram';
+import CreateUndergraduateProgram from '../views/Admin/CreateUndergraduateProgram';
 import UpdateProgram from '../views/Admin/UpdateProgram';
 
 import routes from '../routes/Coordinator';
@@ -67,7 +67,7 @@ const Coordinator = ({ ...rest }) => {
     if (navigator.platform.indexOf('Win') > -1) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
-        suppressScrollY: false,
+        suppressScrollY: false
       });
       document.body.style.overflow = 'hidden';
     }

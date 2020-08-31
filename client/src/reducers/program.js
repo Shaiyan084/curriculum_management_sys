@@ -11,7 +11,8 @@ import {
 
 const initialState = {
   program: null,
-  programs: [],
+  undergraduatePrograms: [],
+  graduatePrograms: [],
   loading: true,
   errors: null
 };
@@ -20,13 +21,19 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case ALL_UNDERGRADUATE_PROGRAMS_LOADED:
     case ALL_GRADUATE_PROGRAMS_LOADED:
       return {
         ...state,
         loading: false,
         errors: null,
-        programs: payload
+        graduatePrograms: payload
+      };
+    case ALL_UNDERGRADUATE_PROGRAMS_LOADED:
+      return {
+        ...state,
+        loading: false,
+        errors: null,
+        undergraduatePrograms: payload
       };
     case PROGRAM_LOADED:
       return {

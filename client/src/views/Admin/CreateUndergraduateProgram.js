@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -53,7 +53,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const CreateProgram = ({
+const CreateUndergraduateProgram = ({
   getAllDepartments,
   history,
   department: { loading, departments },
@@ -113,9 +113,11 @@ const CreateProgram = ({
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color='primary'>
-            <h4 className={classes.cardTitleWhite}>Create Program</h4>
+            <h4 className={classes.cardTitleWhite}>
+              Create an Undergraduate Program
+            </h4>
             <p className={classes.cardCategoryWhite}>
-              Fill in the information below to create a program
+              Fill in the information below to create an undergraduate program
             </p>
           </CardHeader>
           <CardBody>
@@ -286,7 +288,7 @@ const CreateProgram = ({
   );
 };
 
-CreateProgram.propTypes = {
+CreateUndergraduateProgram.propTypes = {
   getAllDepartments: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   department: PropTypes.object.isRequired,
@@ -302,4 +304,4 @@ export default connect(mapStateToProps, {
   getAllDepartments,
   setAlert,
   createUndergraduateProgram
-})(withRouter(CreateProgram));
+})(withRouter(CreateUndergraduateProgram));

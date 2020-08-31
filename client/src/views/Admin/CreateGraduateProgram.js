@@ -1,0 +1,307 @@
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import { getAllDepartments } from '../../actions/department';
+import { createGraduateProgram } from '../../actions/program';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
+import { Button } from '@material-ui/core';
+import GridItem from '../../components/Grid/GridItem.js';
+import GridContainer from '../../components/Grid/GridContainer.js';
+import Card from '../../components/Card/Card.js';
+import CardHeader from '../../components/Card/CardHeader.js';
+import CardBody from '../../components/Card/CardBody.js';
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+} from '@material-ui/core';
+
+const styles = {
+  cardCategoryWhite: {
+    '&,& a,& a:hover,& a:focus': {
+      color: 'rgba(255,255,255,.62)',
+      margin: '0',
+      fontSize: '0.9rem',
+      marginTop: '0',
+      marginBottom: '0'
+    },
+    '& a,& a:hover,& a:focus': {
+      color: '#FFFFFF'
+    }
+  },
+  cardTitleWhite: {
+    color: '#FFFFFF',
+    fontSize: '1.3rem',
+    marginTop: '0px',
+    minHeight: 'auto',
+    fontWeight: '300',
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: '3px',
+    textDecoration: 'none',
+    '& small': {
+      color: '#777',
+      fontSize: '65%',
+      fontWeight: '400',
+      lineHeight: '1'
+    }
+  }
+};
+
+const useStyles = makeStyles(styles);
+
+const CreateGraduateProgram = ({
+  getAllDepartments,
+  createGraduateProgram,
+  department: { loading, departments },
+  setAlert,
+  history
+}) => {
+  const classes = useStyles();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    yearly: '',
+    semester: '',
+    feePerSemester: '',
+    minPercentageOfEquivalence: '',
+    minCGPA: '',
+    categoryOfDegree: '',
+    department: ''
+  });
+
+  const {
+    name,
+    description,
+    yearly,
+    semester,
+    feePerSemester,
+    minPercentageOfEquivalence,
+    minCGPA,
+    categoryOfDegree,
+    department
+  } = formData;
+
+  const onChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+    if (categoryOfDegree === '' || department === '') {
+      setAlert('Please fill in the all the fields in order to proceed');
+    } else {
+      createGraduateProgram(formData, history);
+    }
+  };
+
+  const [getAllDepartmentsCalled, setGetAllDepartmentsCalled] = useState(false);
+
+  useEffect(() => {
+    if (!getAllDepartmentsCalled) {
+      getAllDepartments();
+      setGetAllDepartmentsCalled(true);
+    }
+  }, []);
+
+  return (
+    <GridContainer>
+      <GridItem xs={12} sm={12} md={12}>
+        <Card>
+          <CardHeader color='primary'>
+            <h4 className={classes.cardTitleWhite}>
+              Create an Graduate Program
+            </h4>
+            <p className={classes.cardCategoryWhite}>
+              Fill in the information below to create a graduate program
+            </p>
+          </CardHeader>
+          <CardBody>
+            <form onSubmit={e => onSubmit(e)}>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='Name'
+                    variant='outlined'
+                    type='text'
+                    name='name'
+                    value={name}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <TextField
+                    className='form-control'
+                    label='Yearly duration'
+                    variant='outlined'
+                    type='number'
+                    name='yearly'
+                    value={yearly}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <TextField
+                    className='form-control'
+                    label='Semester duration'
+                    variant='outlined'
+                    type='number'
+                    name='semester'
+                    value={semester}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <TextField
+                    className='form-control'
+                    label='Fee per semester (Rs.)'
+                    variant='outlined'
+                    type='number'
+                    name='feePerSemester'
+                    value={feePerSemester}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <TextField
+                    className='form-control'
+                    label='Minimum percentage of equivalence'
+                    variant='outlined'
+                    type='number'
+                    name='minPercentageOfEquivalence'
+                    value={minPercentageOfEquivalence}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControl variant='outlined' className='form-control'>
+                    <InputLabel id='cod-label'>Category of degree</InputLabel>
+                    <Select
+                      labelId='cod-label'
+                      label='Category of degree'
+                      name='categoryOfDegree'
+                      value={categoryOfDegree}
+                      onChange={e => onChange(e)}
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={0}>
+                        Intermediate with Mathematics
+                      </MenuItem>
+                      <MenuItem value={1}>Intermediate with Biology</MenuItem>
+                      <MenuItem value={2}>
+                        Intermediate with any subject
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControl variant='outlined' className='form-control'>
+                    <InputLabel id='department-label'>Department</InputLabel>
+                    <Select
+                      labelId='department-label'
+                      label='Department'
+                      name='department'
+                      value={department}
+                      onChange={e => onChange(e)}
+                    >
+                      <MenuItem value=''>
+                        <em>None</em>
+                      </MenuItem>
+                      {!loading &&
+                        departments.length > 0 &&
+                        departments.map(department => (
+                          <MenuItem value={`${department._id}`}>
+                            {department.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='Min CGPA (should not be more than 4 and less than 2)'
+                    variant='outlined'
+                    type='number'
+                    name='minCGPA'
+                    value={minCGPA}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='Description'
+                    variant='outlined'
+                    type='text'
+                    rows={5}
+                    multiline
+                    name='description'
+                    value={description}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <Button
+                    color='secondary'
+                    variant='contained'
+                    type='submit'
+                    size='large'
+                  >
+                    Submit
+                  </Button>
+                  &nbsp;
+                  <Link
+                    to={'/admin/manage-programs'}
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </GridItem>
+              </GridContainer>
+            </form>
+          </CardBody>
+        </Card>
+      </GridItem>
+    </GridContainer>
+  );
+};
+
+CreateGraduateProgram.propTypes = {
+  getAllDepartments: PropTypes.func.isRequired,
+  createGraduateProgram: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  department: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  department: state.department
+});
+
+export default connect(mapStateToProps, {
+  getAllDepartments,
+  setAlert,
+  createGraduateProgram
+})(withRouter(CreateGraduateProgram));

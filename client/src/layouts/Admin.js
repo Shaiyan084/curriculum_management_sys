@@ -10,7 +10,8 @@ import Alert from '../components/Alert/Alert';
 
 import CreateDepartment from '../views/Admin/CreateDepartment';
 import UpdateDepartment from '../views/Admin/UpdateDepartment';
-import CreateProgram from '../views/Admin/CreateProgram';
+import CreateUndergraduateProgram from '../views/Admin/CreateUndergraduateProgram';
+import CreateGraduateProgram from '../views/Admin/CreateGraduateProgram';
 import UpdateProgram from '../views/Admin/UpdateProgram';
 import CreateCoordinator from '../views/Admin/CreateCoordinator';
 
@@ -38,7 +39,14 @@ const switchRoutes = (
       return null;
     })}
     <Route path='/admin/create-department' component={CreateDepartment} />
-    <Route path='/admin/create-program' component={CreateProgram} />
+    <Route
+      path='/admin/create-undergraduate-program'
+      component={CreateUndergraduateProgram}
+    />
+    <Route
+      path='/admin/create-graduate-program'
+      component={CreateGraduateProgram}
+    />
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />
     <Route path='/admin/update-program/:id' component={UpdateProgram} />
     <Route path='/admin/add-coordinator' component={CreateCoordinator} />

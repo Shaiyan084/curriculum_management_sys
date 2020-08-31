@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
-import Table from '../../components/Table/Table.js';
+// import Table from '../../components/Table/Table.js';
 import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
-import { Button } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { getAllUndergraduatePrograms } from '../../actions/program';
-import { Link } from 'react-router-dom';
+// import { Button } from '@material-ui/core';
+// import { connect } from 'react-redux';
+// import { getAllUndergraduatePrograms } from '../../actions/program';
+import ProgramTabs from './ProgramTabs';
+// import { Link } from 'react-router-dom';
 
 const styles = {
   cardCategoryWhite: {
@@ -45,70 +46,72 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManagePrograms = ({
-  getAllUndergraduatePrograms,
-  program: { loading, programs }
-}) => {
+const ManagePrograms = (
+  {
+    // getAllUndergraduatePrograms,
+    // program: { loading, programs }
+  }
+) => {
   const classes = useStyles();
 
-  const [programsList, setProgramsList] = useState([]);
+  // const [programsList, setProgramsList] = useState([]);
 
-  const getPrograms = () => {
-    let res = [];
-    let i = 1;
+  // const getUndergraduatePrograms = () => {
+  //   let res = [];
+  //   let i = 1;
 
-    programsList.forEach(program => {
-      res = [
-        ...res,
-        [
-          `${i}`,
-          program.name,
-          program.department.name,
-          <Fragment>
-            <Link
-              to={`/admin/update-program/${program._id}`}
-              className='text-decoration-none'
-            >
-              <Button
-                color='secondary'
-                variant='contained'
-                className='margin-left-right margin-top-bottom'
-              >
-                Update
-              </Button>
-              <Button
-                variant='contained'
-                className='margin-left-right margin-top-bottom button-function'
-              >
-                Enable
-              </Button>
-              <Button
-                variant='contained'
-                className='margin-left-right margin-top-bottom button-danger'
-              >
-                Remove
-              </Button>
-            </Link>
-          </Fragment>
-        ]
-      ];
+  //   programsList.forEach(program => {
+  //     res = [
+  //       ...res,
+  //       [
+  //         `${i}`,
+  //         program.name,
+  //         program.department.name,
+  //         <Fragment>
+  //           <Link
+  //             to={`/admin/update-program/${program._id}`}
+  //             className='text-decoration-none'
+  //           >
+  //             <Button
+  //               color='secondary'
+  //               variant='contained'
+  //               className='margin-left-right margin-top-bottom'
+  //             >
+  //               Update
+  //             </Button>
+  //           </Link>
+  //           <Button
+  //             variant='contained'
+  //             className='margin-left-right margin-top-bottom button-function'
+  //           >
+  //             Enable
+  //           </Button>
+  //           <Button
+  //             variant='contained'
+  //             className='margin-left-right margin-top-bottom button-danger'
+  //           >
+  //             Remove
+  //           </Button>
+  //         </Fragment>
+  //       ]
+  //     ];
 
-      i++;
-    });
+  //     i++;
+  //   });
 
-    return res;
-  };
+  //   return res;
+  // };
 
-  const [getAllProgramsCalled, setGetAllProgramsCalled] = useState(false);
+  // const [getAllProgramsCalled, setGetAllProgramsCalled] = useState(false);
 
-  useEffect(() => {
-    if (!getAllProgramsCalled) {
-      getAllUndergraduatePrograms();
-      setGetAllProgramsCalled(true);
-    }
+  // useEffect(() => {
+  //   if (!getAllProgramsCalled) {
+  //     getAllUndergraduatePrograms();
+  //     setGetAllProgramsCalled(true);
+  //   }
 
-    setProgramsList(!loading && programs.length > 0 ? programs : []);
-  }, [programs]);
+  //   setProgramsList(!loading && programs.length > 0 ? programs : []);
+  // }, [programs]);
 
   return (
     <GridContainer>
@@ -122,20 +125,24 @@ const ManagePrograms = ({
             </p>
           </CardHeader>
           <CardBody>
-            <Link to='/admin/create-program' className='text-decoration-none'>
+            <ProgramTabs />
+            {/* <Link
+              to='/admin/create-undergraduate-program'
+              className='text-decoration-none'
+            >
               <Button color='primary' variant='contained'>
-                Add program
+                Add Undergraduate program
               </Button>
             </Link>
             {programsList.length > 0 ? (
               <Table
                 tableHeaderColor='primary'
                 tableHead={['S.No', 'Name', 'Department', 'Actions']}
-                tableData={getPrograms()}
+                tableData={getUndergraduatePrograms()}
               />
             ) : (
               <div className='text-center imp-message'>No programs found</div>
-            )}
+            )} */}
           </CardBody>
         </Card>
       </GridItem>
@@ -143,15 +150,15 @@ const ManagePrograms = ({
   );
 };
 
-ManagePrograms.propTypes = {
-  getAllUndergraduatePrograms: PropTypes.func.isRequired,
-  program: PropTypes.object.isRequired
-};
+// ManagePrograms.propTypes = {
+//   getAllUndergraduatePrograms: PropTypes.func.isRequired,
+//   program: PropTypes.object.isRequired
+// };
 
-const mapStateToProps = state => ({
-  program: state.program
-});
+// const mapStateToProps = state => ({
+//   program: state.program
+// });
 
-export default connect(mapStateToProps, { getAllUndergraduatePrograms })(
-  ManagePrograms
-);
+export default // connect(mapStateToProps, { getAllUndergraduatePrograms })(
+ManagePrograms;
+// );
