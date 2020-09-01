@@ -11,7 +11,6 @@ import CardBody from '../../components/Card/CardBody.js';
 // import { connect } from 'react-redux';
 // import { getAllUndergraduatePrograms } from '../../actions/program';
 import ProgramTabs from './ProgramTabs';
-// import { Link } from 'react-router-dom';
 
 const styles = {
   cardCategoryWhite: {

@@ -112,7 +112,7 @@ const ProgramTabs = ({
     return res;
   };
 
-  const [graduateProgramsList, setGraduatedProgramsList] = useState([]);
+  const [graduateProgramsList, setGraduateProgramsList] = useState([]);
 
   const getGraduatePrograms = () => {
     let res = [];
@@ -155,7 +155,10 @@ const ProgramTabs = ({
           </Fragment>
         ]
       ];
+      i++;
     });
+
+    return res;
   };
 
   const [
@@ -185,7 +188,7 @@ const ProgramTabs = ({
       setGetAllGraduateProgramsCalled(true);
     }
 
-    setGraduatedProgramsList(
+    setGraduateProgramsList(
       !loading && graduatePrograms.length > 0 ? graduatePrograms : []
     );
   }, [graduatePrograms]);
@@ -244,6 +247,7 @@ const ProgramTabs = ({
           <Button color='primary' variant='contained'>
             Add Graduate program
           </Button>
+          {console.log('error')}
         </Link>
         {graduateProgramsList.length > 0 ? (
           <Table
