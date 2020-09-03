@@ -7,10 +7,12 @@ import {
   COORDINATOR_PROFILE_PICTURE_REMOVED,
   COORDINATORS_ERROR,
   SET_AUTH_COORDINATOR_LOADING,
-  UNSET_AUTH_COORDINATOR_LOADING
+  UNSET_AUTH_COORDINATOR_LOADING,
+  DELETE_COORDINATOR_ACCOUNT
 } from '../actions/types';
 
 const initialState = {
+  // token: localStorage.getItem('token'),
   coordinator: null,
   coordinators: [],
   loading: true,
@@ -54,6 +56,13 @@ export default function(state = initialState, action) {
         ...state,
         errors: payload,
         coordinators: []
+      };
+    case DELETE_COORDINATOR_ACCOUNT:
+      // localStorage.removeItem('token');
+      return {
+        coordinators: state.coordinators.filter(
+          coordinator => coordinator._id !== payload
+        )
       };
     case COORDINATOR_PASSWORD_UPDATED:
     default:

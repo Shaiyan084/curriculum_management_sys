@@ -395,4 +395,17 @@ router.put(
   }
 );
 
+// @route  DELETE /api/programs/:id
+// @desc   Remove a program by id
+// @access Private
+router.delete('/remove-program/:id', auth, async (req, res) => {
+  try {
+    await Programme.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: 'Program has been removed successfully' });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

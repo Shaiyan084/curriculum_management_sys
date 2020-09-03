@@ -6,7 +6,8 @@ import {
   GRADUATE_PROGRAM_CREATED,
   GRADUATE_PROGRAM_UPDATED,
   PROGRAM_ERROR,
-  PROGRAM_LOADED
+  PROGRAM_LOADED,
+  REMOVE_PROGRAM
 } from '../actions/types';
 
 const initialState = {
@@ -52,6 +53,7 @@ export default function(state = initialState, action) {
     case UNDERGRADUATE_PROGRAM_UPDATED:
     case GRADUATE_PROGRAM_CREATED:
     case GRADUATE_PROGRAM_UPDATED:
+    case REMOVE_PROGRAM:
     default:
       return state;
   }

@@ -598,4 +598,17 @@ router.put('/profile-picture/remove', auth, async (req, res) => {
   }
 });
 
+// @route  DELETE /api/users/delete-coordinator-account/:id
+// @desc   Delete a coordinator account based on id
+// @access Private
+router.delete('/delete-coordinator-account/:id', auth, async (req, res) => {
+  try {
+    await User.findOneAndRemove({ _id: req.params.id });
+    res.json({ msg: 'User deleted successfully' });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

@@ -50,7 +50,7 @@ const switchRoutes = (
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />
     <Route path='/admin/update-program/:id' component={UpdateProgram} />
     <Route path='/admin/add-coordinator' component={CreateCoordinator} />
-    <Redirect from='/admin' to='/admin/dashboard' />
+    {/* <Redirect from='/admin' to='/admin/dashboard' /> */}
   </Switch>
 );
 

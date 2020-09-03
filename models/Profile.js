@@ -23,8 +23,7 @@ const ProfileSchema = mongoose.Schema({
     },
     // Admin/ Coordinator/ Applicant
     status: {
-      type: Number,
-      required: true
+      type: Number
     }
   },
   familyDetails: {

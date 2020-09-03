@@ -12,10 +12,11 @@ import {
   Paper,
   Hidden,
   Popper,
-  Divider,
+  Divider
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth';
+import { Link } from 'react-router-dom';
 
 import styles from '../../assets/jss/material-dashboard-react/components/headerLinksStyle.js';
 
@@ -25,7 +26,7 @@ const AdminNavbarLinks = ({ logout }) => {
   const classes = useStyles();
   const [openProfile, setOpenProfile] = React.useState(null);
 
-  const handleClickProfile = (event) => {
+  const handleClickProfile = event => {
     if (openProfile && openProfile.contains(event.target)) {
       setOpenProfile(null);
     } else {
@@ -71,18 +72,23 @@ const AdminNavbarLinks = ({ logout }) => {
               id='profile-menu-list-grow'
               style={{
                 transformOrigin:
-                  placement === 'bottom' ? 'center top' : 'center bottom',
+                  placement === 'bottom' ? 'center top' : 'center bottom'
               }}
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role='menu'>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
+                    <Link
+                      to={'/create-profile'}
+                      className='text-decoration-none'
                     >
-                      Profile
-                    </MenuItem>
+                      <MenuItem
+                        onClick={handleCloseProfile}
+                        className={classes.dropdownItem}
+                      >
+                        Create Profile
+                      </MenuItem>
+                    </Link>
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
@@ -108,7 +114,7 @@ const AdminNavbarLinks = ({ logout }) => {
 };
 
 AdminNavbarLinks.propTypes = {
-  logout: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 export default connect(null, { logout })(AdminNavbarLinks);

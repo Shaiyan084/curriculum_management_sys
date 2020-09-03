@@ -7,52 +7,54 @@ import {
   GRADUATE_PROGRAM_UPDATED,
   PROGRAM_ERROR,
   PROGRAM_LOADED,
+  REMOVE_PROGRAM
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
 
 // Get all undergraduate programs
-export const getAllUndergraduatePrograms = () => async (dispatch) => {
+export const getAllUndergraduatePrograms = () => async dispatch => {
   try {
     const res = await axios.get('/api/programs/undergraduate-programs');
 
     dispatch({
       type: ALL_UNDERGRADUATE_PROGRAMS_LOADED,
-      payload: res.data,
+      payload: res.data
     });
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
 // Get all graduate programs
-export const getAllGraduatePrograms = () => async (dispatch) => {
+export const getAllGraduatePrograms = () => async dispatch => {
   try {
     const res = await axios.get('/api/programs/graduate-programs');
 
     dispatch({
       type: ALL_GRADUATE_PROGRAMS_LOADED,
-      payload: res.data,
+      payload: res.data
     });
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
 // Create an undergraduate program
-export const createUndergraduateProgram = (formData, history) => async (
-  dispatch
-) => {
+export const createUndergraduateProgram = (
+  formData,
+  history
+) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   };
 
   try {
@@ -66,7 +68,7 @@ export const createUndergraduateProgram = (formData, history) => async (
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
 
     dispatch(setAlert('Error occured while creating PROGRAM'));
@@ -74,13 +76,11 @@ export const createUndergraduateProgram = (formData, history) => async (
 };
 
 // Create a graduate program
-export const createGraduateProgram = (formData, history) => async (
-  dispatch
-) => {
+export const createGraduateProgram = (formData, history) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   };
   try {
     await axios.post('/api/programs/graduate-program', formData, config);
@@ -95,7 +95,7 @@ export const createGraduateProgram = (formData, history) => async (
 
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
 
     dispatch(setAlert('Error occured while creating PROGRAM'));
@@ -103,13 +103,15 @@ export const createGraduateProgram = (formData, history) => async (
 };
 
 // Update an undergraduate program
-export const updateUndergraduateProgram = (id, formData, history) => async (
-  dispatch
-) => {
+export const updateUndergraduateProgram = (
+  id,
+  formData,
+  history
+) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   };
 
   try {
@@ -127,7 +129,7 @@ export const updateUndergraduateProgram = (id, formData, history) => async (
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
 
     dispatch(setAlert('Error occured while updating PROGRAM'));
@@ -135,13 +137,15 @@ export const updateUndergraduateProgram = (id, formData, history) => async (
 };
 
 // Update an graduate program
-export const updateGraduateProgram = (id, formData, history) => async (
-  dispatch
-) => {
+export const updateGraduateProgram = (
+  id,
+  formData,
+  history
+) => async dispatch => {
   const config = {
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   };
 
   try {
@@ -155,7 +159,7 @@ export const updateGraduateProgram = (id, formData, history) => async (
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
 
     dispatch(setAlert('Error occured while updating PROGRAM'));
@@ -163,18 +167,35 @@ export const updateGraduateProgram = (id, formData, history) => async (
 };
 
 // Get program by id
-export const getProgramById = (id) => async (dispatch) => {
+export const getProgramById = id => async dispatch => {
   try {
     const res = await axios.get(`/api/programs/${id}`);
 
     dispatch({
       type: PROGRAM_LOADED,
-      payload: res.data,
+      payload: res.data
     });
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
+};
+
+// Remove program by id
+export const removeProgram = (id, history) => async dispatch => {
+  if (window.confirm('Are you sure you want to remove program!'))
+    try {
+      await axios.delete(`/api/programs/remove-program/${id}`);
+
+      dispatch({
+        type: REMOVE_PROGRAM
+      });
+
+      dispatch(setAlert('Program has been removed successfully', 'success'));
+      history.goBack();
+    } catch (err) {
+      dispatch(setAlert('Error occured whilst removing program', 'danger'));
+    }
 };

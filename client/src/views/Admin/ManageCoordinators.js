@@ -11,6 +11,7 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { loadAllCoordinators } from '../../actions/coordinator';
+import { deleteCoordinatorAccount } from '../../actions/coordinator';
 
 const styles = {
   cardCategoryWhite: {
@@ -47,6 +48,8 @@ const useStyles = makeStyles(styles);
 
 const ManageCoordinators = ({
   loadAllCoordinators,
+  // deleteAccount,
+  deleteCoordinatorAccount,
   coordinator: { loading, coordinators }
 }) => {
   const classes = useStyles();
@@ -83,13 +86,19 @@ const ManageCoordinators = ({
             >
               Update
             </Button>
+            {/* <Link
+              to={'/admin/manage-coordinators'}
+              className='text-decoration-none'
+            > */}
             <Button
               color='primary'
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
+              onClick={() => deleteCoordinatorAccount(coordinator._id)}
             >
               Remove
             </Button>
+            {/* </Link> */}
           </Fragment>
         ]
       ];
@@ -147,6 +156,7 @@ const ManageCoordinators = ({
 
 ManageCoordinators.propTypes = {
   loadAllCoordinators: PropTypes.func.isRequired,
+  deleteCoordinatorAccount: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   coordinator: PropTypes.object.isRequired
@@ -156,6 +166,7 @@ const mapStateToProps = state => ({
   coordinator: state.coordinator
 });
 
-export default connect(mapStateToProps, { loadAllCoordinators })(
-  ManageCoordinators
-);
+export default connect(mapStateToProps, {
+  loadAllCoordinators,
+  deleteCoordinatorAccount
+})(ManageCoordinators);

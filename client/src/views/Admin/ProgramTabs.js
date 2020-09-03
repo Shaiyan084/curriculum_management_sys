@@ -9,8 +9,11 @@ import Box from '@material-ui/core/Box';
 import Table from '../../components/Table/Table.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getAllUndergraduatePrograms } from '../../actions/program';
-import { getAllGraduatePrograms } from '../../actions/program';
+import {
+  getAllUndergraduatePrograms,
+  getAllGraduatePrograms,
+  removeProgram
+} from '../../actions/program';
 import { Link } from 'react-router-dom';
 
 function TabPanel(props) {
@@ -56,6 +59,7 @@ const useStyles = makeStyles(theme => ({
 const ProgramTabs = ({
   getAllUndergraduatePrograms,
   getAllGraduatePrograms,
+  removeProgram,
   program: { loading, undergraduatePrograms, graduatePrograms }
 }) => {
   const classes = useStyles();
@@ -99,6 +103,7 @@ const ProgramTabs = ({
             <Button
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
+              onClick={() => removeProgram(program._id)}
             >
               Remove
             </Button>
@@ -149,6 +154,7 @@ const ProgramTabs = ({
             <Button
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
+              onClick={() => removeProgram(program._id)}
             >
               Remove
             </Button>
@@ -273,6 +279,7 @@ const ProgramTabs = ({
 ProgramTabs.propTypes = {
   getAllUndergraduatePrograms: PropTypes.func.isRequired,
   getAllGraduatePrograms: PropTypes.func.isRequired,
+  removeProgram: PropTypes.func.isRequired,
   program: PropTypes.object.isRequired
 };
 
@@ -282,5 +289,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAllUndergraduatePrograms,
-  getAllGraduatePrograms
+  getAllGraduatePrograms,
+  removeProgram
 })(ProgramTabs);

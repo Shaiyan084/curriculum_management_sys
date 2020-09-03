@@ -13,7 +13,8 @@ import {
   COORDINATORS_ERROR,
   AUTH_ERROR,
   SET_AUTH_COORDINATOR_LOADING,
-  UNSET_AUTH_COORDINATOR_LOADING
+  UNSET_AUTH_COORDINATOR_LOADING,
+  DELETE_COORDINATOR_ACCOUNT
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -273,4 +274,24 @@ export const removeCoordinatorProfilePicture = formData => async dispatch => {
   dispatch(
     setAlert('Error occured while removing the profile picture', 'danger')
   );
+};
+
+// Delete Coordinator Account
+export const deleteCoordinatorAccount = id => async dispatch => {
+  if (
+    window.confirm(
+      'Are you sure you want to delete this account? This can not be undone!'
+    )
+  ) {
+    try {
+      await axios.delete(`/api/users/delete-coordinator-account/${id}`);
+      dispatch({ type: DELETE_COORDINATOR_ACCOUNT });
+      dispatch(
+        setAlert('User account has been removed successfully', 'success')
+      );
+    } catch (err) {
+      console.log(err);
+      dispatch(setAlert('Error occurerd while deleting account', 'danger'));
+    }
+  }
 };

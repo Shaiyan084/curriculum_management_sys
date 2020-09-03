@@ -104,7 +104,7 @@ export const registerCoordinator = (formData, history) => async dispatch => {
       payload: res.data.token
     });
 
-    history.push('/manage-coordinators');
+    history.push('/admin/manage-coordinators');
 
     dispatch(loadUser());
   } catch (err) {
@@ -115,3 +115,23 @@ export const registerCoordinator = (formData, history) => async dispatch => {
     }
   }
 };
+
+// // Delete Account
+// export const deleteAccount = id => async dispatch => {
+//   if (
+//     window.confirm(
+//       'Are you sure you want to delete this account? This can not be undone!'
+//     )
+//   ) {
+//     try {
+//       await axios.delete(`/api/users/delete-account/${id}`);
+//       dispatch({ type: DELETE_ACCOUNT });
+//       dispatch(
+//         setAlert('User account has been deleted successfully', 'success')
+//       );
+//     } catch (err) {
+//       console.log(err);
+//       dispatch(setAlert('Error occurerd while deleting account', 'danger'));
+//     }
+//   }
+// };

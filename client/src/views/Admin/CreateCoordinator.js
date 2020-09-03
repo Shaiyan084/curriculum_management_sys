@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAllDepartments } from '../../actions/department';
 import { registerCoordinator } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter, Link } from 'react-router-dom';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import Card from '../../components/Card/Card.js';
@@ -212,13 +212,27 @@ const CreateCoordinator = ({
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <Button
-                    color='primary'
+                    color='secondary'
                     variant='contained'
                     type='submit'
                     size='large'
                   >
                     Submit
                   </Button>
+                  &nbsp;
+                  <Link
+                    to={'/admin/manage-coordinators'}
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Back
+                    </Button>
+                  </Link>
                 </GridItem>
               </GridContainer>
             </form>
