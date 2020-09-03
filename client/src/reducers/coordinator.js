@@ -60,9 +60,11 @@ export default function(state = initialState, action) {
     case DELETE_COORDINATOR_ACCOUNT:
       // localStorage.removeItem('token');
       return {
+        ...state,
         coordinators: state.coordinators.filter(
           coordinator => coordinator._id !== payload
-        )
+        ),
+        loading: false
       };
     case COORDINATOR_PASSWORD_UPDATED:
     default:
