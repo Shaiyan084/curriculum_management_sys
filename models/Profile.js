@@ -21,7 +21,10 @@ const ProfileSchema = mongoose.Schema({
     description: {
       type: String
     },
-    // Admin/ Coordinator/ Applicant
+    cnic: {
+      type: String
+    },
+    // Admin/ Coordinator/ Applicant/ Student
     status: {
       type: Number
     }
@@ -45,6 +48,76 @@ const ProfileSchema = mongoose.Schema({
     address: {
       type: String
     }
+  },
+  experienceDetails: {
+    title: {
+      type: String
+    },
+    company: {
+      type: String
+    },
+    location: {
+      type: String
+    },
+    from: {
+      type: Date
+    },
+    to: {
+      type: Date
+    },
+    current: {
+      type: Boolean
+    },
+    description: {
+      type: String
+    }
+  },
+  educationDetails: {
+    college: {
+      type: String
+    },
+    university: {
+      type: String
+    },
+    degree: {
+      type: String
+    },
+    fieldOfStudy: {
+      type: String
+    },
+    from: {
+      type: Date
+    },
+    to: {
+      type: Date
+    },
+    current: {
+      type: Boolean
+    },
+    description: {
+      type: String
+    }
+  },
+  social: {
+    youtube: {
+      type: String
+    },
+    twitter: {
+      type: String
+    },
+    facebook: {
+      type: String
+    },
+    linkedin: {
+      type: String
+    },
+    instagram: {
+      type: String
+    }
+  },
+  date: {
+    type: Date,
+    default: Date.now()
   }
 });
 
