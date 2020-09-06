@@ -14,31 +14,31 @@ import {
   AUTH_ERROR,
   SET_AUTH_COORDINATOR_LOADING,
   UNSET_AUTH_COORDINATOR_LOADING,
-  DELETE_COORDINATOR_ACCOUNT
+  DELETE_COORDINATOR_ACCOUNT,
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
 
 // Load All Coordinators
-export const loadAllCoordinators = () => async dispatch => {
+export const loadAllCoordinators = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/users/coordinators');
 
     dispatch({
       type: ALL_COORDINATORS_LOADED,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
       type: COORDINATORS_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 // Load Current Coordinator
-export const loadCoordinator = () => async dispatch => {
+export const loadCoordinator = () => async (dispatch) => {
   if (localStorage.getItem('token')) {
     setAuthToken(localStorage.getItem('token'));
   }
@@ -47,11 +47,11 @@ export const loadCoordinator = () => async dispatch => {
 
     dispatch({
       type: COORDINATOR_LOADED,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR
+      type: AUTH_ERROR,
     });
   }
 };
@@ -121,53 +121,53 @@ export const loadCoordinator = () => async dispatch => {
 // };
 
 // Change Coordinator Name
-export const changeCoordinatorName = formData => async dispatch => {
+export const changeCoordinatorName = (formData) => async (dispatch) => {
   dispatch({
-    type: SET_AUTH_COORDINATOR_LOADING
+    type: SET_AUTH_COORDINATOR_LOADING,
   });
 
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     const res = await axios.put('/api/users/name', formData, config);
 
     dispatch({
       type: COORDINATOR_NAME_UPDATED,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     dispatch(setAlert('Name has been updated successfully', 'success'));
   } catch (err) {
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(err.message, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(err.message, 'danger')));
     }
   }
 };
 
 // Change Coordinator Password
-export const changeCoordinatorPassword = password => async dispatch => {
+export const changeCoordinatorPassword = (password) => async (dispatch) => {
   dispatch({
-    type: SET_AUTH_COORDINATOR_LOADING
+    type: SET_AUTH_COORDINATOR_LOADING,
   });
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     const pass = JSON.stringify({ password });
@@ -176,37 +176,39 @@ export const changeCoordinatorPassword = password => async dispatch => {
 
     dispatch({
       type: COORDINATOR_PASSWORD_UPDATED,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     dispatch(setAlert('Password updated successfully', 'success'));
   } catch (err) {
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.message, 'danger')));
     }
   }
 };
 
 // Upload Coordinator Profile Picture
-export const uploadCoordinatorProfilePicture = formData => async dispatch => {
+export const uploadCoordinatorProfilePicture = (formData) => async (
+  dispatch
+) => {
   dispatch({
-    type: SET_AUTH_COORDINATOR_LOADING
+    type: SET_AUTH_COORDINATOR_LOADING,
   });
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     const res = await axios.put(
@@ -217,37 +219,39 @@ export const uploadCoordinatorProfilePicture = formData => async dispatch => {
 
     dispatch({
       type: COORDINATOR_PROFILE_PICTURE_UPDATED,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     dispatch(setAlert('Profile updated successfully', 'success'));
   } catch (err) {
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(error.message, 'danger'));
+      errors.forEach((error) => dispatch(error.message, 'danger'));
     }
   }
 };
 
 // Remove Coordinator Profile Picture
-export const removeCoordinatorProfilePicture = formData => async dispatch => {
+export const removeCoordinatorProfilePicture = (formData) => async (
+  dispatch
+) => {
   dispatch({
-    type: SET_AUTH_COORDINATOR_LOADING
+    type: SET_AUTH_COORDINATOR_LOADING,
   });
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
 
     const res = await axios.put(
@@ -258,17 +262,17 @@ export const removeCoordinatorProfilePicture = formData => async dispatch => {
 
     dispatch({
       type: COORDINATOR_PROFILE_PICTURE_REMOVED,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
 
     dispatch(setAlert('Profile picture removed successfully', 'success'));
   } catch (err) {
     dispatch({
-      type: UNSET_AUTH_COORDINATOR_LOADING
+      type: UNSET_AUTH_COORDINATOR_LOADING,
     });
   }
   dispatch(
@@ -277,7 +281,7 @@ export const removeCoordinatorProfilePicture = formData => async dispatch => {
 };
 
 // Delete Coordinator Account
-export const deleteCoordinatorAccount = id => async dispatch => {
+export const deleteCoordinatorAccount = (id) => async (dispatch) => {
   if (
     window.confirm(
       'Are you sure you want to delete this account? This can not be undone!'
@@ -285,7 +289,11 @@ export const deleteCoordinatorAccount = id => async dispatch => {
   ) {
     try {
       await axios.delete(`/api/users/delete-coordinator-account/${id}`);
-      dispatch({ type: DELETE_COORDINATOR_ACCOUNT });
+      dispatch({
+        type: DELETE_COORDINATOR_ACCOUNT,
+        payload: id,
+      });
+
       dispatch(
         setAlert('User account has been removed successfully', 'success')
       );

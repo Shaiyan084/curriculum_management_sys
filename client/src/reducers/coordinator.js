@@ -8,7 +8,7 @@ import {
   COORDINATORS_ERROR,
   SET_AUTH_COORDINATOR_LOADING,
   UNSET_AUTH_COORDINATOR_LOADING,
-  DELETE_COORDINATOR_ACCOUNT
+  DELETE_COORDINATOR_ACCOUNT,
 } from '../actions/types';
 
 const initialState = {
@@ -17,10 +17,10 @@ const initialState = {
   coordinators: [],
   loading: true,
   coordinatorLoading: true,
-  errors: null
+  errors: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -29,7 +29,7 @@ export default function(state = initialState, action) {
         ...state,
         error: null,
         loading: false,
-        coordinators: payload
+        coordinators: payload,
       };
     case COORDINATOR_LOADED:
     case COORDINATOR_NAME_UPDATED:
@@ -39,32 +39,34 @@ export default function(state = initialState, action) {
         ...state,
         coordinator: payload,
         loading: false,
-        isAuthenticated: true
+        isAuthenticated: true,
       };
     case SET_AUTH_COORDINATOR_LOADING:
       return {
         ...state,
-        coordinatorLoading: true
+        coordinatorLoading: true,
       };
     case UNSET_AUTH_COORDINATOR_LOADING:
       return {
         ...state,
-        coordinatorLoading: false
+        coordinatorLoading: false,
       };
     case COORDINATORS_ERROR:
       return {
         ...state,
         errors: payload,
-        coordinators: []
+        coordinators: [],
       };
     case DELETE_COORDINATOR_ACCOUNT:
       // localStorage.removeItem('token');
       return {
         ...state,
-        coordinators: state.coordinators.filter(
-          coordinator => coordinator._id !== payload
-        ),
-        loading: false
+        coordinators: [
+          ...state.coordinators.filter(
+            (coordinator) => coordinator._id !== payload
+          ),
+        ],
+        loading: false,
       };
     case COORDINATOR_PASSWORD_UPDATED:
     default:
