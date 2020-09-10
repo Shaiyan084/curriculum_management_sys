@@ -12,7 +12,6 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  // token: localStorage.getItem('token'),
   coordinator: null,
   coordinators: [],
   loading: true,
@@ -58,12 +57,13 @@ export default function(state = initialState, action) {
         coordinators: []
       };
     case DELETE_COORDINATOR_ACCOUNT:
-      // localStorage.removeItem('token');
       return {
         ...state,
-        coordinators: state.coordinators.filter(
-          coordinator => coordinator._id !== payload
-        ),
+        coordinators: [
+          ...state.coordinators.filter(
+            coordinator => coordinator._id !== payload
+          )
+        ],
         loading: false
       };
     case COORDINATOR_PASSWORD_UPDATED:

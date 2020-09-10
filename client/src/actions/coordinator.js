@@ -285,7 +285,11 @@ export const deleteCoordinatorAccount = id => async dispatch => {
   ) {
     try {
       await axios.delete(`/api/users/delete-coordinator-account/${id}`);
-      dispatch({ type: DELETE_COORDINATOR_ACCOUNT });
+      dispatch({
+        type: DELETE_COORDINATOR_ACCOUNT,
+        payload: id
+      });
+
       dispatch(
         setAlert('User account has been removed successfully', 'success')
       );

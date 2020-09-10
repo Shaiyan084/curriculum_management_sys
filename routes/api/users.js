@@ -364,69 +364,6 @@ router.post(
   }
 );
 
-// // @route  PUT /api/users/department-coordinator
-// // @desc   Register a coordinator to a department
-// // @access Private
-// router.put(
-//   '/department-coordinator',
-//   [
-//     auth,
-//     check('name', 'Name is required')
-//       .not()
-//       .isEmpty(),
-//     check('email', 'Email is required')
-//       .not()
-//       .isEmpty(),
-//     check('password', 'Password is required').isLength({ min: 6 }),
-//     check('department', 'Department is required')
-//       .not()
-//       .isEmpty()
-//   ],
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { name, email, password, department } = req.body;
-
-//     try {
-//       const user = await User.findOne({ email });
-
-//       if (user) {
-//         return res.status(400).json({ msg: 'User already exists' });
-//       }
-
-//       const avatar = gravatar.url(email, {
-//         s: '200', //size
-//         r: 'pg', //rating
-//         d: 'mm' //default
-//       });
-
-//       user = new User({
-//         name,
-//         email,
-//         password,
-//         department,
-//         avatar
-//       });
-
-//       const salt = bcrypt.genSalt(10);
-//       user.password = bcrypt.hash(password, salt);
-
-//       user.type = 5;
-
-//       await user.save();
-//       res.json({
-//         msg: 'Department Coordinator has been successfully registered'
-//       });
-//     } catch (err) {
-//       console.log(err.message);
-//       return res.status(500).send('Server Error');
-//     }
-//   }
-// );
-
 // @route  GET /api/users/coordinators
 // @desc   Get all Coordinators
 // @access Private

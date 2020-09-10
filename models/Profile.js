@@ -7,25 +7,25 @@ const ProfileSchema = mongoose.Schema({
   },
   myDetails: {
     name: {
-      type: String,
-      required: true
+      type: String
     },
     email: {
-      type: String,
-      required: true
+      type: String
     },
-    address: {
-      type: String,
-      required: true
+    // address: {
+    //   type: String
+    // },
+    dateOfBirth: {
+      type: Date
     },
     description: {
       type: String
     },
     cnic: {
-      type: String
+      type: Number
     },
     // Admin/ Coordinator/ Applicant/ Student
-    status: {
+    type: {
       type: Number
     }
   },
@@ -118,6 +118,10 @@ const ProfileSchema = mongoose.Schema({
   date: {
     type: Date,
     default: Date.now()
+  },
+  status: {
+    type: Number,
+    default: 0
   }
 });
 

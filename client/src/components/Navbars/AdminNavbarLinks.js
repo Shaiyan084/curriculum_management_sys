@@ -79,7 +79,7 @@ const AdminNavbarLinks = ({ logout }) => {
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role='menu'>
                     <Link
-                      to={'/create-profile'}
+                      to={'/admin/create-profile'}
                       className='text-decoration-none'
                     >
                       <MenuItem

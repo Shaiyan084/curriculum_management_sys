@@ -27,6 +27,40 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route  GET /api/profile/admin
+// @desc   Get all profiles of admins
+// @access Private
+router.get('/admin', auth, async (req, res) => {
+  try {
+    const profiles = await Profile.find({ type: 0 }).populate('user', [
+      'name',
+      'email',
+      'avatar'
+    ]);
+    res.json(profiles);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/profile/coordinator
+// @desc   Get all profiles of coordinators
+// @access Private
+router.get('/coordinator', auth, async (req, res) => {
+  try {
+    const profiles = await Profile.find({ type: 1 }).populate('user', [
+      'name',
+      'email',
+      'avatar'
+    ]);
+    res.json(profiles);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  PUT /api/profile/my-details
 // @desc   Add/Update users personal details
 // @access Private
@@ -40,16 +74,17 @@ router.put(
     check('email', 'Email is required')
       .not()
       .isEmpty(),
-    check('address', 'Address is required')
+    // check('address', 'Address is required')
+    //   .not()
+    //   .isEmpty(),
+    check('dateOfBirth', 'Date of birth is required')
       .not()
       .isEmpty(),
     check('description', 'Description is required')
       .not()
       .isEmpty(),
-    check('cnic', 'CNIC is required')
-      .not()
-      .isEmpty(),
-    check('status', 'Status is required').isInt()
+    check('cnic', 'CNIC is required').isLength({ max: 13 }),
+    check('type', 'Type is required').isInt()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -57,16 +92,25 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, address, description, cnic, status } = req.body;
+    const {
+      name,
+      email,
+      // address,
+      dateOfBirth,
+      description,
+      cnic,
+      type
+    } = req.body;
 
     let myDetails = {};
 
     myDetails.name = name;
     myDetails.email = email;
-    myDetails.address = address;
+    // myDetails.address = address;
+    myDetails.dateOfBirth = dateOfBirth;
     myDetails.description = description;
     myDetails.cnic = cnic;
-    myDetails.status = status;
+    myDetails.type = type;
 
     try {
       const profile = await Profile.findOneAndUpdate(
