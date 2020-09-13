@@ -126,32 +126,32 @@ const PersonalDetails = ({
 
     setFormData({
       name:
-        !loading && profile !== null && profile.myDetails
-          ? profile.myDetails.name
+        !loading && profile !== null && profile.PersonalDetails
+          ? profile.PersonalDetails.name
           : '',
       email:
-        !loading && profile !== null && profile.myDetails
-          ? profile.myDetails.email
+        !loading && profile !== null && profile.PersonalDetails
+          ? profile.PersonalDetails.email
           : '',
       //   address:
-      //     !loading && profile !== null && profile.myDetails
-      //       ? profile.myDetails.address
+      //     !loading && profile !== null && profile.PersonalDetails
+      //       ? profile.PersonalDetails.address
       //       : '',
       dateOfBirth:
-        !loading && profile !== null && profile.myDetails
-          ? getFormattedDate(profile.myDetails.dateOfBirth)
+        !loading && profile !== null && profile.PersonalDetails
+          ? getFormattedDate(profile.PersonalDetails.dateOfBirth)
           : getCurrentDate(),
       description:
-        !loading && profile !== null && profile.myDetails
-          ? profile.myDetails.description
+        !loading && profile !== null && profile.PersonalDetails
+          ? profile.PersonalDetails.description
           : '',
       cnic:
-        !loading && profile !== null && profile.myDetails
-          ? profile.myDetails.cnic
+        !loading && profile !== null && profile.PersonalDetails
+          ? profile.PersonalDetails.cnic
           : '',
       type:
-        !loading && profile !== null && profile.myDetails
-          ? profile.myDetails.type
+        !loading && profile !== null && profile.PersonalDetails
+          ? profile.PersonalDetails.type
           : ''
     });
   }, [profile]);

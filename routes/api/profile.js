@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
-const auht = require('../../middleware/auth');
+const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
 // @route  GET /api/profile/me
@@ -65,7 +65,7 @@ router.get('/coordinator', auth, async (req, res) => {
 // @desc   Add/Update users personal details
 // @access Private
 router.put(
-  '/my-details',
+  '/personal-details',
   [
     auth,
     check('name', 'Name is required')
@@ -83,8 +83,8 @@ router.put(
     check('description', 'Description is required')
       .not()
       .isEmpty(),
-    check('cnic', 'CNIC is required').isLength({ max: 13 }),
-    check('type', 'Type is required').isInt()
+    check('cnic', 'CNIC is required').isLength({ min: 1, max: 13 }),
+    check('type', 'Type of user is required').isInt()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -102,22 +102,32 @@ router.put(
       type
     } = req.body;
 
-    let myDetails = {};
+    let personalDetails = {};
 
-    myDetails.name = name;
-    myDetails.email = email;
-    // myDetails.address = address;
-    myDetails.dateOfBirth = dateOfBirth;
-    myDetails.description = description;
-    myDetails.cnic = cnic;
-    myDetails.type = type;
+    personalDetails.name = name;
+    personalDetails.email = email;
+    // personalDetails.address = address;
+    personalDetails.dateOfBirth = dateOfBirth;
+    personalDetails.description = description;
+    personalDetails.cnic = cnic;
+    personalDetails.type = type;
 
     try {
-      const profile = await Profile.findOneAndUpdate(
-        { user: req.user.id },
-        { $set: { myDetails } },
-        { new: true }
-      );
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: { personalDetails } },
+          { new: true }
+        );
+      } else {
+        profile = new Profile({ personalDetails });
+      }
+
+      if (profile.status < 1) {
+        profile.status = 1;
+      }
 
       await profile.save();
       res.json(profile);
@@ -164,22 +174,32 @@ router.put(
       description
     } = req.body;
 
-    let profileFields = {};
+    let experienceDetails = {};
 
-    profileFields.title = title;
-    profileFields.company = company;
-    profileFields.location = location;
-    profileFields.from = from;
-    profileFields.to = to;
-    profileFields.current = current;
-    profileFields.description = description;
+    experienceDetails.title = title;
+    experienceDetails.company = company;
+    experienceDetails.location = location;
+    experienceDetails.from = from;
+    experienceDetails.to = to;
+    experienceDetails.current = current;
+    experienceDetails.description = description;
 
     try {
-      const profile = await Profile.findByIdAndUpdate(
-        { user: req.user.id },
-        { $set: { profileFields } },
-        { new: true }
-      );
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: { profileFields } },
+          { new: true }
+        );
+      } else {
+        profile = new Profile({ experienceDetails });
+      }
+
+      if (profile.status < 2) {
+        profile.status = 2;
+      }
 
       await profile.save();
       res.json(profile);
@@ -249,6 +269,10 @@ router.put(
         { $set: { profileFields } },
         { new: true }
       );
+
+      if (profile.status < 3) {
+        profile.status = 3;
+      }
 
       await profile.save();
       res.json(profile);

@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const ProfileSchema = mongoose.Schema({
   user: {
-    type: mongoose.Schema.Type.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
   },
-  myDetails: {
+  personalDetails: {
     name: {
       type: String
     },
@@ -66,7 +66,8 @@ const ProfileSchema = mongoose.Schema({
       type: Date
     },
     current: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     description: {
       type: String

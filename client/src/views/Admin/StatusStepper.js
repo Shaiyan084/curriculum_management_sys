@@ -10,10 +10,10 @@ const StatusStepper = ({ status }) => {
           <StepLabel>Personal Details</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Education Details</StepLabel>
+          <StepLabel>Experience Details</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Experience Details</StepLabel>
+          <StepLabel>Education Details</StepLabel>
         </Step>
       </Stepper>
     </Fragment>

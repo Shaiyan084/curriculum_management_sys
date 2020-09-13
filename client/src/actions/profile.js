@@ -109,7 +109,11 @@ export const updateAdminPersonalDetails = (
     }
   };
   try {
-    const res = await axios.put('/api/profile/my-details', formData, config);
+    const res = await axios.put(
+      '/api/profile/personal-details',
+      formData,
+      config
+    );
 
     dispatch({
       type: UPDATE_ADMIN_PERSONAL_DETAILS,
