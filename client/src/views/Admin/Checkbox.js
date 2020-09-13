@@ -4,34 +4,34 @@ import { green } from '@material-ui/core/colors';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+// import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+// import CheckBoxIcon from '@material-ui/icons/CheckBox';
+// import Favorite from '@material-ui/icons/Favorite';
+// import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
-// const GreenCheckbox = withStyles({
-//   root: {
-//     color: green[400],
-//     '&$checked': {
-//       color: green[600]
-//     }
-//   },
-//   checked: {}
-// })(props => <Checkbox color='default' {...props} />);
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600]
+    }
+  },
+  checked: {}
+})(props => <Checkbox color='default' {...props} />);
 
-// export default function CheckboxLabels() {
-//   const [state, setState] = React.useState({
-//     checkedA: true,
-//     checkedB: true,
-//     checkedF: true,
-//     checkedG: true
-//   });
+export default function CheckboxLabels({ current }) {
+  const [state, setState] = React.useState({
+    checkedA: true,
+    checkedB: true,
+    checkedF: true,
+    checkedG: true,
+    current: false
+  });
 
-//   const handleChange = event => {
-//     setState({ ...state, [event.target.name]: event.target.checked });
-//   };
+  const handleChange = event => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
 
-const Checkbox = ({ current }) => {
   return (
     <FormGroup row>
       {/* <FormControlLabel
@@ -56,7 +56,15 @@ const Checkbox = ({ current }) => {
         label='Primary'
       /> */}
       <FormControlLabel
-        control={<Checkbox name='checkedC' />}
+        control={
+          <Checkbox
+            name='checkedC'
+            checked={state.checkedC}
+            onChange={handleChange}
+            name='checkedC'
+            value={current}
+          />
+        }
         label='Currently Working'
       />
       {/* <FormControlLabel disabled control={<Checkbox name="checkedD" />} label="Disabled" />
@@ -92,6 +100,4 @@ const Checkbox = ({ current }) => {
       /> */}
     </FormGroup>
   );
-};
-
-export default Checkbox;
+}
