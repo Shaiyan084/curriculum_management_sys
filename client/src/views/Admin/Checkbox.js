@@ -9,28 +9,29 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
-const GreenCheckbox = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600]
-    }
-  },
-  checked: {}
-})(props => <Checkbox color='default' {...props} />);
+// const GreenCheckbox = withStyles({
+//   root: {
+//     color: green[400],
+//     '&$checked': {
+//       color: green[600]
+//     }
+//   },
+//   checked: {}
+// })(props => <Checkbox color='default' {...props} />);
 
-export default function CheckboxLabels() {
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedF: true,
-    checkedG: true
-  });
+// export default function CheckboxLabels() {
+//   const [state, setState] = React.useState({
+//     checkedA: true,
+//     checkedB: true,
+//     checkedF: true,
+//     checkedG: true
+//   });
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+//   const handleChange = event => {
+//     setState({ ...state, [event.target.name]: event.target.checked });
+//   };
 
+const Checkbox = ({ current }) => {
   return (
     <FormGroup row>
       {/* <FormControlLabel
@@ -91,4 +92,6 @@ export default function CheckboxLabels() {
       /> */}
     </FormGroup>
   );
-}
+};
+
+export default Checkbox;
