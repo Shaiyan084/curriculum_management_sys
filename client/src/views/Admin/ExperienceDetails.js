@@ -11,8 +11,7 @@ import Card from '../../components/Card/Card';
 import CardHeader from '../../components/Card/CardHeader';
 import CardBody from '../../components/Card/CardBody';
 import StatusStepper from './StatusStepper';
-import Checkbox from './Checkbox';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Checkbox } from '@material-ui/core';
 
 const styles = {
   cardCategoryWhite: {
@@ -51,10 +50,46 @@ const ExperienceDetails = ({
   updateAdminExperienceDetails,
   history,
   loadUser,
-  profile: { loading, profile },
-  auth
+  profile: { loading, profile }
 }) => {
   const classes = useStyles();
+
+  const getCurrentDate = () => {
+    let d = new Date(Date.now());
+    d = new Date(Date.now() + d.getTimezoneOffset() * 60000);
+
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getYear();
+
+    return `${year}-${month < 10 ? '0' : ''}${month}-${
+      date < 10 ? '0' : ''
+    }${date}`;
+  };
+
+  const getToDate = toDate => {
+    let d = new Date(toDate);
+
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getYear();
+
+    return `${year}-${month < 10 ? '0' : ''}${month}-${
+      date < 10 ? '0' : ''
+    }${date}`;
+  };
+
+  const getFromDate = fromDate => {
+    let d = new Date(fromDate);
+
+    const date = d.getDate();
+    const month = d.getMonth() + 1;
+    const year = d.getYear();
+
+    return `${year}-${month < 10 ? '0' : ''}${month}-${
+      date < 10 ? '0' : ''
+    }${date}`;
+  };
 
   const [formData, setFormData] = useState({
     title: '',
@@ -100,12 +135,12 @@ const ExperienceDetails = ({
           : '',
       from:
         !loading && profile !== null && profile.experienceDetails
-          ? profile.experienceDetails.from
-          : '',
+          ? getFromDate(profile.experienceDetails.from)
+          : getCurrentDate(),
       to:
         !loading && profile !== null && profile.experienceDetails
-          ? profile.experienceDetails.to
-          : '',
+          ? getToDate(profile.experienceDetails.to)
+          : getCurrentDate(),
       current:
         !loading && profile !== null && profile.experienceDetails
           ? profile.experienceDetails.current
@@ -116,8 +151,6 @@ const ExperienceDetails = ({
           : ''
     });
   }, [profile]);
-
-  const [toDateDisabled, toggleDisabled] = useState(false);
 
   if (!loading && profile !== null && profile.status < 1) {
     return <Redirect to='/admin/create-profile' />;
@@ -195,53 +228,18 @@ const ExperienceDetails = ({
                     name='to'
                     type='date'
                     value={to}
-                    required={true}
                     onChange={e => onChange(e)}
-                    disabled={toDateDisabled ? 'disabled' : ''}
+                    disabled={current}
                   />
                 </GridItem>
-                {/* <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    className='form-control'
-                    label='From'
-                    variant='outlined'
-                    name='from'
-                    type='text'
-                    value={from}
-                    required={true}
-                    onChange={e => onChange(e)}
-                  />
-                </GridItem> */}
                 <GridItem xs={12} sm={12} md={12}>
-                  {/* <Checkbox
-                    className='form-control'
-                    label='Currently Working'
-                    name='current'
-                    type='checkbox'
-                    value={current}
-                    required={true}
-                    onChange={e => onChange(e)}
-                  /> */}
                   <Checkbox
                     className='form-control'
-                    name='current'
-                    type='checkbox'
-                    value={current}
-                    required={true}
+                    checked={current}
                     onChange={e => {
                       setFormData({ ...formData, current: !current });
-                      toggleDisabled(!toDateDisabled);
                     }}
                   />
-                  {/* <TextField
-                    className='form-control'
-                    label='Currently In Service'
-                    variant='outlined'
-                    name='current'
-                    type='checkbox'
-                    value={current}
-                    required={true}
-                  /> */}
                 </GridItem>
                 &nbsp;
                 <GridItem xs={12} sm={12} md={12}>
@@ -286,7 +284,6 @@ ExperienceDetails.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
   profile: state.profile
 });
 

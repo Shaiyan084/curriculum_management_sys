@@ -12,9 +12,6 @@ const ProfileSchema = mongoose.Schema({
     email: {
       type: String
     },
-    // address: {
-    //   type: String
-    // },
     dateOfBirth: {
       type: Date
     },

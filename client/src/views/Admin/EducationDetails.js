@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { loadUser } from '../../actions/auth';
-import { updateAdminPersonalDetails } from '../../actions/profile';
+import { updateAdminEducationDetails } from '../../actions/profile';
+import { makeStyles } from '@material-ui/core/styles';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
 import Card from '../../components/Card/Card';
 import CardHeader from '../../components/Card/CardHeader';
 import CardBody from '../../components/Card/CardBody';
 import StatusStepper from './StatusStepper';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  Button
-} from '@material-ui/core';
+import { TextField, Button, Checkbox } from '@material-ui/core';
 
 const styles = {
-  cardCategoryWhite: {
+  cardTitleWhite: {
     '&,& a,& a:hover,& a:focus': {
       color: 'rgba(255,255,255,.62)',
       margin: '0',
@@ -33,7 +26,7 @@ const styles = {
       color: '#FFFFFF'
     }
   },
-  cardTitleWhite: {
+  cardCategoryWhite: {
     color: '#FFFFFF',
     fontSize: '1.3rem',
     marginTop: '0px',
@@ -53,11 +46,11 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const PersonalDetails = ({
+const EducationDetails = ({
   loadUser,
-  updateAdminPersonalDetails,
-  history,
-  profile: { profile, loading }
+  updateAdminEducationDetails,
+  profile: { loading, profile },
+  history
 }) => {
   const classes = useStyles();
 
@@ -87,15 +80,28 @@ const PersonalDetails = ({
   };
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    dateOfBirth: '',
-    description: '',
-    cnic: '',
-    type: ''
+    college: '',
+    university: '',
+    degree: '',
+    fieldOfStudy: '',
+    from: '',
+    to: '',
+    current: '',
+    description: ''
   });
 
-  const { name, email, dateOfBirth, description, cnic, type } = formData;
+  const {
+    college,
+    university,
+    degree,
+    fieldOfStudy,
+    from,
+    to,
+    current,
+    description
+  } = formData;
+
+  const [getCurrentUserCalled, setGetCurrentUserCalled] = useState(false);
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -103,10 +109,8 @@ const PersonalDetails = ({
 
   const onSubmit = e => {
     e.preventDefault();
-    updateAdminPersonalDetails(formData, history);
+    updateAdminEducationDetails(formData, history);
   };
-
-  const [getCurrentUserCalled, setGetCurrentUserCalled] = useState(false);
 
   useEffect(() => {
     if (!getCurrentUserCalled) {
@@ -115,41 +119,53 @@ const PersonalDetails = ({
     }
 
     setFormData({
-      name:
-        !loading && profile !== null && profile.personalDetails
-          ? profile.personalDetails.name
+      college:
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.college
           : '',
-      email:
-        !loading && profile !== null && profile.personalDetails
-          ? profile.personalDetails.email
+      university:
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.university
           : '',
-      dateOfBirth:
-        !loading && profile !== null && profile.personalDetails
-          ? getFormattedDate(profile.personalDetails.dateOfBirth)
+      degree:
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.degree
+          : '',
+      fieldOfStudy:
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.fieldOfStudy
+          : '',
+      from:
+        !loading && profile !== null && profile.educationDetails
+          ? getFormattedDate(profile.educationDetails.from)
           : getCurrentDate(),
+      to:
+        !loading && profile !== null && profile.educationDetails
+          ? getFormattedDate(profile.educationDetails.to)
+          : getCurrentDate(),
+      current:
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.current
+          : '',
       description:
-        !loading && profile !== null && profile.personalDetails
-          ? profile.personalDetails.description
-          : '',
-      cnic:
-        !loading && profile !== null && profile.personalDetails
-          ? profile.personalDetails.cnic
-          : '',
-      type:
-        !loading && profile !== null && profile.personalDetails
-          ? profile.personalDetails.type
+        !loading && profile !== null && profile.educationDetails
+          ? profile.educationDetails.description
           : ''
     });
   }, [profile]);
+
+  if (!loading && profile !== null && profile.status < 2) {
+    return <Redirect to='/admin/education-details' />;
+  }
 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color='primary'>
-            <h1 className={classes.cardTitleWhite}>Personal Details</h1>
+          <CardHeader>
+            <h1 className={classes.cardTitleWhite}>Education Details</h1>
             <p className={classes.cardCategoryWhite}>
-              Fill in the information below update your personal details
+              Fill in the information below update your education details
             </p>
           </CardHeader>
           <CardBody>
@@ -161,11 +177,11 @@ const PersonalDetails = ({
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
-                    label='Name'
+                    label='College'
                     variant='outlined'
-                    name='name'
+                    name='college'
                     type='text'
-                    value={name}
+                    value={college}
                     onChange={e => onChange(e)}
                     required={true}
                   />
@@ -173,63 +189,78 @@ const PersonalDetails = ({
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
-                    label='Email'
+                    label='University'
                     variant='outlined'
+                    name='university'
                     type='text'
-                    name='email'
-                    value={email}
+                    value={university}
                     onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
-                    label='Date of Birth'
+                    label='Degree'
                     variant='outlined'
+                    name='degree'
+                    type='text'
+                    value={degree}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='Field of Study'
+                    variant='outlined'
+                    name='fieldOfStudy'
+                    type='text'
+                    value={fieldOfStudy}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    className='form-control'
+                    label='From'
+                    variant='outlined'
+                    name='from'
                     type='date'
-                    name='dateOfBirth'
-                    value={dateOfBirth}
+                    value={from}
                     onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className='form-control' variant='outlined'>
-                    <InputLabel id='type-label'>Status</InputLabel>
-                    <Select
-                      labelId='type-label'
-                      label='Status'
-                      name='type'
-                      value={type}
-                      onChange={e => onChange(e)}
-                    >
-                      <MenuItem value=''>
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={0}>Admin</MenuItem>
-                      <MenuItem value={1}>Coordintor</MenuItem>
-                      <MenuItem value={2}>Faculty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
-                    label='CNIC (Please enter a 13 digit CNIC number: xxxxx-xxxxxxx-x)'
+                    label='To'
                     variant='outlined'
-                    type='number'
-                    name='cnic'
-                    value={cnic}
-                    onChange={e => onChange(e)}
+                    name='to'
+                    type='date'
+                    value={to}
                     required={true}
+                    onChange={e => onChange(e)}
+                    disabled={current}
                   />
                 </GridItem>
-
+                <GridItem>
+                  <Checkbox
+                    className='form-control'
+                    checked={current}
+                    onChange={e => {
+                      setFormData({ ...formData, current: !current });
+                    }}
+                  />
+                </GridItem>
+                &nbsp;
                 <GridItem xs={12} sm={12} md={12}>
                   <TextField
                     className='form-control'
-                    label='Personal Info (Note this info will be shown on your profile)'
+                    label='Give a brief description about your major in last education (let it be your university).'
                     rows={5}
                     multiline
                     type='text'
@@ -259,11 +290,11 @@ const PersonalDetails = ({
   );
 };
 
-PersonalDetails.propTypes = {
+EducationDetails.propTypes = {
   loadUser: PropTypes.func.isRequired,
-  updateAdminPersonalDetails: PropTypes.func.isRequired,
+  updateAdminEducationDetails: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 
@@ -273,5 +304,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   loadUser,
-  updateAdminPersonalDetails
-})(withRouter(PersonalDetails));
+  updateAdminEducationDetails
+})(withRouter(EducationDetails));

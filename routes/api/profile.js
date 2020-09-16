@@ -190,7 +190,7 @@ router.put(
       if (profile) {
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
-          { $set: { profileFields } },
+          { $set: { experienceDetails } },
           { new: true }
         );
       } else {
@@ -253,22 +253,28 @@ router.put(
       description
     } = req.body;
 
-    let profileFields = {};
+    let educationDetails = {};
 
-    profileFields.college = college;
-    profileFields.university = university;
-    profileFields.degree = degree;
-    profileFields.fieldOfStudy = fieldOfStudy;
-    profileFields.from = from;
-    profileFields.to = to;
-    profileFields.current = current;
-    profileFields.description = description;
+    educationDetails.college = college;
+    educationDetails.university = university;
+    educationDetails.degree = degree;
+    educationDetails.fieldOfStudy = fieldOfStudy;
+    educationDetails.from = from;
+    educationDetails.to = to;
+    educationDetails.current = current;
+    educationDetails.description = description;
     try {
-      const profile = await Profile.findByIdAndUpdate(
-        { user: req.user.id },
-        { $set: { profileFields } },
-        { new: true }
-      );
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        profile = await Profile.findByIdAndUpdate(
+          { user: req.user.id },
+          { $set: { educationDetails } },
+          { new: true }
+        );
+      } else {
+        profile = new Profile({ educationDetails });
+      }
 
       if (profile.status < 3) {
         profile.status = 3;

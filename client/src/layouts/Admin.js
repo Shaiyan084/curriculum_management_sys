@@ -16,6 +16,7 @@ import UpdateProgram from '../views/Admin/UpdateProgram';
 import CreateCoordinator from '../views/Admin/CreateCoordinator';
 import PersonalDetails from '../views/Admin/PersonalDetails';
 import ExperienceDetails from '../views/Admin/ExperienceDetails';
+import EducationDetails from '../views/Admin/EducationDetails';
 
 import routes from '../routes/Admin';
 
@@ -54,6 +55,7 @@ const switchRoutes = (
     <Route path='/admin/add-coordinator' component={CreateCoordinator} />
     <Route path='/admin/create-profile' component={PersonalDetails} />
     <Route path='/admin/experience-details' component={ExperienceDetails} />
+    <Route path='/admin/education-details' component={EducationDetails} />
     {/* <Redirect from='/admin' to='/admin/dashboard' /> */}
   </Switch>
 );
