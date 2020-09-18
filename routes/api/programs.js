@@ -366,25 +366,38 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route  PUT /api/programs/status/:id
-// @desc   Change program status
+// @route  PUT /api/programs/enable/:id
+// @desc   Enable the program by id
 // @access Private
 router.put(
-  '/status/:id',
+  '/enable/:id',
   [auth, check('status', 'Status is required').isBoolean()],
   async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { status } = req.body;
-
     try {
       const program = await Programme.findById(req.params.id);
 
-      program.status = status;
+      program.status = true;
+
+      await program.save();
+      res.json(program);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route  PUT /api/programs/disable/:id
+// @desc   Disable the program by id
+// @access Private
+router.put(
+  '/disable/:id',
+  [auth, check('status', 'Status is required').isBoolean()],
+  async (req, res) => {
+    try {
+      const program = await Programme.findById(req.params.id);
+
+      program.status = false;
 
       await program.save();
       res.json(program);

@@ -2,9 +2,15 @@ import {
   ALL_UNDERGRADUATE_PROGRAMS_LOADED,
   UNDERGRADUATE_PROGRAM_CREATED,
   UNDERGRADUATE_PROGRAM_UPDATED,
+  UNDERGRADUATE_PROGRAM_ENABLED,
+  UNDERGRADUATE_PROGRAM_DISABLED,
+  SET_UNDERGRADUATE_PROGRAM_LOADING,
   ALL_GRADUATE_PROGRAMS_LOADED,
   GRADUATE_PROGRAM_CREATED,
   GRADUATE_PROGRAM_UPDATED,
+  GRADUATE_PROGRAM_ENABLED,
+  GRADUATE_PROGRAM_DISABLED,
+  SET_GRADUATE_PROGRAM_LOADING,
   PROGRAM_ERROR,
   PROGRAM_LOADED,
   REMOVE_PROGRAM
@@ -198,4 +204,94 @@ export const removeProgram = (id, history) => async dispatch => {
     } catch (err) {
       dispatch(setAlert('Error occured whilst removing program', 'danger'));
     }
+};
+
+// Enable an graduate program by id
+export const enableUndergraduateProgram = id => async dispatch => {
+  dispatch({
+    type: SET_UNDERGRADUATE_PROGRAM_LOADING
+  });
+  try {
+    const res = await axios.put(`/api/programs/enable/${id}`);
+
+    dispatch({
+      type: UNDERGRADUATE_PROGRAM_ENABLED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Undergraudate program enabled successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: PROGRAM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Disable an undergraduate program by id
+export const disableUndergraduateProgram = id => async dispatch => {
+  dispatch({
+    type: SET_UNDERGRADUATE_PROGRAM_LOADING
+  });
+  try {
+    const res = await axios.put(`/api/programs/disable/${id}`);
+
+    dispatch({
+      type: UNDERGRADUATE_PROGRAM_DISABLED,
+      payload: res.data
+    });
+
+    dispatch(
+      setAlert('Undergraduate program disabled successfully', 'success')
+    );
+  } catch (err) {
+    dispatch({
+      type: PROGRAM_ERROR,
+      payload: { msg: err.resposne.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Enable a graduate program by id
+export const enableGraduateProgram = id => async dispatch => {
+  dispatch({
+    type: SET_GRADUATE_PROGRAM_LOADING
+  });
+  try {
+    const res = await axios.put(`/api/programs/enable/${id}`);
+
+    dispatch({
+      type: GRADUATE_PROGRAM_ENABLED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Graduate program enabled successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: PROGRAM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Disable a graduate program by id
+export const disableGraduateProgram = id => async dispatch => {
+  dispatch({
+    type: SET_GRADUATE_PROGRAM_LOADING
+  });
+  try {
+    const res = await axios.put(`/api/programs/disable/${id}`);
+
+    dispatch({
+      type: GRADUATE_PROGRAM_DISABLED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Graduate program disabled successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: PROGRAM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
 };

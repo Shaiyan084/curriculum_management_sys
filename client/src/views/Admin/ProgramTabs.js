@@ -12,6 +12,10 @@ import { connect } from 'react-redux';
 import {
   getAllUndergraduatePrograms,
   getAllGraduatePrograms,
+  enableUndergraduateProgram,
+  disableUndergraduateProgram,
+  enableGraduateProgram,
+  disableGraduateProgram,
   removeProgram
 } from '../../actions/program';
 import { Link } from 'react-router-dom';
@@ -58,6 +62,10 @@ const useStyles = makeStyles(theme => ({
 
 const ProgramTabs = ({
   getAllUndergraduatePrograms,
+  enableUndergraduateProgram,
+  disableUndergraduateProgram,
+  enableGraduateProgram,
+  disableGraduateProgram,
   getAllGraduatePrograms,
   removeProgram,
   program: { loading, undergraduatePrograms, graduatePrograms }
@@ -94,12 +102,23 @@ const ProgramTabs = ({
                 Update
               </Button>
             </Link>
-            <Button
-              variant='contained'
-              className='margin-left-right margin-top-bottom button-function'
-            >
-              Enable
-            </Button>
+            {program.status ? (
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-function'
+                onClick={() => disableUndergraduateProgram(program._id)}
+              >
+                Disable
+              </Button>
+            ) : (
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-function'
+                onClick={() => enableUndergraduateProgram(program._id)}
+              >
+                Enable
+              </Button>
+            )}
             <Button
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
@@ -145,12 +164,23 @@ const ProgramTabs = ({
                 Update
               </Button>
             </Link>
-            <Button
-              variant='contained'
-              className='margin-left-right margin-top-bottom button-function'
-            >
-              Enable
-            </Button>
+            {program.status ? (
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-function'
+                onClick={() => enableGraduateProgram(program._id)}
+              >
+                Enable
+              </Button>
+            ) : (
+              <Button
+                variant='contained'
+                className='margin-left-right margin-top-bottom button-function'
+                onClick={() => disableGraduateProgram(program._id)}
+              >
+                Disable
+              </Button>
+            )}
             <Button
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
@@ -279,6 +309,10 @@ const ProgramTabs = ({
 ProgramTabs.propTypes = {
   getAllUndergraduatePrograms: PropTypes.func.isRequired,
   getAllGraduatePrograms: PropTypes.func.isRequired,
+  enableUndergraduateProgram: PropTypes.func.isRequired,
+  disableUndergraduateProgram: PropTypes.func.isRequired,
+  enableGraduateProgram: PropTypes.func.isRequired,
+  disableGraduateProgram: PropTypes.func.isRequired,
   removeProgram: PropTypes.func.isRequired,
   program: PropTypes.object.isRequired
 };
@@ -290,5 +324,9 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getAllUndergraduatePrograms,
   getAllGraduatePrograms,
+  enableUndergraduateProgram,
+  disableUndergraduateProgram,
+  enableGraduateProgram,
+  disableGraduateProgram,
   removeProgram
 })(ProgramTabs);

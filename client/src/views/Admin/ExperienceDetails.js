@@ -232,7 +232,7 @@ const ExperienceDetails = ({
                     disabled={current}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                   <Checkbox
                     className='form-control'
                     checked={current}

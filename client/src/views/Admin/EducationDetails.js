@@ -242,12 +242,11 @@ const EducationDetails = ({
                     name='to'
                     type='date'
                     value={to}
-                    required={true}
                     onChange={e => onChange(e)}
                     disabled={current}
                   />
                 </GridItem>
-                <GridItem>
+                <GridItem xs={12} sm={12} md={6}>
                   <Checkbox
                     className='form-control'
                     checked={current}
