@@ -102,6 +102,7 @@ const UndergraduateProgramList = ({
       ];
       i++;
     });
+    return res;
   };
 
   const [
