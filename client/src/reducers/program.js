@@ -69,7 +69,7 @@ export default function(state = initialState, action) {
         undergraduatePrograms: [
           ...state.undergraduatePrograms.map(undergraduateProgram => {
             if (undergraduateProgram._id === payload._id) {
-              undergraduateProgram.enabled = payload.enabled;
+              undergraduateProgram.status = payload.status;
             }
             return undergraduateProgram;
           })
@@ -83,7 +83,7 @@ export default function(state = initialState, action) {
         undergraduatePrograms: [
           ...state.undergraduatePrograms.map(undergraduateProgram => {
             if (undergraduateProgram._id === payload._id) {
-              undergraduateProgram.disabled = payload.disabled;
+              undergraduateProgram.status = payload.status;
             }
             return undergraduateProgram;
           })

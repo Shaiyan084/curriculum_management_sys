@@ -8,10 +8,8 @@ import Footer from '../components/Footer/Footer.js';
 import Sidebar from '../components/Sidebar/Admin';
 import Alert from '../components/Alert/Alert';
 
-import CreateDepartment from '../views/Admin/CreateDepartment';
-import UpdateDepartment from '../views/Admin/UpdateDepartment';
-import CreateUndergraduateProgram from '../views/Admin/CreateUndergraduateProgram';
-import UpdateProgram from '../views/Admin/UpdateProgram';
+import Dashboard from '../views/Applicant/Dashboard';
+import UndergraduateProgramList from '../views/Applicant/UndergraduateProgramList';
 
 import routes from '../routes/Applicant';
 
@@ -40,7 +38,12 @@ const switchRoutes = (
     <Route path='/admin/create-program' component={CreateProgram} />
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />
     <Route path='/admin/update-program/:id' component={UpdateProgram} /> */}
-    <Redirect from='/applicant' to='/applicant/personal-details' />
+    <Route
+      path='/applicant/undergraduate-program-selection-list'
+      component={UndergraduateProgramList}
+    />
+    <Route path='/applicant/dashboard' component={Dashboard} />
+    {/* <Redirect from='/applicant' to='/applicant/personal-details' /> */}
   </Switch>
 );
 
