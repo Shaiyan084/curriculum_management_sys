@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Stepper, Step, StepLabel } from '@material-ui/core';
 
-const StatusStepper = ({ status }) => {
+const UndergraduateStatusStepper = ({ status }) => {
   return (
     <Fragment>
       <Stepper activeStep={status} alternativeLabel>
@@ -20,8 +20,8 @@ const StatusStepper = ({ status }) => {
   );
 };
 
-StatusStepper.propTypes = {
-  status: PropTypes.number.isRequired,
+UndergraduateStatusStepper.propTypes = {
+  status: PropTypes.number.isRequired
 };
 
-export default StatusStepper;
+export default UndergraduateStatusStepper;

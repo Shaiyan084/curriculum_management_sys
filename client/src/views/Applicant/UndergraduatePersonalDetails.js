@@ -10,10 +10,10 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
-import StatusStepper from './StatusStepper';
+import UndergraduateStatusStepper from './UndergraduateStatusStepper';
 import {
   getCurrentApplicant,
-  updatePersonalDetails,
+  updatePersonalDetails
 } from '../../actions/applicant';
 import FormImage from './FormImage';
 
@@ -24,11 +24,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0',
+      marginBottom: '0'
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF',
-    },
+      color: '#FFFFFF'
+    }
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -43,9 +43,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1',
-    },
-  },
+      lineHeight: '1'
+    }
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -54,7 +54,7 @@ const PersonalDetails = ({
   updatePersonalDetails,
   history,
   getCurrentApplicant,
-  applicant: { loading, applicant },
+  applicant: { loading, applicant }
 }) => {
   const classes = useStyles();
 
@@ -71,7 +71,7 @@ const PersonalDetails = ({
     }${date}`;
   };
 
-  const getFormattedDate = (dateToFormat) => {
+  const getFormattedDate = dateToFormat => {
     let d = new Date(dateToFormat);
 
     const date = d.getDate();
@@ -93,7 +93,7 @@ const PersonalDetails = ({
     placeOfBirth: '',
     dateOfBirth: '',
     phoneNumber: '',
-    domicile: '',
+    domicile: ''
   });
 
   const {
@@ -106,23 +106,23 @@ const PersonalDetails = ({
     placeOfBirth,
     dateOfBirth,
     phoneNumber,
-    domicile,
+    domicile
   } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onChangeImage = (e) => {
+  const onChangeImage = e => {
     const name = e.target.name;
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       setFormData({ ...formData, [name]: e.target.result });
     };
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     updatePersonalDetails(formData, history);
   };
@@ -177,7 +177,7 @@ const PersonalDetails = ({
       domicile:
         !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.domicile
-          : '',
+          : ''
     });
   }, [applicant]);
 
@@ -192,10 +192,10 @@ const PersonalDetails = ({
             </p>
           </CardHeader>
           <CardBody>
-            <StatusStepper
+            <UndergraduateStatusStepper
               status={!loading && applicant !== null ? applicant.status : 0}
             />
-            <form onSubmit={(e) => onSubmit(e)}>
+            <form onSubmit={e => onSubmit(e)}>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
@@ -205,7 +205,7 @@ const PersonalDetails = ({
                     type='text'
                     name='name'
                     value={name}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -217,7 +217,7 @@ const PersonalDetails = ({
                     type='text'
                     name='fatherName'
                     value={fatherName}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -229,7 +229,7 @@ const PersonalDetails = ({
                     type='text'
                     name='cnicNumber'
                     value={cnicNumber}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -242,7 +242,7 @@ const PersonalDetails = ({
                       id='frontPicture'
                       type='file'
                       name='cnicFrontPicture'
-                      onChange={(e) => onChangeImage(e)}
+                      onChange={e => onChangeImage(e)}
                     />
                   </div>
                 </GridItem>
@@ -261,7 +261,7 @@ const PersonalDetails = ({
                       id='backPicture'
                       type='file'
                       name='cnicBackPicture'
-                      onChange={(e) => onChangeImage(e)}
+                      onChange={e => onChangeImage(e)}
                     />
                   </div>
                 </GridItem>
@@ -279,7 +279,7 @@ const PersonalDetails = ({
                     type='text'
                     name='address'
                     value={address}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -291,7 +291,7 @@ const PersonalDetails = ({
                     type='text'
                     name='phoneNumber'
                     value={phoneNumber}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -303,7 +303,7 @@ const PersonalDetails = ({
                     type='date'
                     name='dateOfBirth'
                     value={dateOfBirth}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -315,7 +315,7 @@ const PersonalDetails = ({
                     type='text'
                     name='placeOfBirth'
                     value={placeOfBirth}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -327,7 +327,7 @@ const PersonalDetails = ({
                     type='text'
                     name='domicile'
                     value={domicile}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -354,14 +354,14 @@ PersonalDetails.propTypes = {
   updatePersonalDetails: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   getCurrentApplicant: PropTypes.func.isRequired,
-  applicant: PropTypes.object.isRequired,
+  applicant: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  applicant: state.applicant,
+const mapStateToProps = state => ({
+  applicant: state.applicant
 });
 
 export default connect(mapStateToProps, {
   updatePersonalDetails,
-  getCurrentApplicant,
+  getCurrentApplicant
 })(withRouter(PersonalDetails));

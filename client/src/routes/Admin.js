@@ -11,6 +11,7 @@ import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
 import ManagePrograms from '../views/Admin/ManagePrograms';
 import ManageCoordinators from '../views/Admin/ManageCoordinators';
+import ManageApplicant from '../views/Admin/ManageApplicant';
 
 const routes = [
   {
@@ -49,10 +50,10 @@ const routes = [
     layout: '/admin'
   },
   {
-    path: '/dashboard',
+    path: '/manage-applicants',
     name: 'Manage Applicants',
     icon: AssignmentIndRoundedIcon,
-    component: Dashboard,
+    component: ManageApplicant,
     layout: '/admin'
   },
   {

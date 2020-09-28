@@ -129,116 +129,122 @@ const Dashboard = ({
 
     setPersonalDetails({
       name:
-        !loading && applicant !== null ? applicant.personalDetails.name : '',
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.name
+          : '',
       fatherName:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.fatherName
           : '',
       cnicNumber:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.cnic.number
           : '',
       cnicFrontPicture:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.cnic.frontPicture
           : '',
       cnicBackPicture:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.cnic.backPicture
           : '',
       address:
-        !loading && applicant !== null ? applicant.personalDetails.address : '',
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.address
+          : '',
       placeOfBirth:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.placeOfBirth
           : '',
       dateOfBirth:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.dateOfBirth
           : '',
       phoneNumber:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.phoneNumber
           : '',
       domicile:
-        !loading && applicant !== null ? applicant.personalDetails.domicile : ''
+        !loading && applicant !== null && applicant.personalDetails
+          ? applicant.personalDetails.domicile
+          : ''
     });
 
     setIncomeDetails({
       monthlyIncome:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.incomeDetails
           ? applicant.incomeDetails.monthlyIncome
           : '',
       minimumYearlyIncome:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.incomeDetails
           ? applicant.incomeDetails.minimumYearlyIncome
           : ''
     });
 
     setEducationDetails({
       secondaryEducationType:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.type
           : '',
       secondaryEducationInstitute:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.institute
           : '',
       secondaryEducationFieldOfStudy:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.fieldOfStudy
           : '',
       secondaryEducationFrom:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.from
           : '',
       secondaryEducationTo:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.to
           : '',
       secondaryEducationObtainedMarks:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.obtainedMarks
           : '',
       secondaryEducationTotalMarks:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.totalMarks
           : '',
       secondaryEducationPicture:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.secondaryEducationDetails.picture
           : '',
       intermediateEducationType:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.type
           : '',
       intermediateEducationInstitute:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.institute
           : '',
       intermediateEducationFieldOfStudy:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.fieldOfStudy
           : '',
       intermediateEducationFrom:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.from
           : '',
       intermediateEducationTo:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.to
           : '',
       intermediateEducationObtainedMarks:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails
               .obtainedMarks
           : '',
       intermediateEducationTotalMarks:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.totalMarks
           : '',
       intermediateEducationPicture:
-        !loading && applicant !== null
+        !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.picture
           : ''
       // bachelorEducationInstitute:
@@ -271,6 +277,22 @@ const Dashboard = ({
       <GridItem xs={12} md={12} sm={12}>
         <Card>
           <CardHeader color='primary'>
+            <h1 className={classes.cardTitleWhite}>Notifications</h1>
+            <p className={classes.cardCategoryWhite}>
+              Latest announcements and updates by admin will be posted here.
+            </p>
+          </CardHeader>
+          &nbsp;
+          <CardBody>
+            <GridContainer>
+              <GridItem></GridItem>
+            </GridContainer>
+          </CardBody>
+        </Card>
+        <Divider variant='middle' />
+        &nbsp;
+        <Card>
+          <CardHeader color='primary'>
             <h1 className={classes.cardTitleWhite}>Apply For</h1>
             <p className={classes.cardCategoryWhite}>
               Here you can choose to apply for undergraduate or graduate program
@@ -293,7 +315,11 @@ const Dashboard = ({
                 &nbsp;
                 <GridItem>
                   <Link
-                    to={'/applicant/undergraduate-program-selection-list'}
+                    to={
+                      applicant && applicant.applicantForwarded
+                        ? '#'
+                        : '/applicant/undergraduate-program-selection-list'
+                    }
                     className='text-decoration-none'
                   >
                     <Button
@@ -301,6 +327,7 @@ const Dashboard = ({
                       variant='contained'
                       type='submit'
                       size='large'
+                      disabled={applicant && applicant.applicantForwarded}
                     >
                       Apply For Undergraduate Program
                     </Button>
@@ -322,14 +349,19 @@ const Dashboard = ({
                 &nbsp;
                 <GridItem>
                   <Link
-                    to={'/applicant/graduate-program-selection-list'}
                     className='text-decoration-none'
+                    to={
+                      applicant && applicant.applicantForwarded
+                        ? '#'
+                        : '/applicant/graduate-program-selection-list'
+                    }
                   >
                     <Button
                       color='primary'
                       variant='contained'
                       type='submit'
                       size='large'
+                      disabled={applicant && applicant.applicantForwarded}
                     >
                       Apply For Graduate Program
                     </Button>

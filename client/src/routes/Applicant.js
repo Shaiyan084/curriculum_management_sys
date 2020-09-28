@@ -1,9 +1,13 @@
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 import Dashboard from '../views/Applicant/Dashboard';
-import PersonalDetails from '../views/Applicant/PersonalDetails';
-import IncomeDetails from '../views/Applicant/IncomeDetails';
-import EducationDetails from '../views/Applicant/EducationDetails';
+import UndergraduatePersonalDetails from '../views/Applicant/UndergraduatePersonalDetails';
+import UndergraduateIncomeDetails from '../views/Applicant/UndergraduateIncomeDetails';
+import UndergraduateEducationDetails from '../views/Applicant/UndergraduateEducationDetails';
 import Settings from '../views/Applicant/Settings';
 
 const routes = [
@@ -16,30 +20,30 @@ const routes = [
   },
   {
     path: '/personal-details',
-    name: 'Personal Details',
-    icon: DashboardIcon,
-    component: PersonalDetails,
+    name: 'Update Personal Details',
+    icon: PersonOutlineIcon,
+    component: UndergraduatePersonalDetails,
     layout: '/applicant'
   },
   {
     path: '/income-details',
-    name: 'Income Details',
-    icon: DashboardIcon,
-    component: IncomeDetails,
+    name: 'Update Income Details',
+    icon: AttachMoneyIcon,
+    component: UndergraduateIncomeDetails,
     layout: '/applicant'
   },
   {
     path: '/education-details',
-    name: 'Education Details',
-    icon: DashboardIcon,
-    component: EducationDetails,
+    name: 'Update Education Details',
+    icon: MenuBookIcon,
+    component: UndergraduateEducationDetails,
     layout: '/applicant'
   },
 
   {
     path: '/settings',
     name: 'Settings',
-    icon: DashboardIcon,
+    icon: SettingsIcon,
     component: Dashboard,
     layout: '/applicant'
   }

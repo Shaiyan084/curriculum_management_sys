@@ -504,19 +504,20 @@ router.put('/verify:id', auth, async (req, res) => {
 // @route  PUT /api/forwarded/:id
 // @desc   Forward the applications that match the criteria to the department
 // @access Private
-router.put('/forwarded/:id', auth, async (req, res) => {
+router.put('/forwarded', auth, async (req, res) => {
   try {
-    const applicant = await Applicant.findById(req.params.id);
+    const applicant = await Applicant.findOne({ user: req.user.id });
+    // console.log('Applicant: ', applicant);
 
-    if (applicant.applicantVerified === false) {
-      return res.send(400).json({ msg: 'Applicant has not been verified yet' });
-    }
+    // if (applicant.applicantVerified === false) {
+    //   return res.send(400).json({ msg: 'Applicant has not been verified yet' });
+    // }
 
-    applicant.applicantVerified = true;
-    applicant.applicantFowaraded = true;
+    // applicant.applicantVerified = true;
+    applicant.applicantForwarded = true;
 
     await applicant.save();
-    res.json(applicant, {
+    res.json({
       msg: 'Your application has been forwarded to the department'
     });
   } catch (err) {

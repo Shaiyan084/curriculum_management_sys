@@ -8,7 +8,7 @@ const app = express();
 connectDB();
 
 //Initialze Middleware
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '20mb' }));
 
 app.get('/', (req, res) => res.send('API Running'));
 

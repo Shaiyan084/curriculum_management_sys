@@ -1,9 +1,16 @@
 import {
   APPLICANT_LOADED,
   APPLICANT_ERROR,
+  APPLICANT_PROGRAM_APPLIED,
+  APPLICANT_PROGRAM_REMOVED,
+  APPLICANT_FORWARDED,
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
-  UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED
+  UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+  GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
+  GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
+  GRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+  GRADUATE_APPLICANT_NTS_MARKS_UPDATED
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -25,7 +32,7 @@ export const getCurrentApplicant = () => async dispatch => {
   }
 };
 
-// Update applicant personal details
+// Update undergraduate applicant personal details
 export const updatePersonalDetails = (formData, history) => async dispatch => {
   const config = {
     headers: {
@@ -56,7 +63,7 @@ export const updatePersonalDetails = (formData, history) => async dispatch => {
   }
 };
 
-// Update applicant income details
+// Update undergraduate applicant income details
 export const updateIncomeDetails = (formData, history) => async dispatch => {
   const config = {
     headers: {
@@ -83,12 +90,87 @@ export const updateIncomeDetails = (formData, history) => async dispatch => {
       payload: { msg: err.response.statusText, status: err.response.status }
     });
 
-    dispatch(setAlert('Error occured'));
+    dispatch(setAlert('All fields are required'));
   }
 };
 
-// Update applicant education details
+// Update undergraduate applicant education details
 export const updateEducationDetails = formData => async dispatch => {
+  if (
+    window.confirm(
+      'After submission you will not be able to make any changes, do you want to continue?'
+    )
+  ) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.put(
+        '/api/applicants/education-details',
+        formData,
+        config
+      );
+
+      dispatch({
+        type: UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+        payload: res.data
+      });
+
+      return true;
+    } catch (err) {
+      dispatch({
+        type: APPLICANT_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+
+      dispatch(setAlert('All fields are required'));
+    }
+  }
+
+  return false;
+};
+
+// Update graduate applicant personal details
+export const updateGraduatePersonalDetails = (
+  formData,
+  history
+) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  try {
+    const res = await axios.put(
+      '/api/applicants/personal-details',
+      formData,
+      config
+    );
+
+    dispatch({
+      type: GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
+      payload: res.data
+    });
+
+    history.push('/applicant/income-details');
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+
+    dispatch(setAlert('All fields are required'));
+  }
+};
+
+// Update graduate applicant income details
+export const updateGraduateIncomeDetails = (
+  formData,
+  history
+) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -97,13 +179,73 @@ export const updateEducationDetails = formData => async dispatch => {
 
   try {
     const res = await axios.put(
+      '/api/applicants/income-details',
+      formData,
+      config
+    );
+
+    dispatch({
+      type: GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
+      payload: res.data
+    });
+
+    history.push('/applicant/education-details');
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+    dispatch(setAlert('All fields are required'));
+  }
+};
+
+// Update graduate applicant education details
+export const updateGraduateEducationDetails = (
+  formData,
+  history
+) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  try {
+    const res = await axios.put(
       '/api/applicants/education-details',
       formData,
       config
     );
 
     dispatch({
-      type: UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+      type: GRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+      payload: res.data
+    });
+
+    history.push('/applicant/nts-details');
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+    dispatch(setAlert('All fields are required'));
+  }
+};
+
+// Update graduate applicant nts marks details
+export const updateGraduateNTSDetails = (
+  formData,
+  history
+) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  try {
+    const res = await axios.put('/api/applicants/ntsMarks', formData, config);
+
+    dispatch({
+      type: GRADUATE_APPLICANT_NTS_MARKS_UPDATED,
       payload: res.data
     });
   } catch (err) {
@@ -111,7 +253,58 @@ export const updateEducationDetails = formData => async dispatch => {
       type: APPLICANT_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
-
     dispatch(setAlert('All fields are required'));
+  }
+};
+
+// Apply for program
+export const applyProgram = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/applicants/apply/${id}`);
+
+    dispatch({
+      type: APPLICANT_PROGRAM_APPLIED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Remove for program
+export const removeProgram = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/applicants/remove/${id}`);
+
+    dispatch({
+      type: APPLICANT_PROGRAM_REMOVED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Applicant forwarded
+export const applicantForwarded = () => async dispatch => {
+  try {
+    await axios.put('/api/applicants/forwarded');
+
+    dispatch({
+      type: APPLICANT_FORWARDED
+    });
+
+    dispatch(setAlert('Application has been forwaded'));
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
   }
 };

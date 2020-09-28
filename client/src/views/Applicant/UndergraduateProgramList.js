@@ -2,9 +2,13 @@ import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { withRouter, Link, Redirect } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { getAllUndergraduatePrograms } from '../../actions/program';
-import { getCurrentApplicant } from '../../actions/applicant';
+import {
+  getCurrentApplicant,
+  applyProgram,
+  removeProgram
+} from '../../actions/applicant';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
 import Card from '../../components/Card/Card';
@@ -69,10 +73,12 @@ const useStyles = makeStyles(styles);
 
 const UndergraduateProgramList = ({
   getCurrentApplicant,
+  applyProgram,
+  removeProgram,
   getAllUndergraduatePrograms,
   history,
   applicant: { loading, applicant },
-  program: { undergraduatePrograms },
+  program: { loading: undergraduateProgramsLoading, undergraduatePrograms },
   auth
 }) => {
   const classes = useStyles(styles);
@@ -86,24 +92,52 @@ const UndergraduateProgramList = ({
     let i = 1;
 
     undergraduateProgramsList.forEach(program => {
-      res = [
-        ...res,
-        ,
-        [
-          `${i}`,
-          program.name,
-          program.department.name,
-          program.description,
-          program.duration.yearly,
-          <Fragment>
-            <Checkbox />
-          </Fragment>
-        ]
-      ];
-      i++;
+      if (program.status) {
+        res = [
+          ...res,
+          [
+            `${i}`,
+            program.name,
+            program.department.name,
+            program.criteria.minPercentageOfEquivalence,
+            program.duration.yearly,
+            <Fragment>
+              <Checkbox
+                checked={
+                  applicant &&
+                  applicant.appliedPrograms
+                    .map(program => program.programme)
+                    .indexOf(program._id) !== -1
+                  // ? true
+                  // : false
+                }
+                onChange={() =>
+                  applicant.appliedPrograms
+                    .map(program => program.programme)
+                    .indexOf(program._id) !== -1
+                    ? removeProgram(program._id)
+                    : applyProgram(program._id)
+                }
+              />
+            </Fragment>
+          ]
+        ];
+        i++;
+      }
     });
     return res;
   };
+
+  const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
+    false
+  );
+
+  useEffect(() => {
+    if (!getCurrentApplicantCalled) {
+      getCurrentApplicant();
+      setGetCurrentApplicantCalled(true);
+    }
+  }, []);
 
   const [
     getAllUndergraduateProgramsCalled,
@@ -117,7 +151,9 @@ const UndergraduateProgramList = ({
     }
 
     setUndergraduateProgramsList(
-      !loading && undergraduatePrograms.length > 0 ? undergraduatePrograms : []
+      !undergraduateProgramsLoading && undergraduatePrograms.length > 0
+        ? undergraduatePrograms
+        : []
     );
   }, [undergraduatePrograms]);
 
@@ -141,7 +177,7 @@ const UndergraduateProgramList = ({
                   'S.No',
                   'Name',
                   'Department',
-                  'Description',
+                  'Minimum Percentage Required',
                   'Duration (years)',
                   'Select'
                 ]}
@@ -150,6 +186,36 @@ const UndergraduateProgramList = ({
             ) : (
               <div className='text-center imp-message'>No programs found</div>
             )}
+            &nbsp;
+            <GridItem xs={12} sm={12} md={12}>
+              <Link
+                to='/applicant/personal-details'
+                className='text-decoration-none'
+              >
+                <Button
+                  color='secondary'
+                  variant='contained'
+                  type='submit'
+                  size='large'
+                >
+                  Next
+                </Button>
+              </Link>
+              &nbsp;
+              <Link
+                to={'/applicant/dashboard'}
+                className='text-decoration-none'
+              >
+                <Button
+                  color='primary'
+                  variant='contained'
+                  type='submit'
+                  size='large'
+                >
+                  Back
+                </Button>
+              </Link>
+            </GridItem>
           </CardBody>
         </Card>
       </GridItem>
@@ -159,6 +225,8 @@ const UndergraduateProgramList = ({
 
 UndergraduateProgramList.propTypes = {
   getCurrentApplicant: PropTypes.func.isRequired,
+  applyProgram: PropTypes.func.isRequired,
+  removeProgram: PropTypes.func.isRequired,
   getAllUndergraduatePrograms: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   applicant: PropTypes.object.isRequired
@@ -172,5 +240,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAllUndergraduatePrograms,
+  applyProgram,
+  removeProgram,
   getCurrentApplicant
 })(withRouter(UndergraduateProgramList));

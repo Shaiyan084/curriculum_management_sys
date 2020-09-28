@@ -11,16 +11,17 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
+  MenuItem
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import {
   getCurrentApplicant,
   updateEducationDetails,
+  applicantForwarded
 } from '../../actions/applicant';
 import { setAlert } from '../../actions/alert';
 import { TextField } from '@material-ui/core';
-import StatusStepper from './StatusStepper';
+import UndergraduateStatusStepper from './UndergraduateStatusStepper';
 import FormImage from './FormImage';
 import { Redirect } from 'react-router-dom';
 
@@ -31,11 +32,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0',
+      marginBottom: '0'
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF',
-    },
+      color: '#FFFFFF'
+    }
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -50,18 +51,19 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1',
-    },
-  },
+      lineHeight: '1'
+    }
+  }
 };
 
 const useStyles = makeStyles(styles);
 
 const EducationDetails = ({
   getCurrentApplicant,
+  applicantForwarded,
   applicant: { loading, applicant },
   updateEducationDetails,
-  setAlert,
+  setAlert
 }) => {
   const classes = useStyles();
 
@@ -81,7 +83,7 @@ const EducationDetails = ({
     intermediateEducationTo: '',
     intermediateEducationObtainedMarks: '',
     intermediateEducationTotalMarks: '',
-    intermediateEducationPicture: '',
+    intermediateEducationPicture: ''
   });
 
   const {
@@ -100,28 +102,33 @@ const EducationDetails = ({
     intermediateEducationTo,
     intermediateEducationObtainedMarks,
     intermediateEducationTotalMarks,
-    intermediateEducationPicture,
+    intermediateEducationPicture
   } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onChangeImage = (e) => {
+  const onChangeImage = e => {
     const name = e.target.name;
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       setFormData({ ...formData, [name]: e.target.result });
     };
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (secondaryEducationType === '' || intermediateEducationType === '') {
       setAlert('All fields are required');
     } else {
-      updateEducationDetails(formData);
+      updateEducationDetails(formData).then(result => {
+        // Forward application here
+        if (result) {
+          applicantForwarded();
+        }
+      });
     }
   };
 
@@ -200,13 +207,17 @@ const EducationDetails = ({
       intermediateEducationPicture:
         !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.picture
-          : '',
+          : ''
     });
   }, [applicant]);
 
   if (!loading && applicant !== null && applicant.status < 2) {
     return <Redirect to='/applicant/income-details' />;
   }
+
+  // if (!loading && applicant !== null && applicant.status === 3) {
+  //   return <Redirect to='/applicant/dashboard' />;
+  // }
 
   return (
     <GridContainer>
@@ -219,10 +230,10 @@ const EducationDetails = ({
             </p>
           </CardHeader>
           <CardBody>
-            <StatusStepper
+            <UndergraduateStatusStepper
               status={!loading && applicant !== null ? applicant.status : 0}
             />
-            <form onSubmit={(e) => onSubmit(e)}>
+            <form onSubmit={e => onSubmit(e)}>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <div className='heading-primary'>Secondary Education</div>
@@ -235,7 +246,7 @@ const EducationDetails = ({
                       label='Type'
                       name='secondaryEducationType'
                       value={secondaryEducationType}
-                      onChange={(e) => onChange(e)}
+                      onChange={e => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
@@ -253,7 +264,7 @@ const EducationDetails = ({
                     type='text'
                     name='secondaryEducationInstitute'
                     value={secondaryEducationInstitute}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -265,7 +276,7 @@ const EducationDetails = ({
                     type='text'
                     name='secondaryEducationFieldOfStudy'
                     value={secondaryEducationFieldOfStudy}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -277,7 +288,7 @@ const EducationDetails = ({
                     type='number'
                     name='secondaryEducationFrom'
                     value={secondaryEducationFrom}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -289,7 +300,7 @@ const EducationDetails = ({
                     type='number'
                     name='secondaryEducationTo'
                     value={secondaryEducationTo}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -301,7 +312,7 @@ const EducationDetails = ({
                     type='number'
                     name='secondaryEducationObtainedMarks'
                     value={secondaryEducationObtainedMarks}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -313,7 +324,7 @@ const EducationDetails = ({
                     type='number'
                     name='secondaryEducationTotalMarks'
                     value={secondaryEducationTotalMarks}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -324,7 +335,7 @@ const EducationDetails = ({
                       id='backPicture'
                       type='file'
                       name='secondaryEducationPicture'
-                      onChange={(e) => onChangeImage(e)}
+                      onChange={e => onChangeImage(e)}
                     />
                   </div>
                 </GridItem>
@@ -345,7 +356,7 @@ const EducationDetails = ({
                       label='Type'
                       name='intermediateEducationType'
                       value={intermediateEducationType}
-                      onChange={(e) => onChange(e)}
+                      onChange={e => onChange(e)}
                     >
                       <MenuItem value=''>
                         <em>None</em>
@@ -364,7 +375,7 @@ const EducationDetails = ({
                     type='text'
                     name='intermediateEducationInstitute'
                     value={intermediateEducationInstitute}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -376,7 +387,7 @@ const EducationDetails = ({
                     type='text'
                     name='intermediateEducationFieldOfStudy'
                     value={intermediateEducationFieldOfStudy}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -388,7 +399,7 @@ const EducationDetails = ({
                     type='number'
                     name='intermediateEducationFrom'
                     value={intermediateEducationFrom}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -400,7 +411,7 @@ const EducationDetails = ({
                     type='number'
                     name='intermediateEducationTo'
                     value={intermediateEducationTo}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -412,7 +423,7 @@ const EducationDetails = ({
                     type='number'
                     name='intermediateEducationObtainedMarks'
                     value={intermediateEducationObtainedMarks}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -424,7 +435,7 @@ const EducationDetails = ({
                     type='number'
                     name='intermediateEducationTotalMarks'
                     value={intermediateEducationTotalMarks}
-                    onChange={(e) => onChange(e)}
+                    onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
@@ -437,7 +448,7 @@ const EducationDetails = ({
                       id='backPicture'
                       type='file'
                       name='intermediateEducationPicture'
-                      onChange={(e) => onChangeImage(e)}
+                      onChange={e => onChangeImage(e)}
                     />
                   </div>
                 </GridItem>
@@ -468,17 +479,19 @@ const EducationDetails = ({
 
 EducationDetails.propTypes = {
   getCurrentApplicant: PropTypes.func.isRequired,
+  applicantForwarded: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
   updateEducationDetails: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  applicant: state.applicant,
+const mapStateToProps = state => ({
+  applicant: state.applicant
 });
 
 export default connect(mapStateToProps, {
   getCurrentApplicant,
+  applicantForwarded,
   updateEducationDetails,
-  setAlert,
+  setAlert
 })(EducationDetails);
