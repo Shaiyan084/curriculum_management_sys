@@ -22,6 +22,9 @@ const ApplicantSchema = mongoose.Schema({
     fatherName: {
       type: String
     },
+    email: {
+      type: String
+    },
     // CNIC should remain like previous
     cnic: {
       number: {

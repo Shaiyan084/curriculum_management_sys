@@ -4,6 +4,7 @@ const Applicant = require('../../models/Applicant');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Programme = require('../../models/Programme');
+const User = require('../../models/User');
 // const nodemailer = require('nodemailer');
 
 // @route  GET /api/applicants/me
@@ -11,8 +12,43 @@ const Programme = require('../../models/Programme');
 // @access Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const applicant = await Applicant.findOne({ user: req.user.id });
+    const applicant = await Applicant.findOne({ user: req.user.id })
+      .select('-password')
+      .populate('user', ['email']);
     res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/applicants
+// @desc   Get all Applicant
+// @access Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await Applicant.find()
+      .select('-password')
+      .populate('appliedPrograms', ['name', 'email']);
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/applicants/applicationForwarded
+// @desc   Get all application forwaded applicants
+// @access Private
+router.get('/application-forwarded', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.find()
+      .select('-password')
+      .populate('appliedPrograms', ['name', 'email']);
+
+    if (applicant.applicantForwarded == true) {
+      res.json(applicant);
+    }
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');
@@ -30,6 +66,9 @@ router.put(
       .not()
       .isEmpty(),
     check('fatherName', "Father's name is required")
+      .not()
+      .isEmpty(),
+    check('email', 'Email is required')
       .not()
       .isEmpty(),
     check('cnicNumber', 'Cnic number is required')
@@ -65,6 +104,7 @@ router.put(
     const {
       name,
       fatherName,
+      email,
       dateOfBirth,
       placeOfBirth,
       cnicNumber,
@@ -79,6 +119,7 @@ router.put(
 
     personalDetails.name = name;
     personalDetails.fatherName = fatherName;
+    personalDetails.email = email;
     personalDetails.placeOfBirth = placeOfBirth;
     personalDetails.dateOfBirth = dateOfBirth;
     personalDetails.address = address;

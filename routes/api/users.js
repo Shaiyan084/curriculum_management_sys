@@ -393,7 +393,7 @@ router.get('/coordinators/email', auth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.log(err.message);
-    return res.status(400).send('Server Error');
+    return res.status(500).send('Server Error');
   }
 });
 
@@ -406,7 +406,7 @@ router.get('/faculty', auth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.log(err.message);
-    res.status(500).send('Server Error');
+    return res.status(500).send('Server Error');
   }
 });
 
@@ -461,7 +461,12 @@ router.put(
 // @access Private
 router.put(
   '/password',
-  [auth, check('password', 'Password is required').isLength({ min: 6 })],
+  [
+    auth,
+    check('password', 'Password of 6 or more character is required').isLength({
+      min: 6
+    })
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -471,6 +476,7 @@ router.put(
     const { password } = req.body;
     try {
       const user = await User.findById(req.params.id);
+
       const salt = bcrypt.genSalt(10);
       user.password = bcrypt.hash(password, salt);
 
