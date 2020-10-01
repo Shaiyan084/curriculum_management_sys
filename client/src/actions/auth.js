@@ -1,5 +1,7 @@
 import {
   USER_LOADED,
+  SET_AUTH_USER_LOADING,
+  UNSET_AUTH_USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
@@ -7,7 +9,11 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   REGISTER_COORDINATOR_SUCCESS,
-  REGISTER_COORDINATOR_FAILED
+  REGISTER_COORDINATOR_FAILED,
+  NAME_UPDATED,
+  PASSWORD_UPDATED,
+  PROFILE_PICTURE_UPLOADED,
+  PROFILE_PICTURE_REMOVED
 } from './types';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -135,3 +141,145 @@ export const registerCoordinator = (formData, history) => async dispatch => {
 //     }
 //   }
 // };
+
+// Change Name
+export const changeName = formData => async dispatch => {
+  dispatch({
+    type: SET_AUTH_USER_LOADING
+  });
+
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const res = await axios.put('api/users/name', formData, config);
+
+    dispatch({
+      type: NAME_UPDATED,
+      payload: res.data
+    });
+
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    dispatch(setAlert('Name updated successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+    }
+  }
+};
+
+// Change Password
+export const changePassword = password => async dispatch => {
+  dispatch({
+    type: SET_AUTH_USER_LOADING
+  });
+
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify({ password });
+
+    const res = await axios.put('/api/users/password', body, config);
+
+    dispatch({
+      type: PASSWORD_UPDATED,
+      payload: res.data
+    });
+
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    dispatch(setAlert('Password updated successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+    }
+  }
+};
+
+// Upload Profile Picture
+export const uploadProfilePicture = formData => async dispatch => {
+  dispatch({
+    type: SET_AUTH_USER_LOADING
+  });
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const res = await axios.put(
+      'api/users/profile-picture/upload',
+      formData,
+      config
+    );
+
+    dispatch({
+      type: PROFILE_PICTURE_UPLOADED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Profile picture uploaded successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+    }
+  }
+};
+
+// Remove Profile Picture
+export const removeProfilePicture = () => async dispatch => {
+  dispatch({
+    type: SET_AUTH_USER_LOADING
+  });
+  try {
+    const res = await axios.put('api/users/profile-picture/remove');
+
+    dispatch({
+      type: PROFILE_PICTURE_REMOVED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Profile picture removed successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: UNSET_AUTH_USER_LOADING
+    });
+
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
+    }
+  }
+};

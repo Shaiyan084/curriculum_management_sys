@@ -10,6 +10,7 @@ import Alert from '../components/Alert/Alert';
 
 import Dashboard from '../views/Applicant/Dashboard';
 import UndergraduateProgramList from '../views/Applicant/UndergraduateProgramList';
+import Settings from '../views/Applicant/Settings';
 
 import routes from '../routes/Applicant';
 
@@ -34,14 +35,11 @@ const switchRoutes = (
       }
       return null;
     })}
-    {/* <Route path='/admin/create-department' component={CreateDepartment} />
-    <Route path='/admin/create-program' component={CreateProgram} />
-    <Route path='/admin/update-department/:id' component={UpdateDepartment} />
-    <Route path='/admin/update-program/:id' component={UpdateProgram} /> */}
     <Route
       path='/applicant/undergraduate-program-selection-list'
       component={UndergraduateProgramList}
     />
+    <Route path='/applicant/settings' component={Settings} />
     <Route path='/applicant/dashboard' component={Dashboard} />
     {/* <Redirect from='/applicant' to='/applicant/personal-details' /> */}
   </Switch>

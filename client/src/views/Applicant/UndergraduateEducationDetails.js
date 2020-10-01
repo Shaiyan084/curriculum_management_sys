@@ -215,9 +215,9 @@ const EducationDetails = ({
     return <Redirect to='/applicant/income-details' />;
   }
 
-  // if (!loading && applicant !== null && applicant.status === 3) {
-  //   return <Redirect to='/applicant/dashboard' />;
-  // }
+  if (!loading && applicant !== null && applicant.status === 3) {
+    return <Redirect to='/applicant/dashboard' />;
+  }
 
   return (
     <GridContainer>

@@ -12,6 +12,11 @@ import CardBody from '../../components/Card/CardBody';
 import Divider from '@material-ui/core/Divider';
 import FormImage from './FormImage';
 import Moment from 'react-moment';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import {
   FormControl,
   InputLabel,
@@ -271,6 +276,16 @@ const Dashboard = ({
       //   !loading && applicant !== null ? applicant.educationDetails.cgpa : ''
     });
   }, [applicant]);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <GridContainer>

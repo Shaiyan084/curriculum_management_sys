@@ -99,6 +99,10 @@ const IncomeDetails = ({
     return <Redirect to='/applicant/personal-details' />;
   }
 
+  if (!loading && applicant !== null && applicant.status === 3) {
+    return <Redirect to='/applicant/dashboard' />;
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>

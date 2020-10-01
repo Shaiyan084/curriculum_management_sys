@@ -8,7 +8,7 @@ import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import UndergraduateStatusStepper from './UndergraduateStatusStepper';
 import {
@@ -54,7 +54,8 @@ const PersonalDetails = ({
   updatePersonalDetails,
   history,
   getCurrentApplicant,
-  applicant: { loading, applicant }
+  applicant: { loading, applicant },
+  auth: { user }
 }) => {
   const classes = useStyles();
 
@@ -86,6 +87,7 @@ const PersonalDetails = ({
   const [formData, setFormData] = useState({
     name: '',
     fatherName: '',
+    email: '',
     cnicNumber: '',
     cnicFrontPicture: '',
     cnicBackPicture: '',
@@ -99,6 +101,7 @@ const PersonalDetails = ({
   const {
     name,
     fatherName,
+    email,
     cnicNumber,
     cnicFrontPicture,
     cnicBackPicture,
@@ -146,6 +149,7 @@ const PersonalDetails = ({
         !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.fatherName
           : '',
+      email: !loading && user !== null && user.email ? user.email : '',
       cnicNumber:
         !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.cnic.number
@@ -180,6 +184,10 @@ const PersonalDetails = ({
           : ''
     });
   }, [applicant]);
+
+  if (!loading && applicant !== null && applicant.status === 3) {
+    return <Redirect to='/applicant/dashboard' />;
+  }
 
   return (
     <GridContainer>
@@ -217,6 +225,18 @@ const PersonalDetails = ({
                     type='text'
                     name='fatherName'
                     value={fatherName}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={4}>
+                  <TextField
+                    className='form-control'
+                    label='Email (For updates enter a valid email address)'
+                    variant='outlined'
+                    type='text'
+                    name='email'
+                    value={email}
                     onChange={e => onChange(e)}
                     required={true}
                   />
@@ -353,12 +373,14 @@ const PersonalDetails = ({
 PersonalDetails.propTypes = {
   updatePersonalDetails: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
   getCurrentApplicant: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  applicant: state.applicant
+  applicant: state.applicant,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, {

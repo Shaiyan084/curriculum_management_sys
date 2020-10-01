@@ -44,7 +44,7 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     icon: SettingsIcon,
-    component: Dashboard,
+    component: Settings,
     layout: '/applicant'
   }
 ];

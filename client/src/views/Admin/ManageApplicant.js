@@ -1,14 +1,28 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  getAllUndergraduateApplicants,
+  getCurrentApplicant
+} from '../../actions/applicant';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
-import ManageApplicantAccordian from './ManageApplicantAccordian';
+import Table from '../../components/Table/Table.js';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Box,
+  Checkbox
+} from '@material-ui/core';
 
 const styles = {
   cardCategoryWhite: {
@@ -43,8 +57,95 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ManageApplicant = props => {
+const ManageApplicant = ({
+  getCurrentApplicant,
+  getAllUndergraduateApplicants,
+  applicant: {
+    loading: undergraduateApplicantsLoading,
+    undergraduateApplicants,
+    applicant
+  },
+  history
+}) => {
   const classes = useStyles(styles);
+
+  const [undergraduateApplicantList, setUndergraduateApplicantList] = useState(
+    []
+  );
+
+  const getUndergraduateApplicants = () => {
+    let res = [];
+    let i = 1;
+
+    undergraduateApplicantList.forEach(undergraduateApplicant => {
+      if (undergraduateApplicant.applicantForwarded) {
+        res = [
+          ...res,
+          [
+            `${i}`,
+            undergraduateApplicant.personalDetails.name,
+            undergraduateApplicant.personalDetails.fatherName,
+            undergraduateApplicant.personalDetails.email,
+            (undergraduateApplicant.educationDetails.secondaryEducationDetails
+              .obtainedMarks /
+              undergraduateApplicant.educationDetails.secondaryEducationDetails
+                .totalMarks) *
+              100,
+            (undergraduateApplicant.educationDetails
+              .intermediateEducationDetails.obtainedMarks /
+              undergraduateApplicant.educationDetails
+                .intermediateEducationDetails.totalMarks) *
+              100,
+            <Fragment>
+              <Link
+                to={`/admin/forward-applicant/${undergraduateApplicant._id}`}
+                className='text-decoration-none'
+              >
+                <Button
+                  variant='contained'
+                  className='margin-left-right margin-top-bottom button-function'
+                >
+                  View
+                </Button>
+              </Link>
+            </Fragment>
+          ]
+        ];
+        i++;
+      }
+    });
+    return res;
+  };
+
+  const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
+    false
+  );
+
+  useEffect(() => {
+    if (!getCurrentApplicantCalled) {
+      getCurrentApplicant();
+      setGetCurrentApplicantCalled(true);
+    }
+  }, [applicant]);
+
+  const [
+    getAllUndergraduateApplicantsCalled,
+    setGetAllUndergraduateApplicantsCalled
+  ] = useState(false);
+
+  useEffect(() => {
+    if (!getAllUndergraduateApplicantsCalled) {
+      getAllUndergraduateApplicants();
+      setGetAllUndergraduateApplicantsCalled(true);
+    }
+
+    setUndergraduateApplicantList(
+      !undergraduateApplicantsLoading && undergraduateApplicants.length > 0
+        ? undergraduateApplicants
+        : []
+    );
+  }, [undergraduateApplicants]);
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -56,31 +157,23 @@ const ManageApplicant = props => {
             </p>
           </CardHeader>
           <CardBody>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={12}>
-                <ManageApplicantAccordian />
-                {/* <div> */}
-                {/* <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls='panel1a-content'
-                      id='panel1a-header'
-                    >
-                      <Typography className={classes.heading}>
-                        Accordion 1
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse malesuada lacus ex, sit amet blandit leo
-                        lobortis eget.
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion> */}
-                {/* </div> */}
-              </GridItem>
-            </GridContainer>
+            {undergraduateApplicantList.length > 0 ? (
+              <Table
+                tableHeaderColor='primary'
+                tableHead={[
+                  'S.No',
+                  'Name',
+                  'Father Name',
+                  'Email',
+                  'Secondary Education (%)',
+                  'Intermediate Education (%)',
+                  'Actions'
+                ]}
+                tableData={getUndergraduateApplicants()}
+              />
+            ) : (
+              <div className='text-center imp-message'>No applicants found</div>
+            )}
           </CardBody>
         </Card>
       </GridItem>
@@ -88,6 +181,20 @@ const ManageApplicant = props => {
   );
 };
 
-ManageApplicant.propTypes = {};
+ManageApplicant.propTypes = {
+  getCurrentApplicant: PropTypes.func.isRequired,
+  getAllUndergraduateApplicants: PropTypes.func.isRequired,
+  applicant: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
-export default ManageApplicant;
+const mapStateToProps = state => ({
+  applicant: state.applicant,
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, {
+  getCurrentApplicant,
+  getAllUndergraduateApplicants
+})(withRouter(ManageApplicant));

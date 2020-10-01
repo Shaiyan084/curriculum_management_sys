@@ -1,14 +1,20 @@
 import {
   USER_LOADED,
   // ALL_USERS_LOADED,
+  SET_AUTH_USER_LOADING,
+  UNSET_AUTH_USER_LOADING,
   AUTH_ERROR,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
-  REGISTER_COORDINATOR_SUCCESS,
-  REGISTER_COORDINATOR_FAILED,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
-  LOGOUT
+  LOGOUT,
+  REGISTER_COORDINATOR_SUCCESS,
+  REGISTER_COORDINATOR_FAILED,
+  NAME_UPDATED,
+  PASSWORD_UPDATED,
+  PROFILE_PICTURE_UPLOADED,
+  PROFILE_PICTURE_REMOVED
 } from '../actions/types';
 
 const initialState = {
@@ -17,6 +23,7 @@ const initialState = {
   isAuthenticated: null,
   token: localStorage.getItem('token'),
   users: [],
+  userLoading: true,
   errors: null
 };
 
@@ -30,13 +37,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        userLoading: false,
         isAuthenticated: true,
         token: payload
       };
     case USER_LOADED:
+    case NAME_UPDATED:
+    case PROFILE_PICTURE_UPLOADED:
+    case PROFILE_PICTURE_REMOVED:
       return {
         ...state,
         loading: false,
+        userLoading: false,
         isAuthenticated: true,
         user: payload
       };
@@ -46,6 +58,16 @@ export default function(state = initialState, action) {
     //     error: null,
     //     users: payload
     //   };
+    case SET_AUTH_USER_LOADING:
+      return {
+        ...state,
+        userLoading: true
+      };
+    case UNSET_AUTH_USER_LOADING:
+      return {
+        ...state,
+        userLoading: false
+      };
     case LOGIN_FAILED:
     case LOGOUT:
     case AUTH_ERROR:
@@ -55,11 +77,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        userLoading: false,
         isAuthenticated: false,
         user: null
       };
     case REGISTER_SUCCESS:
     case REGISTER_COORDINATOR_SUCCESS:
+    case PASSWORD_UPDATED:
     default:
       return state;
   }

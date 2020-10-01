@@ -4,13 +4,16 @@ import {
   APPLICANT_PROGRAM_APPLIED,
   APPLICANT_PROGRAM_REMOVED,
   APPLICANT_FORWARDED,
+  APPLICANT_FORWARDED_LOADED,
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+  ALL_UNDERGRADUATE_APPLICANT_LOADED,
   GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   GRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
-  GRADUATE_APPLICANT_NTS_MARKS_UPDATED
+  GRADUATE_APPLICANT_NTS_MARKS_UPDATED,
+  ALL_GRADUATE_APPLICANT_LOADED
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -22,6 +25,40 @@ export const getCurrentApplicant = () => async dispatch => {
 
     dispatch({
       type: APPLICANT_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get applicants forwarded applications
+export const getApplicationForwardedApplicants = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/applicants/application-forwarded');
+
+    dispatch({
+      type: APPLICANT_FORWARDED_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get all undergraduate applicants
+export const getAllUndergraduateApplicants = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/applicants');
+
+    dispatch({
+      type: ALL_UNDERGRADUATE_APPLICANT_LOADED,
       payload: res.data
     });
   } catch (err) {

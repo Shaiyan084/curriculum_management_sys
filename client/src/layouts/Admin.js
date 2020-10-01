@@ -57,7 +57,7 @@ const switchRoutes = (
     <Route path='/admin/create-profile' component={PersonalDetails} />
     <Route path='/admin/experience-details' component={ExperienceDetails} />
     <Route path='/admin/education-details' component={EducationDetails} />
-    <Route path='/admin/manage-applicants' component={ManageApplicant} />
+    {/* <Route path='/admin/manage-applicants' component={ManageApplicant} /> */}
     {/* <Redirect from='/admin' to='/admin/dashboard' /> */}
   </Switch>
 );
