@@ -142,6 +142,9 @@ const ApplicantSchema = mongoose.Schema({
     },
     universityTestScore: {
       type: Number
+    },
+    totalAggregate: {
+      type: Number
     }
   },
   appliedPrograms: [

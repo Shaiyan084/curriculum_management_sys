@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getApplicantById, testScoreAdded } from '../../actions/applicant';
+import {
+  getApplicantById,
+  testScoreAdded,
+  calculateAggregate
+} from '../../actions/applicant';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
@@ -59,6 +63,7 @@ const useStyles = makeStyles(styles);
 
 const ForwardApplicant = ({
   getApplicantById,
+  calculateAggregate,
   testScoreAdded,
   applicant: { loading, applicant },
   history,
@@ -337,6 +342,18 @@ const ForwardApplicant = ({
                       </h4>
                     </Box>
                     <Divider variant='middle' />
+                    {applicant &&
+                      applicant.educationDetails &&
+                      applicant.educationDetails.totalAggregate}
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Button
+                        variant='contained'
+                        className='margin-left-right margin-top-bottom button-function'
+                        onClick={() => calculateAggregate(applicant._id)}
+                      >
+                        Calculate Aggregate
+                      </Button>
+                    </GridItem>
                   </GridItem>
                 </GridContainer>
               </CardBody>
@@ -673,6 +690,7 @@ const ForwardApplicant = ({
 
 ForwardApplicant.propTypes = {
   getApplicantById: PropTypes.func.isRequired,
+  calculateAggregate: PropTypes.func.isRequired,
   testScoreAdded: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
@@ -686,5 +704,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getApplicantById,
+  calculateAggregate,
   testScoreAdded
 })(withRouter(ForwardApplicant));

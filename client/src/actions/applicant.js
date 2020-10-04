@@ -15,7 +15,8 @@ import {
   GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   GRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
   GRADUATE_APPLICANT_NTS_MARKS_UPDATED,
-  ALL_GRADUATE_APPLICANT_LOADED
+  ALL_GRADUATE_APPLICANT_LOADED,
+  UNDERGRADUATE_AGGREGATE_CALCULATED
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -391,6 +392,25 @@ export const testScoreAdded = (id, universityTestScore) => async dispatch => {
     });
 
     dispatch(setAlert('Test score is added successfully'));
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Applicant Aggregate Calculated
+export const calculateAggregate = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/applicants/calculate-aggregate/${id}`);
+
+    dispatch({
+      type: UNDERGRADUATE_AGGREGATE_CALCULATED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Aggregate has been calculated'));
   } catch (err) {
     dispatch({
       type: APPLICANT_ERROR,

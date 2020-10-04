@@ -687,7 +687,7 @@ router.get('/ntsMarks/:id', auth, async (req, res) => {
 // @access Private
 router.put('/calculate-aggregate/:id', auth, async (req, res) => {
   try {
-    const applicant = await Applicant.find({ user: req.user.id });
+    const applicant = await Applicant.findById(req.params.id);
 
     if (!applicant) {
       return res.status(400).json({ msg: 'Applicant does not exists' });
@@ -696,8 +696,7 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
     const {
       secondaryEducationDetails,
       intermediateEducationDetails,
-      ntsMarks,
-      bachelorEducationDetails
+      universityTestScore
     } = applicant.educationDetails;
 
     let secondaryAggregate =
@@ -710,18 +709,27 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
         intermediateEducationDetails.totalMarks) *
       100 *
       0.4;
-    let ntsAggregate = ntsMarks * 0.5;
+    let universityTestAggregate = universityTestScore * 0.5;
 
     let totalAggregate =
-      secondaryAggregate + intermediateAggregate + ntsAggregate;
+      secondaryAggregate + intermediateAggregate + universityTestAggregate;
 
     // if(applicant.type == 1){
     //   let bachelorAggregate = (bachelorEducationDetails.cgpa * 0.5) + (ntsMarks * 0.5);
 
     //   let totalAggregate = bachelorAggregate;
     // }
-    await totalAggregate.save();
-    res.json(totalAggregate);
+
+    applicant.educationDetails.totalAggregate = totalAggregate;
+
+    applicant.populate('user', ['name', 'email', 'avatar'], (err, res) => {
+      if (err) throw err;
+      return res;
+    });
+
+    await applicant.save();
+
+    res.json(applicant);
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');
