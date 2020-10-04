@@ -13,7 +13,8 @@ import {
   SET_GRADUATE_PROGRAM_LOADING,
   PROGRAM_ERROR,
   PROGRAM_LOADED,
-  REMOVE_PROGRAM
+  REMOVE_PROGRAM,
+  ALL_UNDERGRADUATE_PROGRAMS_DISABLED
 } from '../actions/types';
 
 const initialState = {
@@ -117,6 +118,7 @@ export default function(state = initialState, action) {
           })
         ]
       };
+    case ALL_UNDERGRADUATE_PROGRAMS_DISABLED:
     case UNDERGRADUATE_PROGRAM_CREATED:
     case UNDERGRADUATE_PROGRAM_UPDATED:
     case GRADUATE_PROGRAM_CREATED:

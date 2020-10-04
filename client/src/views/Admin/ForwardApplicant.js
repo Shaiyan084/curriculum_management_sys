@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getApplicantById, getCurrentApplicant } from '../../actions/applicant';
+import { getApplicantById, testScoreAdded } from '../../actions/applicant';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
@@ -58,8 +58,8 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 const ForwardApplicant = ({
-  getCurrentApplicant,
   getApplicantById,
+  testScoreAdded,
   applicant: { loading, applicant },
   history,
   auth,
@@ -112,11 +112,22 @@ const ForwardApplicant = ({
     // cgpa: ''
   });
 
+  const [testScore, setTestScore] = useState(0);
+
   useEffect(() => {
     if (!getApplicantByIdCalled) {
       getApplicantById(match.params.id);
       setGetApplicantByIdCalled(true);
     }
+
+    setTestScore(
+      !loading &&
+        applicant !== null &&
+        applicant.educationDetails &&
+        applicant.educationDetails.universityTestScore
+        ? applicant.educationDetails.universityTestScore
+        : 0
+    );
 
     setPersonalDetails({
       name:
@@ -620,6 +631,36 @@ const ForwardApplicant = ({
                       />
                     </Box>
                   </GridItem>
+
+                  <form
+                    onSubmit={e => {
+                      e.preventDefault();
+                      testScoreAdded(applicant._id, testScore);
+                    }}
+                  >
+                    <GridItem xs={12} sm={12} md={12}>
+                      <TextField
+                        className='form-control'
+                        label='Test Score'
+                        variant='outlined'
+                        type='number'
+                        value={testScore}
+                        onChange={e => setTestScore(e.target.value)}
+                        required={true}
+                      />
+                    </GridItem>
+                    &nbsp;
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Button
+                        variant='contained'
+                        className='margin-left-right margin-top-bottom button-function'
+                        // onClick={() => testScoreAdded(applicant._id)}
+                        type='submit'
+                      >
+                        Add Test Score
+                      </Button>
+                    </GridItem>
+                  </form>
                 </GridContainer>
               </CardBody>
             </Card>
@@ -632,7 +673,7 @@ const ForwardApplicant = ({
 
 ForwardApplicant.propTypes = {
   getApplicantById: PropTypes.func.isRequired,
-  getCurrentApplicant: PropTypes.func.isRequired,
+  testScoreAdded: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   author: PropTypes.object.isRequired
@@ -645,5 +686,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getApplicantById,
-  getCurrentApplicant
+  testScoreAdded
 })(withRouter(ForwardApplicant));

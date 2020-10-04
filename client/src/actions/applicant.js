@@ -6,6 +6,7 @@ import {
   APPLICANT_FORWARDED,
   APPLICANT_FORWARDED_LOADED,
   SET_APPLICANT_LOADING,
+  APPLICANT_TEST_SCORE_ADDED,
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
@@ -359,6 +360,37 @@ export const applicantForwarded = () => async dispatch => {
     });
 
     dispatch(setAlert('Application has been forwaded'));
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Applicant Test Score Added
+export const testScoreAdded = (id, universityTestScore) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  const body = JSON.stringify({ universityTestScore });
+
+  try {
+    const res = await axios.put(
+      `/api/applicants/update-test-score/${id}`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: APPLICANT_TEST_SCORE_ADDED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Test score is added successfully'));
   } catch (err) {
     dispatch({
       type: APPLICANT_ERROR,

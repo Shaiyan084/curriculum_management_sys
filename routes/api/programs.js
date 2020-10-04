@@ -387,6 +387,29 @@ router.put(
   }
 );
 
+// @route  PUT /api/programs/disable/all
+// @desc   Disable the program by id
+// @access Private
+router.put('/undergraduate-disable/all', auth, async (req, res) => {
+  try {
+    const programs = await Programme.find({ type: 0 });
+
+    await Promise.all(
+      programs.map(program => {
+        return new Promise(resolve => {
+          program.status = false;
+          program.save().then(() => resolve());
+        });
+      })
+    );
+
+    res.json({ msg: 'All programs have been disabled successfully' });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  PUT /api/programs/disable/:id
 // @desc   Disable the program by id
 // @access Private

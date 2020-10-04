@@ -139,6 +139,9 @@ const ApplicantSchema = mongoose.Schema({
     },
     ntsMarks: {
       type: Number
+    },
+    universityTestScore: {
+      type: Number
     }
   },
   appliedPrograms: [

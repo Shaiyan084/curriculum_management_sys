@@ -398,6 +398,30 @@ router.put(
   }
 );
 
+// @route  PUT /api/applicants/update-test-score/:id
+// @desc   Update univeristy test score
+// @access Private
+router.put('/update-test-score/:id', auth, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { universityTestScore } = req.body;
+
+  try {
+    const applicant = await Applicant.findById(req.params.id);
+
+    applicant.educationDetails.universityTestScore = universityTestScore;
+
+    await applicant.save();
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  PUT /api/applicants/apply/:id
 // @desc   Apply for a program
 // @access Private
@@ -560,7 +584,7 @@ router.put('/verify:id', auth, async (req, res) => {
   }
 });
 
-// @route  PUT /api/forwarded/:id
+// @route  PUT /api//applicants/forwarded/:id
 // @desc   Forward the applications that match the criteria to the department
 // @access Private
 router.put('/forwarded', auth, async (req, res) => {
@@ -578,6 +602,25 @@ router.put('/forwarded', auth, async (req, res) => {
     await applicant.save();
     res.json({
       msg: 'Your application has been forwarded to the department'
+    });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  PUT /api/applicants/verify/:id
+// @desc   Verify and forward the applications that match the criteria to the department coordinator
+// @access Private
+router.put('/verify/:id', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findById(req.user.id);
+
+    applicant.applicantVerified = true;
+
+    await applicant.save();
+    res.json({
+      msg: 'Your application has been forwarded to the department coordinator'
     });
   } catch (err) {
     console.log(err.message);

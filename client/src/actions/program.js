@@ -13,7 +13,8 @@ import {
   SET_GRADUATE_PROGRAM_LOADING,
   PROGRAM_ERROR,
   PROGRAM_LOADED,
-  REMOVE_PROGRAM
+  REMOVE_PROGRAM,
+  ALL_UNDERGRADUATE_PROGRAMS_DISABLED
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -288,6 +289,31 @@ export const disableGraduateProgram = id => async dispatch => {
     });
 
     dispatch(setAlert('Graduate program disabled successfully', 'success'));
+  } catch (err) {
+    dispatch({
+      type: PROGRAM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Disable all undergraduate program disabled
+export const disableAllUndergraduatePrograms = () => async dispatch => {
+  dispatch({
+    type: SET_GRADUATE_PROGRAM_LOADING
+  });
+  try {
+    await axios.put('/api/programs/undergraduate-disable/all');
+
+    dispatch({
+      type: ALL_UNDERGRADUATE_PROGRAMS_DISABLED
+    });
+
+    dispatch(
+      setAlert('All undergraduate programs disabled successfully', 'success')
+    );
+
+    dispatch(getAllUndergraduatePrograms());
   } catch (err) {
     dispatch({
       type: PROGRAM_ERROR,

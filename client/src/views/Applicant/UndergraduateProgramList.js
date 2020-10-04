@@ -168,52 +168,74 @@ const UndergraduateProgramList = ({
             </p>
           </CardHeader>
           <CardBody>
-            {undergraduateProgramsList.length > 0 ? (
-              <Table
-                tableHeaderColor='primary'
-                tableHead={[
-                  'S.No',
-                  'Name',
-                  'Department',
-                  'Minimum Percentage Required',
-                  'Duration (years)',
-                  'Select'
-                ]}
-                tableData={getUndergraduatePrograms()}
-              />
+            {undergraduateProgramsList.length > 0 &&
+            getUndergraduatePrograms().length > 0 ? (
+              <Fragment>
+                <Table
+                  tableHeaderColor='primary'
+                  tableHead={[
+                    'S.No',
+                    'Name',
+                    'Department',
+                    'Minimum Percentage Required',
+                    'Duration (years)',
+                    'Select'
+                  ]}
+                  tableData={getUndergraduatePrograms()}
+                />
+                &nbsp;
+                <GridItem xs={12} sm={12} md={12}>
+                  <Link
+                    to='/applicant/personal-details'
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      color='secondary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Next
+                    </Button>
+                  </Link>
+                  &nbsp;
+                  <Link
+                    to={'/applicant/dashboard'}
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </GridItem>
+              </Fragment>
             ) : (
-              <div className='text-center imp-message'>No programs found</div>
+              <div className='text-center imp-message'>
+                Admissions are currently closed
+                <GridItem xs={12} sm={12} md={12}>
+                  <Link
+                    to={'/applicant/dashboard'}
+                    className='text-decoration-none'
+                  >
+                    <Button
+                      style={{ marginTop: '20px' }}
+                      color='primary'
+                      variant='contained'
+                      type='submit'
+                      size='large'
+                    >
+                      Back
+                    </Button>
+                  </Link>
+                </GridItem>
+              </div>
             )}
             &nbsp;
-            <GridItem xs={12} sm={12} md={12}>
-              <Link
-                to='/applicant/personal-details'
-                className='text-decoration-none'
-              >
-                <Button
-                  color='secondary'
-                  variant='contained'
-                  type='submit'
-                  size='large'
-                >
-                  Next
-                </Button>
-              </Link>
-              &nbsp;
-              <Link
-                to={'/applicant/dashboard'}
-                className='text-decoration-none'
-              >
-                <Button
-                  color='primary'
-                  variant='contained'
-                  type='submit'
-                  size='large'
-                >
-                  Back
-                </Button>
-              </Link>
-            </GridItem>
           </CardBody>
         </Card>
       </GridItem>

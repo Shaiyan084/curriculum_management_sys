@@ -17,7 +17,8 @@ import {
   disableUndergraduateProgram,
   enableGraduateProgram,
   disableGraduateProgram,
-  removeProgram
+  removeProgram,
+  disableAllUndergraduatePrograms
 } from '../../actions/program';
 
 function TabPanel(props) {
@@ -62,6 +63,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProgramTabs = ({
   getAllUndergraduatePrograms,
+  disableAllUndergraduatePrograms,
   enableUndergraduateProgram,
   disableUndergraduateProgram,
   enableGraduateProgram,
@@ -257,6 +259,14 @@ const ProgramTabs = ({
             Add Undergraduate program
           </Button>
         </Link>
+        <Button
+          variant='contained'
+          className='margin-left-right margin-top-bottom button-function'
+          onClick={() => disableAllUndergraduatePrograms()}
+        >
+          Disable Undergraduate Admissions
+        </Button>
+
         {undergraduateProgramsList.length > 0 ? (
           <Table
             tableHeaderColor='primary'
@@ -285,6 +295,7 @@ const ProgramTabs = ({
           </Button>
           {console.log('error')}
         </Link>
+
         {graduateProgramsList.length > 0 ? (
           <Table
             tableHeaderColor='primary'
@@ -308,6 +319,7 @@ const ProgramTabs = ({
 
 ProgramTabs.propTypes = {
   getAllUndergraduatePrograms: PropTypes.func.isRequired,
+  disableAllUndergraduatePrograms: PropTypes.func.isRequired,
   getAllGraduatePrograms: PropTypes.func.isRequired,
   enableUndergraduateProgram: PropTypes.func.isRequired,
   disableUndergraduateProgram: PropTypes.func.isRequired,
@@ -323,6 +335,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getAllUndergraduatePrograms,
+  disableAllUndergraduatePrograms,
   getAllGraduatePrograms,
   enableUndergraduateProgram,
   disableUndergraduateProgram,
