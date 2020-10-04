@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeName } from '../../actions/auth';
+import { updatePassword } from '../../actions/auth';
+import { setAlert } from '../../actions/alert';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
 import Card from '../../components/Card/Card';
@@ -69,12 +70,15 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const Name = ({ changeName }) => {
+const Password = ({ updatePassword, setAlert }) => {
   const classes = useStyles(styles);
 
-  const [formData, setFormData] = useState(false);
+  const [formData, setFormData] = useState({
+    password: '',
+    cpassword: ''
+  });
 
-  const { name } = formData;
+  const { password, cpassword } = formData;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -82,7 +86,11 @@ const Name = ({ changeName }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    changeName(formData);
+    if (password !== cpassword) {
+      setAlert('Passwords do not match', 'danger');
+    } else {
+      updatePassword(password);
+    }
   };
 
   return (
@@ -90,27 +98,39 @@ const Name = ({ changeName }) => {
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color='primary'>
-            <h4 className={classes.cardTitleWhite}>Change Name</h4>
-            <p className={classes.cardCategoryWhite}>Update your name</p>
+            <h4 className={classes.cardTitleWhite}>Password</h4>
+            <p className={classes.cardCategoryWhite}>Update your password</p>
           </CardHeader>
           <CardBody>
             <form onSubmit={e => onSubmit(e)}>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     className='form-control'
-                    label='Name'
+                    label='Password'
                     variant='outlined'
-                    type='text'
-                    name='name'
-                    value={name}
+                    type='password'
+                    name='password'
+                    value={password}
+                    onChange={e => onChange(e)}
+                    required={true}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <TextField
+                    className='form-control'
+                    label='Confirm Password'
+                    variant='outlined'
+                    type='password'
+                    name='cpassword'
+                    value={cpassword}
                     onChange={e => onChange(e)}
                     required={true}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <Button color='primary' variant='contained' type='submit'>
-                    Update Name
+                    Update Password
                   </Button>
                 </GridItem>
               </GridContainer>
@@ -122,8 +142,9 @@ const Name = ({ changeName }) => {
   );
 };
 
-Name.propTypes = {
-  changeName: PropTypes.func.isRequired
+Password.propTypes = {
+  updatePassword: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired
 };
 
-export default connect(null, { changeName })(Name);
+export default connect(null, { updatePassword, setAlert })(Password);

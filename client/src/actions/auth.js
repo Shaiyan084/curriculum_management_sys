@@ -155,7 +155,7 @@ export const changeName = formData => async dispatch => {
       }
     };
 
-    const res = await axios.put('api/users/name', formData, config);
+    const res = await axios.put('/api/users/name', formData, config);
 
     dispatch({
       type: NAME_UPDATED,
@@ -180,8 +180,8 @@ export const changeName = formData => async dispatch => {
   }
 };
 
-// Change Password
-export const changePassword = password => async dispatch => {
+// Update Password
+export const updatePassword = password => async dispatch => {
   dispatch({
     type: SET_AUTH_USER_LOADING
   });
@@ -195,7 +195,7 @@ export const changePassword = password => async dispatch => {
 
     const body = JSON.stringify({ password });
 
-    const res = await axios.put('/api/users/password', body, config);
+    const res = await axios.put('/api/users/update-password', body, config);
 
     dispatch({
       type: PASSWORD_UPDATED,
@@ -233,7 +233,7 @@ export const uploadProfilePicture = formData => async dispatch => {
     };
 
     const res = await axios.put(
-      'api/users/profile-picture/upload',
+      '/api/users/profile-picture/upload',
       formData,
       config
     );
@@ -263,7 +263,7 @@ export const removeProfilePicture = () => async dispatch => {
     type: SET_AUTH_USER_LOADING
   });
   try {
-    const res = await axios.put('api/users/profile-picture/remove');
+    const res = await axios.put('/api/users/profile-picture/remove');
 
     dispatch({
       type: PROFILE_PICTURE_REMOVED,

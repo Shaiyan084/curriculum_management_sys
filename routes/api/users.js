@@ -443,7 +443,7 @@ router.put(
     const { name } = req.body;
 
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.user.id);
 
       user.name = name;
 
@@ -460,7 +460,7 @@ router.put(
 // @desc   Change user password
 // @access Private
 router.put(
-  '/password',
+  '/update-password',
   [
     auth,
     check('password', 'Password of 6 or more character is required').isLength({
@@ -475,10 +475,10 @@ router.put(
 
     const { password } = req.body;
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.user.id);
 
-      const salt = bcrypt.genSalt(10);
-      user.password = bcrypt.hash(password, salt);
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
 
       await user.save();
       res.json(user);
@@ -507,7 +507,7 @@ router.put(
     }
     const { image } = req.body;
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.user.id);
 
       user.avatar = image;
 
@@ -525,9 +525,9 @@ router.put(
 // @access Private
 router.put('/profile-picture/remove', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user.id);
 
-    user.avatar = gravatar.url(email, {
+    user.avatar = gravatar.url(user.email, {
       s: '200', //size
       r: 'pg', //rating
       d: 'mm' //default

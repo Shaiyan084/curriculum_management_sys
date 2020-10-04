@@ -12,17 +12,17 @@ import CardBody from '../../components/Card/CardBody';
 import Divider from '@material-ui/core/Divider';
 import FormImage from './FormImage';
 import Moment from 'react-moment';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
+  // FormControl,
+  // InputLabel,
+  // Select,
+  // MenuItem,
+  // TextField,
   Button,
   Box
 } from '@material-ui/core';
@@ -596,7 +596,7 @@ const Dashboard = ({
             <h1 className={classes.cardTitleWhite}>Education Details</h1>
           </CardHeader>
           <CardBody>
-            <h3>Secondary Education Details</h3>
+            <h3 fontWeight='bold'>Secondary Education Details</h3>
             <GridContainer align='center'>
               <GridItem xs={12} sm={12} md={4}>
                 <Box

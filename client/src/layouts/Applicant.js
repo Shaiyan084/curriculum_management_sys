@@ -10,6 +10,7 @@ import Alert from '../components/Alert/Alert';
 
 import Dashboard from '../views/Applicant/Dashboard';
 import UndergraduateProgramList from '../views/Applicant/UndergraduateProgramList';
+import GraduateProgramList from '../views/Applicant/GraduateProgramList';
 import Settings from '../views/Applicant/Settings';
 
 import routes from '../routes/Applicant';
@@ -38,6 +39,10 @@ const switchRoutes = (
     <Route
       path='/applicant/undergraduate-program-selection-list'
       component={UndergraduateProgramList}
+    />
+    <Route
+      path='/applicant/graduate-program-selection-list'
+      component={GraduateProgramList}
     />
     <Route path='/applicant/settings' component={Settings} />
     <Route path='/applicant/dashboard' component={Dashboard} />

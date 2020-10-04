@@ -49,6 +49,20 @@ const GraduatePersonalDetail = ({
 }) => {
   const classes = useStyles(styles);
 
+  const [formData, setFormData] = useState({
+    name: '',
+    fatherName: '',
+    email: '',
+    cnicNumber: '',
+    cnicFrontPicture: '',
+    cnicBackPicture: '',
+    address: '',
+    placeOfBirth: '',
+    dateOfBirth: '',
+    phoneNumber: '',
+    domicile: ''
+  });
+
   return <div></div>;
 };
 

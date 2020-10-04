@@ -1,14 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
 import { withRouter, Link } from 'react-router-dom';
-import { getAllUndergraduatePrograms } from '../../actions/program';
+import { getAllGraduatePrograms } from '../../actions/program';
 import {
   getCurrentApplicant,
   applyProgram,
   removeProgram
 } from '../../actions/applicant';
+import { makeStyles } from '@material-ui/core/styles';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
 import Card from '../../components/Card/Card';
@@ -39,18 +39,6 @@ const styles = {
       color: '#FFFFFF'
     }
   },
-  cardCategoryBlack: {
-    '&,& a, & a:hover, & a:focus': {
-      color: 'rgba(0,0,0)',
-      margin: '0',
-      fontSize: '0.9rem',
-      marginTop: '0',
-      marginBottom: '0'
-    },
-    '& a,& a:hover,& a:focus': {
-      color: '#000000'
-    }
-  },
   cardTitleWhite: {
     color: '#FFFFFF',
     fontSize: '1.3rem',
@@ -71,27 +59,23 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const UndergraduateProgramList = ({
+const GraduateProgramList = ({
   getCurrentApplicant,
   applyProgram,
   removeProgram,
-  getAllUndergraduatePrograms,
-  history,
+  getAllGraduatePrograms,
   applicant: { loading, applicant },
-  program: { loading: undergraduateProgramsLoading, undergraduatePrograms },
-  auth
+  program: { loading: graduateProgramsLoading, graduatePrograms }
 }) => {
   const classes = useStyles(styles);
 
-  const [undergraduateProgramsList, setUndergraduateProgramsList] = useState(
-    []
-  );
+  const [graduateProgramsList, setGraduateProgramsList] = useState([]);
 
-  const getUndergraduatePrograms = () => {
+  const getGraduatePrograms = () => {
     let res = [];
     let i = 1;
 
-    undergraduateProgramsList.forEach(program => {
+    graduateProgramsList.forEach(program => {
       if (program.status) {
         res = [
           ...res,
@@ -99,7 +83,7 @@ const UndergraduateProgramList = ({
             `${i}`,
             program.name,
             program.department.name,
-            program.criteria.minPercentageOfEquivalence,
+            program.criteria.minCGPA,
             program.duration.yearly,
             <Fragment>
               <Checkbox
@@ -138,22 +122,22 @@ const UndergraduateProgramList = ({
   }, []);
 
   const [
-    getAllUndergraduateProgramsCalled,
-    setGetAllUndergraduateProgramsCalled
+    getAllGraduateProgramsCalled,
+    setGetAllGraduateProgramsCalled
   ] = useState(false);
 
   useEffect(() => {
-    if (!getAllUndergraduateProgramsCalled) {
-      getAllUndergraduatePrograms();
-      setGetAllUndergraduateProgramsCalled(true);
+    if (!getAllGraduateProgramsCalled) {
+      getAllGraduatePrograms();
+      setGetAllGraduateProgramsCalled(true);
     }
 
-    setUndergraduateProgramsList(
-      !undergraduateProgramsLoading && undergraduatePrograms.length > 0
-        ? undergraduatePrograms
+    setGraduateProgramsList(
+      !graduateProgramsLoading && graduatePrograms.length > 0
+        ? graduatePrograms
         : []
     );
-  }, [undergraduatePrograms]);
+  }, [graduatePrograms]);
 
   return (
     <GridContainer>
@@ -161,25 +145,25 @@ const UndergraduateProgramList = ({
         <Card>
           <CardHeader color='primary'>
             <h4 className={classes.cardTitleWhite}>
-              Undergraduate Programs Offered
+              Graduate Programs Offered
             </h4>
             <p className={classes.cardCategoryWhite}>
-              Select from the list of all undergraduate programs offered
+              Select from the list of all graduate programs offered
             </p>
           </CardHeader>
           <CardBody>
-            {undergraduateProgramsList.length > 0 ? (
+            {graduateProgramsList.length > 0 ? (
               <Table
                 tableHeaderColor='primary'
                 tableHead={[
                   'S.No',
                   'Name',
                   'Department',
-                  'Minimum Percentage Required',
+                  'Minimum CGPA Required',
                   'Duration (years)',
                   'Select'
                 ]}
-                tableData={getUndergraduatePrograms()}
+                tableData={getGraduatePrograms()}
               />
             ) : (
               <div className='text-center imp-message'>No programs found</div>
@@ -187,7 +171,7 @@ const UndergraduateProgramList = ({
             &nbsp;
             <GridItem xs={12} sm={12} md={12}>
               <Link
-                to='/applicant/personal-details'
+                to='/applicant/graduate-personal-details'
                 className='text-decoration-none'
               >
                 <Button
@@ -221,24 +205,24 @@ const UndergraduateProgramList = ({
   );
 };
 
-UndergraduateProgramList.propTypes = {
+GraduateProgramList.propTypes = {
   getCurrentApplicant: PropTypes.func.isRequired,
   applyProgram: PropTypes.func.isRequired,
   removeProgram: PropTypes.func.isRequired,
-  getAllUndergraduatePrograms: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-  applicant: PropTypes.object.isRequired
+  getAllGraduatePrograms: PropTypes.func.isRequired,
+  applicant: PropTypes.object.isRequired,
+  program: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  program: state.program,
+  auth: state.auth,
   applicant: state.applicant,
-  auth: state.auth
+  program: state.program
 });
 
 export default connect(mapStateToProps, {
-  getAllUndergraduatePrograms,
+  getAllGraduatePrograms,
+  getCurrentApplicant,
   applyProgram,
-  removeProgram,
-  getCurrentApplicant
-})(withRouter(UndergraduateProgramList));
+  removeProgram
+})(withRouter(GraduateProgramList));

@@ -20,21 +20,21 @@ const routes = [
   },
   {
     path: '/personal-details',
-    name: 'Update Personal Details',
+    name: 'Personal Details',
     icon: PersonOutlineIcon,
     component: UndergraduatePersonalDetails,
     layout: '/applicant'
   },
   {
     path: '/income-details',
-    name: 'Update Income Details',
+    name: 'Income Details',
     icon: AttachMoneyIcon,
     component: UndergraduateIncomeDetails,
     layout: '/applicant'
   },
   {
     path: '/education-details',
-    name: 'Update Education Details',
+    name: 'Education Details',
     icon: MenuBookIcon,
     component: UndergraduateEducationDetails,
     layout: '/applicant'

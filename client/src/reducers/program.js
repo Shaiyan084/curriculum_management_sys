@@ -97,7 +97,7 @@ export default function(state = initialState, action) {
         graduatePrograms: [
           ...state.graduatePrograms.map(graduateProgram => {
             if (graduateProgram._id === payload._id) {
-              graduateProgram.enabled = payload.enabled;
+              graduateProgram.status = payload.status;
             }
             return graduateProgram;
           })
@@ -111,7 +111,7 @@ export default function(state = initialState, action) {
         graduatePrograms: [
           ...state.graduatePrograms.map(graduateProgram => {
             if (graduateProgram._id === payload._id) {
-              graduateProgram.disabled = payload.disabled;
+              graduateProgram.status = payload.status;
             }
             return graduateProgram;
           })

@@ -168,17 +168,17 @@ const ProgramTabs = ({
               <Button
                 variant='contained'
                 className='margin-left-right margin-top-bottom button-function'
-                onClick={() => enableGraduateProgram(program._id)}
+                onClick={() => disableGraduateProgram(program._id)}
               >
-                Enable
+                Disable
               </Button>
             ) : (
               <Button
                 variant='contained'
                 className='margin-left-right margin-top-bottom button-function'
-                onClick={() => disableGraduateProgram(program._id)}
+                onClick={() => enableGraduateProgram(program._id)}
               >
-                Disable
+                Enable
               </Button>
             )}
             <Button
