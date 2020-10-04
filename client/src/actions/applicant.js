@@ -5,6 +5,7 @@ import {
   APPLICANT_PROGRAM_REMOVED,
   APPLICANT_FORWARDED,
   APPLICANT_FORWARDED_LOADED,
+  SET_APPLICANT_LOADING,
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
@@ -22,6 +23,26 @@ import { setAlert } from './alert';
 export const getCurrentApplicant = () => async dispatch => {
   try {
     const res = await axios.get('/api/applicants/me');
+
+    dispatch({
+      type: APPLICANT_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get applicant by id
+export const getApplicantById = id => async dispatch => {
+  dispatch({
+    type: SET_APPLICANT_LOADING
+  });
+  try {
+    const res = await axios.get(`/api/applicants/${id}`);
 
     dispatch({
       type: APPLICANT_LOADED,

@@ -37,6 +37,24 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route  GET /api/applicants/:id
+// @desc   Get applicant by id
+// @access Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findById(req.params.id).populate('user', [
+      'name',
+      'email',
+      'avatar'
+    ]);
+
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  GET /api/applicants/applicationForwarded
 // @desc   Get all application forwaded applicants
 // @access Private

@@ -5,6 +5,7 @@ import {
   APPLICANT_PROGRAM_REMOVED,
   APPLICANT_FORWARDED,
   APPLICANT_FORWARDED_LOADED,
+  SET_APPLICANT_LOADING,
   ALL_UNDERGRADUATE_APPLICANT_LOADED,
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
@@ -76,6 +77,11 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         errors: payload
+      };
+    case SET_APPLICANT_LOADING:
+      return {
+        ...state,
+        loading: true
       };
     default:
       return state;
