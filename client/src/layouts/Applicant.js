@@ -5,7 +5,7 @@ import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../components/Navbars/Admin';
 import Footer from '../components/Footer/Footer.js';
-import Sidebar from '../components/Sidebar/Admin';
+import Sidebar from '../components/Sidebar/UndergraduateApplicant';
 import Alert from '../components/Alert/Alert';
 
 import Dashboard from '../views/Applicant/Dashboard';
@@ -91,7 +91,7 @@ const Admin = ({ ...rest }) => {
     <div className={classes.wrapper}>
       <Sidebar
         routes={routes}
-        logoText={'Admin Portal'}
+        logoText={'Applicant Portal'}
         logo={logo}
         image={bgImage}
         handleDrawerToggle={handleDrawerToggle}

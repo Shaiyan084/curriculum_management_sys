@@ -609,6 +609,34 @@ router.put('/forwarded', auth, async (req, res) => {
   }
 });
 
+// @route  PUT /api//applicants/forwarded/:id
+// @desc   Forward Applicants application to the department coordinator
+// @access Private
+router.put('/forwarded/:id', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findById(req.params.id);
+    // console.log('Applicant: ', applicant);
+
+    // if (applicant.applicantVerified === false) {
+    //   return res.send(400).json({ msg: 'Applicant has not been verified yet' });
+    // }
+
+    // applicant.applicantVerified = true;
+    applicant.applicationForwarded = true;
+
+    applicant.populate('user', ['name', 'email', 'avatar'], (err, res) => {
+      if (err) throw err;
+      return res;
+    });
+    await applicant.save();
+
+    res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  PUT /api/applicants/verify/:id
 // @desc   Verify and forward the applications that match the criteria to the department coordinator
 // @access Private

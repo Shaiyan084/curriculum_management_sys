@@ -10,6 +10,7 @@ import {
   UNDERGRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
+  UNDERGRADUATE_APPLICATION_FORWARDED,
   ALL_UNDERGRADUATE_APPLICANT_LOADED,
   GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
@@ -411,6 +412,25 @@ export const calculateAggregate = id => async dispatch => {
     });
 
     dispatch(setAlert('Aggregate has been calculated'));
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Undergraduate Application forwarded
+export const applicationForwarded = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/applicants/forwarded/${id}`);
+
+    dispatch({
+      type: UNDERGRADUATE_APPLICATION_FORWARDED,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Application has been forwaded'));
   } catch (err) {
     dispatch({
       type: APPLICANT_ERROR,

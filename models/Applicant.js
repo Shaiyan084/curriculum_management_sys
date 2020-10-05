@@ -166,6 +166,10 @@ const ApplicantSchema = mongoose.Schema({
   applicantForwarded: {
     type: Boolean,
     default: false
+  },
+  applicationForwarded: {
+    type: Boolean,
+    default: false
   }
 });
 

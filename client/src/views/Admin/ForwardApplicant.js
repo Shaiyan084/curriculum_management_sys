@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 import {
   getApplicantById,
   testScoreAdded,
-  calculateAggregate
+  calculateAggregate,
+  applicationForwarded
 } from '../../actions/applicant';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -64,6 +65,7 @@ const useStyles = makeStyles(styles);
 const ForwardApplicant = ({
   getApplicantById,
   calculateAggregate,
+  applicationForwarded,
   testScoreAdded,
   applicant: { loading, applicant },
   history,
@@ -676,6 +678,15 @@ const ForwardApplicant = ({
                       >
                         Add Test Score
                       </Button>
+                      {/* </GridItem>
+                    <GridItem xs={12} sm={12} md={3}> */}
+                      <Button
+                        variant='contained'
+                        className='margin-left-right margin-top-bottom button-function color-primary'
+                        onClick={() => applicationForwarded(applicant._id)}
+                      >
+                        Forward Application
+                      </Button>
                     </GridItem>
                   </form>
                 </GridContainer>
@@ -691,6 +702,7 @@ const ForwardApplicant = ({
 ForwardApplicant.propTypes = {
   getApplicantById: PropTypes.func.isRequired,
   calculateAggregate: PropTypes.func.isRequired,
+  applicationForwarded: PropTypes.func.isRequired,
   testScoreAdded: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
@@ -704,6 +716,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getApplicantById,
+  applicationForwarded,
   calculateAggregate,
   testScoreAdded
 })(withRouter(ForwardApplicant));
