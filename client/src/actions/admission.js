@@ -1,4 +1,5 @@
 import {
+  CURRENT_SESSION_LOADED,
   ALL_ADMISSION_SESSIONS_LOADED,
   ADMISSION_SESSION_CREATED,
   ADMISSION_SESSION_UPDATED,
@@ -19,6 +20,24 @@ export const getAdmissionSessions = () => async dispatch => {
 
     dispatch({
       type: ALL_ADMISSION_SESSIONS_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: ADMISSION_SESSION_ERROR,
+      payload: { msg: err.message.statusText, status: err.message.status }
+    });
+  }
+};
+
+// Get current session
+export const getCurrentSession = () => async dispatch => {
+  try {
+    console.log('call hua ha');
+    const res = await axios.get('/api/admissions/current');
+
+    dispatch({
+      type: CURRENT_SESSION_LOADED,
       payload: res.data
     });
   } catch (err) {

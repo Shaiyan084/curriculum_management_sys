@@ -1,4 +1,5 @@
 import {
+  CURRENT_SESSION_LOADED,
   ALL_ADMISSION_SESSIONS_LOADED,
   ADMISSION_SESSION_CREATED,
   ADMISSION_SESSION_UPDATED,
@@ -29,6 +30,7 @@ export default function(state = initialState, action) {
         sessions: payload
       };
     case ADMISSION_SESSION_LOADED:
+    case CURRENT_SESSION_LOADED:
       return {
         ...state,
         error: null,

@@ -6,8 +6,10 @@ import {
   Grid,
   Paper,
   TextField,
-  Button,
+  Button
 } from '@material-ui/core';
+import GridItem from '../../components/Grid/GridItem';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/auth';
 import { Redirect } from 'react-router-dom';
@@ -15,16 +17,16 @@ import { Redirect } from 'react-router-dom';
 const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    password: ''
   });
 
   const { email, password } = formData;
 
-  const onChange = (e) => {
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     loginUser(formData);
   };
@@ -57,7 +59,7 @@ const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
               </div>
             </Grid>
             <Grid xs={12} sm={12} md={12} item>
-              <form className='form' onSubmit={(e) => onSubmit(e)}>
+              <form className='form' onSubmit={e => onSubmit(e)}>
                 <TextField
                   className='form-control'
                   label='Email'
@@ -65,7 +67,7 @@ const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
                   type='email'
                   name='email'
                   value={email}
-                  onChange={(e) => onChange(e)}
+                  onChange={e => onChange(e)}
                   required={true}
                 />
                 <TextField
@@ -75,7 +77,7 @@ const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
                   type='password'
                   name='password'
                   value={password}
-                  onChange={(e) => onChange(e)}
+                  onChange={e => onChange(e)}
                   required={true}
                 />
                 <Button
@@ -87,6 +89,12 @@ const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
                 >
                   Login
                 </Button>
+                <GridItem style={{ textAlign: 'center' }}>
+                  If you already have an account?{' '}
+                  <Link to to={'/register/applicant'}>
+                    Register
+                  </Link>
+                </GridItem>
               </form>
             </Grid>
           </Grid>
@@ -98,11 +106,11 @@ const Applicant = ({ loginUser, auth: { loading, isAuthenticated, user } }) => {
 
 Applicant.propTypes = {
   loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
+const mapStateToProps = state => ({
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { loginUser })(Applicant);

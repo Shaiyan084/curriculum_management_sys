@@ -12,6 +12,8 @@ import {
   Select,
   MenuItem
 } from '@material-ui/core';
+import GridItem from '../../components/Grid/GridItem';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerApplicant } from '../../actions/auth';
 import { Redirect } from 'react-router-dom';
@@ -128,8 +130,14 @@ const Applicant = ({
                   type='submit'
                   className='form-control'
                 >
-                  Login
+                  Register
                 </Button>
+                <GridItem style={{ textAlign: 'center' }}>
+                  If you already have an account?{' '}
+                  <Link to to={'/login/applicant'}>
+                    Login
+                  </Link>
+                </GridItem>
               </form>
             </Grid>
           </Grid>

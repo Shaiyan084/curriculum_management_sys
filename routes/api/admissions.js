@@ -20,6 +20,21 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route  GET /api/admissions/current
+// @desc   Get current admission sessions
+// @access Public
+router.get('/current', async (req, res) => {
+  try {
+    const admission = await Admission.find();
+    const session = admission[0].sessions[0];
+
+    res.json(session);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  GET /api/admissions/:id
 // @desc   Get admission sessions by id
 // @access Private
@@ -70,7 +85,11 @@ router.post(
       }
       let admission = await Admission.find();
 
-      admission = admission[0];
+      if (admission.length === 0) {
+        admission = new Admission();
+      } else {
+        admission = admission[0];
+      }
 
       const newSession = {
         name,
@@ -207,10 +226,15 @@ router.put(
 // @access Private
 router.delete('/remove-admission-session/:id', auth, async (req, res) => {
   try {
-    const admission = await Admission.findOneAndRemove();
-    admission[0].sessions.filter(
-      session => session._id.toString() === req.params.id
-    )[0];
+    const admission = await Admission.find();
+
+    const removeIndex = admission[0].sessions
+      .map(session => session._id.toString())
+      .indexOf(req.params.id);
+
+    admission[0].sessions.splice(removeIndex, 1);
+
+    await admission[0].save();
 
     res.json({ msg: 'Admission session has been successfully removed' });
   } catch (err) {
