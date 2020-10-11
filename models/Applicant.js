@@ -170,6 +170,10 @@ const ApplicantSchema = mongoose.Schema({
   applicationForwarded: {
     type: Boolean,
     default: false
+  },
+  admission: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'admission'
   }
 });
 

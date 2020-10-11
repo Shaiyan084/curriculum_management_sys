@@ -5,11 +5,43 @@ const { check, validationResult } = require('express-validator');
 const Admission = require('../../models/Admission');
 const User = require('../../models/User');
 
+// @route  GET /api/admissions
+// @desc   Get all admission sessions
+// @access Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const admission = await Admission.find();
+    const sessions = admission[0].sessions;
+
+    res.json(sessions);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/admissions/:id
+// @desc   Get admission sessions by id
+// @access Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const admission = await Admission.find();
+    const session = admission[0].sessions.filter(
+      session => session._id.toString() === req.params.id
+    )[0];
+
+    res.json(session);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
 // @route  POST /api/admissions
 // @desc   Create a new admission session
 // @access Private
 router.post(
-  '/',
+  '/create-admission-session',
   [
     auth,
     check('name', 'Name of session is required')
@@ -65,40 +97,57 @@ router.post(
   }
 );
 
-// @route  GET /api/admissions
-// @desc   Get all sessions
+// @route  PUT /api/admissions/enable-admission-session/:id
+// @desc   Enable admission session by id
 // @access Private
-router.get('/', auth, async (req, res) => {
-  try {
-    const admission = await Admission.find();
-    const sessions = admission[0].sessions;
+router.put(
+  '/enable-admission-session/:id',
+  [auth, check('status', 'Status is required').isBoolean()],
+  async (req, res) => {
+    try {
+      const admission = await Admission.find();
+      const session = admission[0].sessions.filter(
+        session => session._id.toString() === req.params.id
+      )[0];
 
-    res.json(sessions);
-  } catch (err) {
-    console.log(err.message);
-    return res.status(500).send('Server Error');
+      session.status = true;
+
+      await admission[0].save();
+
+      res.json(session);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send('Server Error');
+    }
   }
-});
+);
 
-// @route  GET /api/admissions/:id
-// @desc   Get sessions by id
+// @route  PUT /api/admissions/disable-admission-session/:id
+// @desc   Disable admission session by id
 // @access Private
-router.get('/:id', auth, async (req, res) => {
-  try {
-    const admission = await Admission.find();
-    const session = admission[0].sessions.filter(
-      session => session._id.toString() === req.params.id
-    )[0];
+router.put(
+  '/disable-admission-session/:id',
+  [auth, check('status', 'Status is required').isBoolean()],
+  async (req, res) => {
+    try {
+      const admission = await Admission.find();
+      const session = admission[0].sessions.filter(
+        session => session._id.toString() === req.params.id
+      )[0];
 
-    res.json(session);
-  } catch (err) {
-    console.log(err.message);
-    return res.status(500).send('Server Error');
+      session.status = false;
+
+      await admission[0].save();
+      res.json(session);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send('Server Error');
+    }
   }
-});
+);
 
 // @route  PUT /api/admissions/:id
-// @desc   Update sessions by id
+// @desc   Update admission sessions by id
 // @access Private
 router.put(
   '/:id',
@@ -152,5 +201,22 @@ router.put(
     }
   }
 );
+
+// @route  PUT /api/admissions/remove-admission-session/:id
+// @desc   Remove admission session by id
+// @access Private
+router.delete('/remove-admission-session/:id', auth, async (req, res) => {
+  try {
+    const admission = await Admission.findOneAndRemove();
+    admission[0].sessions.filter(
+      session => session._id.toString() === req.params.id
+    )[0];
+
+    res.json({ msg: 'Admission session has been successfully removed' });
+  } catch (err) {
+    console.log(err.message);
+    return res.json(500).send('Server Error');
+  }
+});
 
 module.exports = router;

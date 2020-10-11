@@ -1,8 +1,10 @@
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 
 import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
 import ManagePrograms from '../views/Admin/ManagePrograms';
+import ManageApplicant from '../views/Coordinator/ManageApplicant';
 
 const routes = [
   {
@@ -10,8 +12,15 @@ const routes = [
     name: 'Dashboard',
     icon: DashboardIcon,
     component: Dashboard,
-    layout: '/coordinator',
+    layout: '/coordinator'
   },
+  {
+    path: '/manage-applicants',
+    name: 'Manage Applicants',
+    icon: AssignmentIndRoundedIcon,
+    component: ManageApplicant,
+    layout: '/coordinator'
+  }
   // {
   //   path: '/manage-departments',
   //   name: 'Manage Departments',

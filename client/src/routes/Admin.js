@@ -4,6 +4,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import SurroundSoundRoundedIcon from '@material-ui/icons/SurroundSoundRounded';
 import AssignmentIndRoundedIcon from '@material-ui/icons/AssignmentIndRounded';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import TollIcon from '@material-ui/icons/Toll';
 import FaceIcon from '@material-ui/icons/Face';
 import SettingsIcon from '@material-ui/icons/Settings';
 
@@ -12,6 +13,7 @@ import ManageDepartments from '../views/Admin/ManageDepartments';
 import ManagePrograms from '../views/Admin/ManagePrograms';
 import ManageCoordinators from '../views/Admin/ManageCoordinators';
 import ManageApplicant from '../views/Admin/ManageApplicant';
+import ManagePayroll from '../views/Admin/ManagePayroll';
 
 const routes = [
   {
@@ -54,6 +56,13 @@ const routes = [
     name: 'Manage Applicants',
     icon: AssignmentIndRoundedIcon,
     component: ManageApplicant,
+    layout: '/admin'
+  },
+  {
+    path: '/manage-payrolls',
+    name: 'Manage Payrolls',
+    icon: TollIcon,
+    component: ManagePayroll,
     layout: '/admin'
   },
   {

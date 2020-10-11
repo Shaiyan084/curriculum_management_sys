@@ -1,33 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import {
-  getApplicantById,
-  testScoreAdded,
-  calculateAggregate,
-  applicationForwarded
-} from '../../actions/applicant';
+import { withRouter, Link } from 'react-router-dom';
+import { getApplicantById } from '../../actions/applicant';
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import Card from '../../components/Card/Card.js';
 import CardHeader from '../../components/Card/CardHeader.js';
 import CardBody from '../../components/Card/CardBody.js';
-import Table from '../../components/Table/Table.js';
 import Divider from '@material-ui/core/Divider';
 import FormImage from '../Applicant/FormImage';
-import ProfilePicture from '../Applicant/ProfilePicture';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  Button,
-  Box,
-  Checkbox
-} from '@material-ui/core';
+import { TextField, Button, Box } from '@material-ui/core';
 
 const styles = {
   cardCategoryWhite: {
@@ -62,13 +46,9 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const ForwardApplicant = ({
+const ApplicantDetails = ({
   getApplicantById,
-  calculateAggregate,
-  applicationForwarded,
-  testScoreAdded,
   applicant: { loading, applicant },
-  history,
   auth,
   match
 }) => {
@@ -110,25 +90,16 @@ const ForwardApplicant = ({
     intermediateEducationTo: '',
     intermediateEducationObtainedMarks: '',
     intermediateEducationTotalMarks: '',
-    intermediateEducationPicture: ''
+    intermediateEducationPicture: '',
+    universityTestScore: '',
+    totalAggregate: ''
   });
-
-  const [testScore, setTestScore] = useState(0);
 
   useEffect(() => {
     if (!getApplicantByIdCalled) {
       getApplicantById(match.params.id);
       setGetApplicantByIdCalled(true);
     }
-
-    setTestScore(
-      !loading &&
-        applicant !== null &&
-        applicant.educationDetails &&
-        applicant.educationDetails.universityTestScore
-        ? applicant.educationDetails.universityTestScore
-        : 0
-    );
 
     setPersonalDetails({
       name:
@@ -253,6 +224,14 @@ const ForwardApplicant = ({
       intermediateEducationPicture:
         !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.picture
+          : '',
+      universityTestScore:
+        !loading && applicant !== null && applicant.educationDetails
+          ? applicant.educationDetails.universityTestScore
+          : '',
+      totalAggregate:
+        !loading && applicant !== null && applicant.educationDetails
+          ? applicant.educationDetails.totalAggregate
           : ''
     });
   }, [applicant]);
@@ -348,124 +327,6 @@ const ForwardApplicant = ({
                       <h4 align='center' style={{ margin: '0' }}>
                         {incomeDetails.minimumYearlyIncome}
                       </h4>
-                    </Box>
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
-            </Card>
-            &nbsp;
-            <Card>
-              <CardHeader color='info'>
-                <h1 className={classes.cardTitleWhite}>Aggregate Result</h1>
-                <p className={classes.cardCategoryWhite}>
-                  Calculate aggregate result
-                </p>
-              </CardHeader>
-              <CardBody>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <h4
-                      align='center'
-                      style={{ margin: '0', marginTop: '20px' }}
-                    >
-                      University Test Score
-                    </h4>
-                    <Box
-                      component='div'
-                      display='block'
-                      align='center'
-                      p={1}
-                      m={1}
-                      bgcolor='grey'
-                    >
-                      <GridItem xs={12} sm={12} md={12}>
-                        <form
-                          onSubmit={e => {
-                            e.preventDefault();
-                            testScoreAdded(applicant._id, testScore);
-                          }}
-                        >
-                          <GridItem xs={12} sm={12} md={12}>
-                            <TextField
-                              className='form-control'
-                              variant='outlined'
-                              type='number'
-                              value={testScore}
-                              onChange={e => setTestScore(e.target.value)}
-                              required={true}
-                            />
-                          </GridItem>
-                          &nbsp;
-                          <GridItem xs={12} sm={12} md={12}>
-                            <Button
-                              variant='contained'
-                              className='margin-left-right margin-top-bottom'
-                              type='submit'
-                              color='secondary'
-                            >
-                              Add Test Score
-                            </Button>
-                          </GridItem>
-                        </form>
-                      </GridItem>
-                    </Box>
-                    <Divider variant='middle' />
-                    <h4
-                      align='center'
-                      style={{ margin: '0', marginTop: '20px' }}
-                    >
-                      Aggregate
-                    </h4>
-                    <Box
-                      component='div'
-                      display='block'
-                      align='center'
-                      p={1}
-                      m={1}
-                      bgcolor='grey'
-                    >
-                      <GridItem xs={12} sm={12} md={12}>
-                        <Button
-                          variant='contained'
-                          className='margin-left-right margin-top-bottom button-function'
-                          onClick={() => calculateAggregate(applicant._id)}
-                        >
-                          Calculate Aggregate
-                        </Button>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={12}>
-                        <p>Your calculated aggregate is: </p>
-                        <h4>
-                          {applicant &&
-                            applicant.educationDetails &&
-                            applicant.educationDetails.totalAggregate}
-                          %
-                        </h4>
-                      </GridItem>
-                    </Box>
-                    <Divider variant='middle' />
-                    <p
-                      align='center'
-                      style={{ margin: '0', marginTop: '20px' }}
-                    >
-                      Forward application to department coordinator
-                    </p>
-                    <Box
-                      component='div'
-                      display='block'
-                      align='center'
-                      p={1}
-                      m={1}
-                      bgcolor='grey'
-                    >
-                      <Button
-                        variant='contained'
-                        className='margin-left-right margin-top-bottom'
-                        color='primary'
-                        onClick={() => applicationForwarded(applicant._id)}
-                      >
-                        Forward Application
-                      </Button>
                     </Box>
                   </GridItem>
                 </GridContainer>
@@ -761,42 +622,21 @@ const ForwardApplicant = ({
                       />
                     </Box>
                   </GridItem>
-                  {/* 
-                  <Divider variant='middle' />
-                  <form
-                    onSubmit={e => {
-                      e.preventDefault();
-                      testScoreAdded(applicant._id, testScore);
-                    }}
-                  >
-                    <GridItem xs={12} sm={12} md={12}>
-                      <TextField
-                        className='form-control'
-                        variant='outlined'
-                        type='number'
-                        value={testScore}
-                        onChange={e => setTestScore(e.target.value)}
-                        required={true}
-                      />
-                    </GridItem>
-                    &nbsp;
-                    <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Link
+                      to={'/coordinator/manage-applicants'}
+                      className='text-decoration-none'
+                    >
                       <Button
+                        color='primary'
                         variant='contained'
-                        className='margin-left-right margin-top-bottom button-function'
                         type='submit'
+                        size='large'
                       >
-                        Add Test Score
-                      </Button> */}
-                  {/* <Button
-                        variant='contained'
-                        className='margin-left-right margin-top-bottom button-function'
-                        onClick={() => applicationForwarded(applicant._id)}
-                      >
-                        Forward Application
-                      </Button> */}
-                  {/* </GridItem>
-                  </form> */}
+                        Back
+                      </Button>
+                    </Link>
+                  </GridItem>
                 </GridContainer>
               </CardBody>
             </Card>
@@ -807,11 +647,8 @@ const ForwardApplicant = ({
   );
 };
 
-ForwardApplicant.propTypes = {
+ApplicantDetails.propTypes = {
   getApplicantById: PropTypes.func.isRequired,
-  calculateAggregate: PropTypes.func.isRequired,
-  applicationForwarded: PropTypes.func.isRequired,
-  testScoreAdded: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   author: PropTypes.object.isRequired
@@ -822,9 +659,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {
-  getApplicantById,
-  applicationForwarded,
-  calculateAggregate,
-  testScoreAdded
-})(withRouter(ForwardApplicant));
+export default connect(mapStateToProps, { getApplicantById })(
+  withRouter(ApplicantDetails)
+);

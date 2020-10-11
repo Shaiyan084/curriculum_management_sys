@@ -58,14 +58,14 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 const ManageApplicant = ({
-  getCurrentApplicant,
   getAllUndergraduateApplicants,
+  getCurrentApplicant,
   applicant: {
     loading: undergraduateApplicantsLoading,
     undergraduateApplicants,
     applicant
   },
-  history
+  auth: { user }
 }) => {
   const classes = useStyles(styles);
 
@@ -78,7 +78,12 @@ const ManageApplicant = ({
     let i = 1;
 
     undergraduateApplicantList.forEach(undergraduateApplicant => {
-      if (undergraduateApplicant.applicantForwarded) {
+      if (
+        undergraduateApplicant.applicationForwarded &&
+        undergraduateApplicant.appliedPrograms.map(
+          program => program.department === user.department
+        )
+      ) {
         res = [
           ...res,
           [
@@ -86,23 +91,11 @@ const ManageApplicant = ({
             undergraduateApplicant.personalDetails.name,
             undergraduateApplicant.personalDetails.fatherName,
             undergraduateApplicant.personalDetails.email,
-            (
-              (undergraduateApplicant.educationDetails.secondaryEducationDetails
-                .obtainedMarks /
-                undergraduateApplicant.educationDetails
-                  .secondaryEducationDetails.totalMarks) *
-              100
-            ).toFixed(2),
-            (
-              (undergraduateApplicant.educationDetails
-                .intermediateEducationDetails.obtainedMarks /
-                undergraduateApplicant.educationDetails
-                  .intermediateEducationDetails.totalMarks) *
-              100
-            ).toFixed(2),
+            undergraduateApplicant.educationDetails.universityTestScore,
+            undergraduateApplicant.educationDetails.totalAggregate,
             <Fragment>
               <Link
-                to={`/admin/forward-applicant/${undergraduateApplicant._id}`}
+                to={`/coordinator/applicant-details/${undergraduateApplicant._id}`}
                 className='text-decoration-none'
               >
                 <Button
@@ -169,8 +162,8 @@ const ManageApplicant = ({
                   'Name',
                   'Father Name',
                   'Email',
-                  'Secondary Education (%)',
-                  'Intermediate Education (%)',
+                  'University Test Score',
+                  'Total Aggregate (%)',
                   'Actions'
                 ]}
                 tableData={getUndergraduateApplicants()}

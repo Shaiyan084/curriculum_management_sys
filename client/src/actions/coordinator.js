@@ -1,11 +1,6 @@
 import {
   ALL_COORDINATORS_LOADED,
   COORDINATOR_LOADED,
-  // REGISTER_SUCCESS,
-  // REGISTER_FAILED,
-  // LOGIN_SUCCESS,
-  // LOGIN_FAILED,
-  // LOGOUT,
   COORDINATOR_NAME_UPDATED,
   COORDINATOR_PASSWORD_UPDATED,
   COORDINATOR_PROFILE_PICTURE_UPDATED,
@@ -55,70 +50,6 @@ export const loadCoordinator = () => async dispatch => {
     });
   }
 };
-
-// // Register Coordinator
-// export const registerCoordinator = formData => async dispatch => {
-//   const config = {
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   };
-//   try {
-//     const res = await axios.put('/api/users/coordinator', formData, config);
-
-//     dispatch({
-//       type: REGISTER_SUCCESS,
-//       payload: res.data
-//     });
-
-//     dispatch(setAlert('Coordinator Successfully Registered'));
-
-//     // history.push('/login');
-
-//     dispatch(loadCoordinator());
-//   } catch (err) {
-//     dispatch({
-//       type: REGISTER_FAILED
-//     });
-//   }
-// };
-
-// // Login Coordinator
-// export const loginCoordinator = formData => async dispatch => {
-//   try {
-//     const config = {
-//       headers: {
-//         'Content-Type': 'application/json'
-//       }
-//     };
-
-//     const res = await axios.put('/api/auth/login', formData, config);
-
-//     dispatch({
-//       type: LOGIN_SUCCESS,
-//       payload: res.data
-//     });
-
-//     dispatch(loadCoordinator());
-//   } catch (err) {
-//     dispatch({
-//       type: LOGIN_FAILED
-//     });
-
-//     const errors = err.response.data.errors;
-
-//     if (errors) {
-//       errors.forEach(error => dispatch(setAlert(error.message, 'danger')));
-//     }
-//   }
-// };
-
-// // Logout Coordinator
-// export const logoutCoordinator = () => async dispatch => {
-//   dispatch({
-//     type: LOGOUT
-//   });
-// };
 
 // Change Coordinator Name
 export const changeCoordinatorName = formData => async dispatch => {

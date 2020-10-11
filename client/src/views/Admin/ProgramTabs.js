@@ -264,7 +264,7 @@ const ProgramTabs = ({
           className='margin-left-right margin-top-bottom button-function'
           onClick={() => disableAllUndergraduatePrograms()}
         >
-          Disable Undergraduate Admissions
+          Disable All Undergraduate
         </Button>
 
         {undergraduateProgramsList.length > 0 ? (

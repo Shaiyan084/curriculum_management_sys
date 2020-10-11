@@ -12,6 +12,8 @@ import CreateDepartment from '../views/Admin/CreateDepartment';
 import UpdateDepartment from '../views/Admin/UpdateDepartment';
 import CreateUndergraduateProgram from '../views/Admin/CreateUndergraduateProgram';
 import UpdateProgram from '../views/Admin/UpdateProgram';
+import ManageApplicant from '../views/Coordinator/ManageApplicant';
+import ApplicantDetails from '../views/Coordinator/ApplicantDetails';
 
 import routes from '../routes/Coordinator';
 
@@ -36,6 +38,11 @@ const switchRoutes = (
       }
       return null;
     })}
+    <Route path='/coordinator/manage-applicants' component={ManageApplicant} />
+    <Route
+      path='/coordinator/applicant-details/:id'
+      component={ApplicantDetails}
+    />
     {/* <Route path='/admin/create-department' component={CreateDepartment} />
     <Route path='/admin/create-program' component={CreateProgram} />
     <Route path='/admin/update-department/:id' component={UpdateDepartment} />

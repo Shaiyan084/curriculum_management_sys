@@ -1,0 +1,39 @@
+.container{
+	box-sizing: border-box;
+	padding: 40px 20px;
+	margin: 0;
+}
+
+.header{
+	display: flex;
+}
+
+.header-left{
+	text-align: center;
+}
+
+.header-center{
+	flex-grow: 1;
+}
+
+.header-center > div:nth-child(1) {
+	text-align: center;
+	font-size: 25px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.header-center > div:nth-child(2) {
+	text-align: center;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.header-right{
+	text-align: center;
+}
+
+.header-left > img,
+.header-right > img {
+	width: 100px;
+}

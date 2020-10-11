@@ -19,6 +19,9 @@ import ExperienceDetails from '../views/Admin/ExperienceDetails';
 import EducationDetails from '../views/Admin/EducationDetails';
 import ManageApplicant from '../views/Admin/ManageApplicant';
 import ForwardApplicant from '../views/Admin/ForwardApplicant';
+import CreateAdmissionSession from '../views/Admin/CreateAdmissionSession';
+import Dashboard from '../views/Admin/Dashboard';
+import UpdateAdmissionSession from '../views/Admin/UpdateAdmissionSession';
 
 import routes from '../routes/Admin';
 
@@ -60,6 +63,15 @@ const switchRoutes = (
     <Route path='/admin/education-details' component={EducationDetails} />
     <Route path='/admin/manage-applicants' component={ManageApplicant} />
     <Route path='/admin/forward-applicant/:id' component={ForwardApplicant} />
+    <Route
+      path='/admin/create-admission-session'
+      component={CreateAdmissionSession}
+    />
+    <Route path='/admin/dashboard' component={Dashboard} />
+    <Route
+      path='/admin/update-session-details/:id'
+      component={UpdateAdmissionSession}
+    />
     {/* <Redirect from='/admin' to='/admin/dashboard' /> */}
   </Switch>
 );

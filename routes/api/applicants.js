@@ -742,13 +742,7 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
     let totalAggregate =
       secondaryAggregate + intermediateAggregate + universityTestAggregate;
 
-    // if(applicant.type == 1){
-    //   let bachelorAggregate = (bachelorEducationDetails.cgpa * 0.5) + (ntsMarks * 0.5);
-
-    //   let totalAggregate = bachelorAggregate;
-    // }
-
-    applicant.educationDetails.totalAggregate = totalAggregate;
+    applicant.educationDetails.totalAggregate = totalAggregate.toFixed(2);
 
     applicant.populate('user', ['name', 'email', 'avatar'], (err, res) => {
       if (err) throw err;

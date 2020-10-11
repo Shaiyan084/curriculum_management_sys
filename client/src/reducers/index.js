@@ -6,6 +6,7 @@ import program from './program';
 import applicant from './applicant';
 import coordinator from './coordinator';
 import profile from './profile';
+import admission from './admission';
 
 export default combineReducers({
   auth,
@@ -14,5 +15,6 @@ export default combineReducers({
   program,
   applicant,
   coordinator,
-  profile
+  profile,
+  admission
 });
