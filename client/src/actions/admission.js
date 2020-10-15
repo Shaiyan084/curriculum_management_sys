@@ -8,7 +8,8 @@ import {
   ADMISSION_SESSION_LOADING,
   ADMISSION_SESSION_LOADED,
   ADMISSION_SESSION_REMOVED,
-  ADMISSION_SESSION_ERROR
+  ADMISSION_SESSION_ERROR,
+  GENERATE_ADMISSION_MERIT_LIST
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -57,6 +58,24 @@ export const getAdmissionSessionsById = id => async dispatch => {
       type: ADMISSION_SESSION_LOADED,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: ADMISSION_SESSION_ERROR,
+      payload: { msg: err.message.statusText, status: err.message.status }
+    });
+  }
+};
+
+// Create merit list
+export const generateMeritList = () => async dispatch => {
+  try {
+    await axios.post('/api/admissions/generate-merit-list');
+
+    dispatch({
+      type: GENERATE_ADMISSION_MERIT_LIST
+    });
+
+    dispatch(setAlert('Merit list has been generated'));
   } catch (err) {
     dispatch({
       type: ADMISSION_SESSION_ERROR,

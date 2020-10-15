@@ -17,7 +17,8 @@ import {
   GRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
   GRADUATE_APPLICANT_NTS_MARKS_UPDATED,
   ALL_GRADUATE_APPLICANT_LOADED,
-  UNDERGRADUATE_AGGREGATE_CALCULATED
+  UNDERGRADUATE_AGGREGATE_CALCULATED,
+  GET_MERIT_LIST
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alert';
@@ -51,6 +52,26 @@ export const getApplicantById = id => async dispatch => {
       type: APPLICANT_LOADED,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: APPLICANT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Check merit status
+export const checkMeritStatus = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/applicants/get-merit-status');
+
+    dispatch({
+      type: GET_MERIT_LIST
+    });
+
+    console.log(res.data.isOnMerit);
+
+    return res.data.isOnMerit;
   } catch (err) {
     dispatch({
       type: APPLICANT_ERROR,

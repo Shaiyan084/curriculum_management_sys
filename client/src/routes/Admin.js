@@ -14,6 +14,7 @@ import ManagePrograms from '../views/Admin/ManagePrograms';
 import ManageCoordinators from '../views/Admin/ManageCoordinators';
 import ManageApplicant from '../views/Admin/ManageApplicant';
 import ManagePayroll from '../views/Admin/ManagePayroll';
+import Settings from '../views/Admin/Settings';
 
 const routes = [
   {
@@ -76,7 +77,7 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     icon: SettingsIcon,
-    component: Dashboard,
+    component: Settings,
     layout: '/admin'
   }
   //   {

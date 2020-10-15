@@ -6,7 +6,8 @@ import {
   getAdmissionSessions,
   enableAdmissionSession,
   disableAdmissionSession,
-  removeAdmissionSession
+  removeAdmissionSession,
+  generateMeritList
 } from '../../actions/admission';
 import { loadUser } from '../../actions/auth';
 import { makeStyles } from '@material-ui/core/styles';
@@ -77,6 +78,8 @@ const Dashboard = ({
   enableAdmissionSession,
   disableAdmissionSession,
   removeAdmissionSession,
+  generateMeritList,
+  checkMeritStatus,
   loadUser,
   admission: { loading: admissionSessionsLoading, session, sessions },
   auth: { loading, user },
@@ -128,7 +131,6 @@ const Dashboard = ({
                 Enable
               </Button>
             )}
-
             <Button
               variant='contained'
               className='margin-left-right margin-top-bottom button-danger'
@@ -180,6 +182,15 @@ const Dashboard = ({
                   Create Admission Session
                 </Button>
               </Link>
+
+              <Button
+                color='primary'
+                variant='contained'
+                className='margin-left-right margin-top-bottom'
+                onClick={() => generateMeritList()}
+              >
+                Generate Merit List
+              </Button>
             </GridItem>
             {sessionList.length > 0 ? (
               <Table
@@ -209,6 +220,7 @@ Dashboard.propTypes = {
   enableAdmissionSession: PropTypes.func.isRequired,
   disableAdmissionSession: PropTypes.func.isRequired,
   removeAdmissionSession: PropTypes.func.isRequired,
+  generateMeritList: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   admission: PropTypes.object.isRequired
@@ -224,5 +236,6 @@ export default connect(mapStateToProps, {
   getAdmissionSessions,
   enableAdmissionSession,
   disableAdmissionSession,
-  removeAdmissionSession
+  removeAdmissionSession,
+  generateMeritList
 })(withRouter(Dashboard));

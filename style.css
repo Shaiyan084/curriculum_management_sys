@@ -37,3 +37,28 @@
 .header-right > img {
 	width: 100px;
 }
+
+.body > div:nth-child(1) {
+	display: flex;
+}
+
+.body > div:nth-child(2) {
+	display: flex;
+
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+
+tr:nth-child(even) {
+}

@@ -19,7 +19,15 @@ const AdmissionSchema = mongoose.Schema({
       status: {
         type: Boolean,
         default: true
-      }
+      },
+      meritList: [
+        {
+          applicantId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'applicant'
+          }
+        }
+      ]
     }
   ],
   fee: {

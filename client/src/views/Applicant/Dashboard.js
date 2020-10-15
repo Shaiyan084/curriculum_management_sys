@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, Link } from 'react-router-dom';
-import { getCurrentApplicant } from '../../actions/applicant';
+import { getCurrentApplicant, checkMeritStatus } from '../../actions/applicant';
 import { makeStyles } from '@material-ui/core';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
@@ -74,7 +74,9 @@ const useStyles = makeStyles(styles);
 
 const Dashboard = ({
   getCurrentApplicant,
+  checkMeritStatus,
   applicant: { applicant, loading },
+  program: { loading: programLoading, program },
   auth
 }) => {
   const classes = useStyles(styles);
@@ -114,12 +116,6 @@ const Dashboard = ({
     intermediateEducationObtainedMarks: '',
     intermediateEducationTotalMarks: '',
     intermediateEducationPicture: ''
-    // bachelorEducationInstitute: '',
-    // bachelorEducationFieldOfStudy: '',
-    // bachelorEducationFrom: '',
-    // bachelorEducationTo: '',
-    // bachelorEducationPicture: '',
-    // cgpa: ''
   });
 
   const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
@@ -251,29 +247,11 @@ const Dashboard = ({
       intermediateEducationPicture:
         !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.intermediateEducationDetails.picture
+          : '',
+      totalAggregate:
+        !loading && applicant !== null && applicant.educationDetails
+          ? applicant.educationDetails.totalAggregate
           : ''
-      // bachelorEducationInstitute:
-      //   !loading && applicant !== null
-      //     ? applicant.educationDetails.bachelorEducationDetails.institute
-      //     : '',
-      // bachelorEducationFieldOfStudy:
-      //   !loading && applicant !== null
-      //     ? applicant.educationDetails.bachelorEducationDetails.fieldOfStudy
-      //     : '',
-      // bachelorEducationFrom:
-      //   !loading && applicant !== null
-      //     ? applicant.educationDetails.bachelorEducationDetails.from
-      //     : '',
-      // bachelorEducationTo:
-      //   !loading && applicant !== null
-      //     ? applicant.educationDetails.bachelorEducationDetails.to
-      //     : '',
-      // bachelorEducationPicture:
-      //   !loading && applicant !== null
-      //     ? applicant.educationDetails.bachelorEducationDetails.picture
-      //     : '',
-      // cgpa:
-      //   !loading && applicant !== null ? applicant.educationDetails.cgpa : ''
     });
   }, [applicant]);
 
@@ -286,6 +264,18 @@ const Dashboard = ({
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    getCurrentApplicant();
+  }, []);
+
+  const [isOnMerit, setIsOnMerit] = useState(false);
+
+  useEffect(() => {
+    checkMeritStatus().then(result => {
+      setIsOnMerit(result);
+    });
+  }, []);
 
   return (
     <GridContainer>
@@ -300,7 +290,24 @@ const Dashboard = ({
           &nbsp;
           <CardBody>
             <GridContainer>
-              <GridItem></GridItem>
+              <GridItem>
+                {!loading &&
+                applicant !== null &&
+                applicant.educationDetails &&
+                applicant.educationDetails.totalAggregate >=
+                  program.criteria.minimumPercentageOfEquivalence &&
+                applicant.applicantForwarded ? (
+                  isOnMerit && (
+                    <div>Congratulations! You are on the Merit List.</div>
+                  )
+                ) : (
+                  <div>
+                    You are not on the merit list, check the next merit list for
+                    further details. If still your name is not on the merit list
+                    refer to the respective Admin or Coordinator.
+                  </div>
+                )}
+              </GridItem>
             </GridContainer>
           </CardBody>
         </Card>
@@ -886,14 +893,18 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   getCurrentApplicant: PropTypes.func.isRequired,
-  applicant: PropTypes.object.isRequired
+  checkMeritStatus: PropTypes.func.isRequired,
+  applicant: PropTypes.object.isRequired,
+  program: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   applicant: state.applicant,
+  program: state.program,
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getCurrentApplicant })(
-  withRouter(Dashboard)
-);
+export default connect(mapStateToProps, {
+  getCurrentApplicant,
+  checkMeritStatus
+})(withRouter(Dashboard));

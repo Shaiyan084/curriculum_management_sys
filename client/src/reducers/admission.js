@@ -8,7 +8,9 @@ import {
   ADMISSION_SESSION_LOADING,
   ADMISSION_SESSION_LOADED,
   ADMISSION_SESSION_REMOVED,
-  ADMISSION_SESSION_ERROR
+  ADMISSION_SESSION_ERROR,
+  GENERATE_ADMISSION_MERIT_LIST,
+  GET_MERIT_LIST
 } from '../actions/types';
 
 const initialState = {
@@ -79,6 +81,8 @@ export default function(state = initialState, action) {
     case ADMISSION_SESSION_CREATED:
     case ADMISSION_SESSION_UPDATED:
     case ADMISSION_SESSION_REMOVED:
+    case GENERATE_ADMISSION_MERIT_LIST:
+    case GET_MERIT_LIST:
     default:
       return state;
   }

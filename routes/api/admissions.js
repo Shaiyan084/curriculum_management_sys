@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Admission = require('../../models/Admission');
 const User = require('../../models/User');
+const Applicant = require('../../models/Applicant');
 
 // @route  GET /api/admissions
 // @desc   Get all admission sessions
@@ -46,6 +47,31 @@ router.get('/:id', auth, async (req, res) => {
     )[0];
 
     res.json(session);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  POST /api/admissions/generate-merit-list
+// @desc   Create a merit list
+// @access Private
+router.post('/generate-merit-list', auth, async (req, res) => {
+  try {
+    const admission = await Admission.find();
+    const session = admission[0].sessions[0];
+
+    const applicants = await Applicant.find();
+
+    if (session.meritList.length === 0) {
+      applicants.forEach(applicant => {
+        session.meritList.push({ applicantId: applicant._id });
+      });
+    }
+
+    await admission[0].save();
+
+    res.json({ msg: 'Merit list has been generated' });
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');

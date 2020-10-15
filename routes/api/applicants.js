@@ -4,6 +4,7 @@ const Applicant = require('../../models/Applicant');
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Programme = require('../../models/Programme');
+const Admission = require('../../models/Admission');
 const User = require('../../models/User');
 // const nodemailer = require('nodemailer');
 
@@ -31,6 +32,27 @@ router.get('/', auth, async (req, res) => {
       .select('-password')
       .populate('appliedPrograms', ['name', 'email']);
     res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/applicants/get-merit-status
+// @desc   Get Merit Status
+// @access Private
+router.get('/get-merit-status', auth, async (req, res) => {
+  try {
+    const admission = await Admission.find();
+
+    const applicant = await Applicant.findOne({ user: req.user.id });
+
+    const isOnMerit =
+      admission[0].sessions[0].meritList
+        .map(item => item.applicantId.toString())
+        .indexOf(applicant._id.toString()) !== -1;
+
+    res.json({ isOnMerit });
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');
@@ -752,6 +774,29 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
     await applicant.save();
 
     res.json(applicant);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET /api/programs/applied-programs
+// @desc   Get all applied programs
+// @access Private
+router.get('/applied-programs/:id', auth, async (req, res) => {
+  try {
+    const applicant = await Applicant.findOne({ user: req.user.id })
+      .select('-password')
+      .populate('user', ['email']);
+
+    let response = [];
+    const appliedPrograms = applicant.appliedPrograms.map(
+      program => program.id
+    );
+
+    response = appliedPrograms;
+
+    res.json(response);
   } catch (err) {
     console.log(err.message);
     return res.status(500).send('Server Error');
