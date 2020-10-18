@@ -11,6 +11,7 @@ import Login from './layouts/Login';
 import Register from './layouts/Register';
 import Applicant from './layouts/Applicant';
 import Coordinator from './layouts/Coordinator';
+import FeeChallan from './views/FeeChallan/FeeChallan';
 
 import store from './utils/store';
 import { Provider } from 'react-redux';
@@ -41,6 +42,7 @@ const App = () => {
             <Route path='/coordinator' component={Coordinator} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
+            <Route path='/fee-challan' component={FeeChallan} />
             <Redirect from='/' to='/login' />
           </Switch>
         </Router>

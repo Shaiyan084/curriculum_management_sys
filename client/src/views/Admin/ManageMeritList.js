@@ -85,7 +85,7 @@ const ManageMeritList = ({
           name,
           email,
           totalAggregate,
-          actions: 'Actions',
+          //   actions: 'Actions',
         },
       ];
     });

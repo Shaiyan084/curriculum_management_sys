@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Redirect, Link } from 'react-router-dom';
@@ -302,7 +302,12 @@ const Dashboard = ({
                         programme.programme.criteria.minPercentageOfEquivalence
                       ) {
                         return (
-                          <div>{`Congratulations! You are on the Merit List of ${programme.programme.name}`}</div>
+                          <Fragment>
+                            <div>{`Congratulations! You are on the Merit List of ${programme.programme.name}`}</div>
+                            <Link to='/fee-challan' target='_blank'>
+                              Click here to print admission fee challan
+                            </Link>
+                          </Fragment>
                         );
                       } else {
                         return (

@@ -81,7 +81,7 @@ const headCells = [
     disablePadding: false,
     label: 'Total Aggregate (%)',
   },
-  { id: 'actions', numeric: true, disablePadding: false, label: 'Actions' },
+  //   { id: 'actions', numeric: true, disablePadding: false, label: 'Actions' },
 ];
 
 function EnhancedTableHead(props) {
