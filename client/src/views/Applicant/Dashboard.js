@@ -296,13 +296,17 @@ const Dashboard = ({
                     applicant !== null &&
                     applicant.educationDetails &&
                     applicant.educationDetails.totalAggregate &&
-                    applicant.appliedPrograms.filter(programme => {
+                    applicant.appliedPrograms.map(programme => {
                       if (
                         applicant.educationDetails.totalAggregate >=
                         programme.programme.criteria.minPercentageOfEquivalence
                       ) {
                         return (
                           <div>{`Congratulations! You are on the Merit List of ${programme.programme.name}`}</div>
+                        );
+                      } else {
+                        return (
+                          <div>{`You do not fit the criteria for ${programme.programme.name}`}</div>
                         );
                       }
                     })
