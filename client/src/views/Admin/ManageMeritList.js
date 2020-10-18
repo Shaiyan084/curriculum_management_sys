@@ -73,6 +73,25 @@ const ManageMeritList = ({
 }) => {
   const classes = useStyles(styles);
 
+  const getMeritData = () => {
+    let result = [];
+    session.meritList.map(item => {
+      const name = item.applicantId.personalDetails.name;
+      const email = item.applicantId.personalDetails.email;
+      const totalAggregate = item.applicantId.educationDetails.totalAggregate;
+      result = [
+        ...result,
+        {
+          name,
+          email,
+          totalAggregate,
+          actions: 'Actions',
+        },
+      ];
+    });
+    return result;
+  };
+
   const [getCurrentAdmissionSesssion, setGetCurrentAdmissionSession] = useState(
     false
   );
@@ -84,7 +103,13 @@ const ManageMeritList = ({
     }
   }, []);
 
-  return <MeritList />;
+  return (
+    <MeritList
+      rows={
+        session !== null && session.meritList.length > 0 ? getMeritData() : []
+      }
+    />
+  );
 };
 
 ManageMeritList.propTypes = {
