@@ -12,6 +12,7 @@ import {
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
   UNDERGRADUATE_PROGRAM_APPLIED,
+  UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED,
   ALL_GRADUATE_APPLICANT_LOADED,
   GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
@@ -56,6 +57,18 @@ export default function(state = initialState, action) {
         loading: false,
         errors: null,
         applicant: payload
+      };
+    case UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED:
+      return {
+        ...state,
+        loading: false,
+        errors: null,
+        undergraduateApplicants: [
+          ...state.undergraduateApplicants.map(applicant => {
+            if (applicant.appliedPrograms.programme === payload.id) {
+            }
+          })
+        ]
       };
     case ALL_UNDERGRADUATE_APPLICANT_LOADED:
       return {
