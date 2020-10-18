@@ -759,27 +759,27 @@ router.put('/calculate-aggregate/:id', auth, async (req, res) => {
   }
 });
 
-// @route  GET /api/programs/applied-programs
-// @desc   Get all applied programs
-// @access Private
-router.get('/applied-programs/:id', auth, async (req, res) => {
-  try {
-    const applicant = await Applicant.findOne({ user: req.user.id })
-      .select('-password')
-      .populate('user', ['email']);
+// // @route  GET /api/programs/applied-programs
+// // @desc   Get all applied programs
+// // @access Private
+// router.get('/applied-programs/:id', auth, async (req, res) => {
+//   try {
+//     const applicant = await Applicant.findOne({ user: req.user.id })
+//       .select('-password')
+//       .populate('user', ['email']);
 
-    let response = [];
-    const appliedPrograms = applicant.appliedPrograms.map(
-      program => program.id
-    );
+//     let response = [];
+//     const appliedPrograms = applicant.appliedPrograms.map(
+//       program => program.id
+//     );
 
-    response = appliedPrograms;
+//     response = appliedPrograms;
 
-    res.json(response);
-  } catch (err) {
-    console.log(err.message);
-    return res.status(500).send('Server Error');
-  }
-});
+//     res.json(response);
+//   } catch (err) {
+//     console.log(err.message);
+//     return res.status(500).send('Server Error');
+//   }
+// });
 
 module.exports = router;

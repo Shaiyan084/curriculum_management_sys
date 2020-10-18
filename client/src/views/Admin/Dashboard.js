@@ -7,7 +7,7 @@ import {
   enableAdmissionSession,
   disableAdmissionSession,
   removeAdmissionSession,
-  generateMeritList
+  generateMeritList,
 } from '../../actions/admission';
 import { loadUser } from '../../actions/auth';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,7 +25,7 @@ import {
   TextField,
   Button,
   Box,
-  Checkbox
+  Checkbox,
 } from '@material-ui/core';
 
 const styles = {
@@ -35,11 +35,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0'
+      marginBottom: '0',
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF'
-    }
+      color: '#FFFFFF',
+    },
   },
   cardCategoryBlack: {
     '&,& a, & a:hover, & a:focus': {
@@ -47,11 +47,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0'
+      marginBottom: '0',
     },
     '& a,& a:hover,& a:focus': {
-      color: '#000000'
-    }
+      color: '#000000',
+    },
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -66,9 +66,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1'
-    }
-  }
+      lineHeight: '1',
+    },
+  },
 };
 
 const useStyles = makeStyles(styles);
@@ -83,7 +83,7 @@ const Dashboard = ({
   loadUser,
   admission: { loading: admissionSessionsLoading, session, sessions },
   auth: { loading, user },
-  history
+  history,
 }) => {
   const classes = useStyles(styles);
 
@@ -138,8 +138,8 @@ const Dashboard = ({
             >
               Remove
             </Button>
-          </Fragment>
-        ]
+          </Fragment>,
+        ],
       ];
       i++;
     });
@@ -148,7 +148,7 @@ const Dashboard = ({
 
   const [
     getAllAdmissionSessionsCalled,
-    setGetAllAdmissionSessionsCalled
+    setGetAllAdmissionSessionsCalled,
   ] = useState(false);
 
   useEffect(() => {
@@ -200,7 +200,7 @@ const Dashboard = ({
                   'Session Name',
                   'Start Date',
                   'End Date',
-                  'Actions'
+                  'Actions',
                 ]}
                 tableData={getAdmissionSession()}
               />
@@ -223,12 +223,12 @@ Dashboard.propTypes = {
   generateMeritList: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  admission: PropTypes.object.isRequired
+  admission: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   admission: state.admission,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
@@ -237,5 +237,5 @@ export default connect(mapStateToProps, {
   enableAdmissionSession,
   disableAdmissionSession,
   removeAdmissionSession,
-  generateMeritList
+  generateMeritList,
 })(withRouter(Dashboard));

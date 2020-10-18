@@ -12,7 +12,7 @@ import {
   UNDERGRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
   UNDERGRADUATE_APPLICANT_EDUCATION_DETAILS_UPDATED,
   UNDERGRADUATE_PROGRAM_APPLIED,
-  UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED,
+  // UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED,
   ALL_GRADUATE_APPLICANT_LOADED,
   GRADUATE_APPLICANT_PERSONAL_DETAILS_UPDATED,
   GRADUATE_APPLICANT_INCOME_DETAILS_UPDATED,
@@ -20,7 +20,7 @@ import {
   GRADUATE_APPLICANT_NTS_MARKS_UPDATED,
   GRADUATE_PROGRAM_APPLIED,
   UNDERGRADUATE_AGGREGATE_CALCULATED,
-  UNDERGRADUATE_APPLICATION_FORWARDED
+  UNDERGRADUATE_APPLICATION_FORWARDED,
 } from '../actions/types';
 
 const initialState = {
@@ -28,10 +28,10 @@ const initialState = {
   undergraduateApplicants: [],
   graduateApplicants: [],
   loading: true,
-  errors: null
+  errors: null,
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -56,51 +56,52 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         errors: null,
-        applicant: payload
+        applicant: payload,
       };
-    case UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED:
-      return {
-        ...state,
-        loading: false,
-        errors: null,
-        undergraduateApplicants: [
-          ...state.undergraduateApplicants.map(applicant => {
-            if (applicant.appliedPrograms.programme === payload.id) {
-            }
-          })
-        ]
-      };
+    // case UNDERGRADUATE_APPLICANT_APPLIED_PROGRAMS_LOADED:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     errors: null,
+    //     undergraduateApplicants: [
+    //       ...state.undergraduateApplicants.map(applicant => {
+    //         if (applicant.appliedPrograms.programme === payload.id) {
+
+    //         }
+    //       })
+    //     ]
+    //   };
     case ALL_UNDERGRADUATE_APPLICANT_LOADED:
       return {
         ...state,
         loading: false,
         errors: null,
-        undergraduateApplicants: payload
+        undergraduateApplicants: payload,
       };
     case ALL_GRADUATE_APPLICANT_LOADED:
       return {
         ...state,
         loading: false,
         errors: null,
-        graduateApplicants: payload
+        graduateApplicants: payload,
       };
     case APPLICANT_FORWARDED:
       return {
         ...state,
         loading: false,
         errors: null,
-        applicant: { ...state.applicant, applicantForwarded: true }
+        applicant: { ...state.applicant, applicantForwarded: true },
       };
     case APPLICANT_ERROR:
       return {
         ...state,
         loading: false,
-        errors: payload
+        errors: payload,
       };
     case SET_APPLICANT_LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     default:
       return state;

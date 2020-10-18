@@ -26,7 +26,15 @@ router.get('/', auth, async (req, res) => {
 // @access Public
 router.get('/current', async (req, res) => {
   try {
-    const admission = await Admission.find();
+    const admission = await Admission.find().populate(
+      'sessions.meritList.applicantId',
+      [
+        'personalDetails.name',
+        'personalDetails.email',
+        'educationDetails.totalAggregate',
+      ]
+    );
+
     const session = admission[0].sessions[0];
 
     res.json(session);
@@ -85,15 +93,9 @@ router.post(
   '/create-admission-session',
   [
     auth,
-    check('name', 'Name of session is required')
-      .not()
-      .isEmpty(),
-    check('startDate', 'Start date is required')
-      .not()
-      .isEmpty(),
-    check('endDate', 'End date is required')
-      .not()
-      .isEmpty()
+    check('name', 'Name of session is required').not().isEmpty(),
+    check('startDate', 'Start date is required').not().isEmpty(),
+    check('endDate', 'End date is required').not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -120,7 +122,7 @@ router.post(
       const newSession = {
         name,
         startDate,
-        endDate
+        endDate,
       };
 
       if (
@@ -198,15 +200,9 @@ router.put(
   '/:id',
   [
     auth,
-    check('name', 'Name of session is required')
-      .not()
-      .isEmpty(),
-    check('startDate', 'Start date is required')
-      .not()
-      .isEmpty(),
-    check('endDate', 'End date is required')
-      .not()
-      .isEmpty()
+    check('name', 'Name of session is required').not().isEmpty(),
+    check('startDate', 'Start date is required').not().isEmpty(),
+    check('endDate', 'End date is required').not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);

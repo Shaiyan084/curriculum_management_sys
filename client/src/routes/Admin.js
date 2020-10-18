@@ -7,12 +7,14 @@ import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import TollIcon from '@material-ui/icons/Toll';
 import FaceIcon from '@material-ui/icons/Face';
 import SettingsIcon from '@material-ui/icons/Settings';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 import Dashboard from '../views/Admin/Dashboard';
 import ManageDepartments from '../views/Admin/ManageDepartments';
 import ManagePrograms from '../views/Admin/ManagePrograms';
 import ManageCoordinators from '../views/Admin/ManageCoordinators';
 import ManageApplicant from '../views/Admin/ManageApplicant';
+import ManageMeritList from '../views/Admin/ManageMeritList';
 import ManagePayroll from '../views/Admin/ManagePayroll';
 import Settings from '../views/Admin/Settings';
 
@@ -22,64 +24,71 @@ const routes = [
     name: 'Dashboard',
     icon: DashboardIcon,
     component: Dashboard,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/manage-departments',
     name: 'Manage Departments',
     icon: BusinessIcon,
     component: ManageDepartments,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/manage-programs',
     name: 'Manage Programs',
     icon: ViewListIcon,
     component: ManagePrograms,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/manage-announcements',
     name: 'Manage Announcements',
     icon: SurroundSoundRoundedIcon,
     component: ManagePrograms,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/manage-coordinators',
     name: 'Manage Coordinators',
     icon: SupervisedUserCircleIcon,
     component: ManageCoordinators,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/manage-applicants',
     name: 'Manage Applicants',
     icon: AssignmentIndRoundedIcon,
     component: ManageApplicant,
-    layout: '/admin'
+    layout: '/admin',
+  },
+  {
+    path: '/manage-merit-list',
+    name: 'Manage List',
+    icon: PlaylistAddCheckIcon,
+    component: ManageMeritList,
+    layout: '/admin',
   },
   {
     path: '/manage-payrolls',
     name: 'Manage Payrolls',
     icon: TollIcon,
     component: ManagePayroll,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/profile',
     name: 'Profile',
     icon: FaceIcon,
     component: ManageCoordinators,
-    layout: '/admin'
+    layout: '/admin',
   },
   {
     path: '/settings',
     name: 'Settings',
     icon: SettingsIcon,
     component: Settings,
-    layout: '/admin'
-  }
+    layout: '/admin',
+  },
   //   {
   //     path: '/user',
   //     name: 'User Profile',
