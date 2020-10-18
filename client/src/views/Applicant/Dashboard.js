@@ -24,7 +24,7 @@ import {
   // MenuItem,
   // TextField,
   Button,
-  Box
+  Box,
 } from '@material-ui/core';
 
 const styles = {
@@ -34,11 +34,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0'
+      marginBottom: '0',
     },
     '& a,& a:hover,& a:focus': {
-      color: '#FFFFFF'
-    }
+      color: '#FFFFFF',
+    },
   },
   cardCategoryBlack: {
     '&,& a, & a:hover, & a:focus': {
@@ -46,11 +46,11 @@ const styles = {
       margin: '0',
       fontSize: '0.9rem',
       marginTop: '0',
-      marginBottom: '0'
+      marginBottom: '0',
     },
     '& a,& a:hover,& a:focus': {
-      color: '#000000'
-    }
+      color: '#000000',
+    },
   },
   cardTitleWhite: {
     color: '#FFFFFF',
@@ -65,9 +65,9 @@ const styles = {
       color: '#777',
       fontSize: '65%',
       fontWeight: '400',
-      lineHeight: '1'
-    }
-  }
+      lineHeight: '1',
+    },
+  },
 };
 
 const useStyles = makeStyles(styles);
@@ -77,7 +77,7 @@ const Dashboard = ({
   checkMeritStatus,
   applicant: { applicant, loading },
   program: { loading: programLoading, program },
-  auth
+  auth,
 }) => {
   const classes = useStyles(styles);
 
@@ -91,12 +91,12 @@ const Dashboard = ({
     placeOfBirth: '',
     dateOfBirth: '',
     phoneNumber: '',
-    domicile: ''
+    domicile: '',
   });
 
   const [incomeDetails, setIncomeDetails] = useState({
     monthlyIncome: '',
-    minimumYearlyIncome: ''
+    minimumYearlyIncome: '',
   });
 
   const [educationDetails, setEducationDetails] = useState({
@@ -115,7 +115,7 @@ const Dashboard = ({
     intermediateEducationTo: '',
     intermediateEducationObtainedMarks: '',
     intermediateEducationTotalMarks: '',
-    intermediateEducationPicture: ''
+    intermediateEducationPicture: '',
   });
 
   const [getCurrentApplicantCalled, setGetCurrentApplicantCalled] = useState(
@@ -168,7 +168,7 @@ const Dashboard = ({
       domicile:
         !loading && applicant !== null && applicant.personalDetails
           ? applicant.personalDetails.domicile
-          : ''
+          : '',
     });
 
     setIncomeDetails({
@@ -179,7 +179,7 @@ const Dashboard = ({
       minimumYearlyIncome:
         !loading && applicant !== null && applicant.incomeDetails
           ? applicant.incomeDetails.minimumYearlyIncome
-          : ''
+          : '',
     });
 
     setEducationDetails({
@@ -251,7 +251,7 @@ const Dashboard = ({
       totalAggregate:
         !loading && applicant !== null && applicant.educationDetails
           ? applicant.educationDetails.totalAggregate
-          : ''
+          : '',
     });
   }, [applicant]);
 
@@ -291,22 +291,34 @@ const Dashboard = ({
           <CardBody>
             <GridContainer>
               <GridItem>
-                {!loading &&
-                applicant !== null &&
-                applicant.educationDetails &&
-                applicant.educationDetails.totalAggregate >=
-                  program.criteria.minimumPercentageOfEquivalence &&
-                applicant.applicantForwarded ? (
-                  isOnMerit && (
-                    <div>Congratulations! You are on the Merit List.</div>
-                  )
-                ) : (
-                  <div>
-                    You are not on the merit list, check the next merit list for
-                    further details. If still your name is not on the merit list
-                    refer to the respective Admin or Coordinator.
-                  </div>
-                )}
+                {
+                  !loading &&
+                    applicant !== null &&
+                    applicant.educationDetails &&
+                    applicant.educationDetails.totalAggregate &&
+                    applicant.appliedPrograms.filter(programme => {
+                      if (
+                        applicant.educationDetails.totalAggregate >=
+                        programme.programme.criteria.minPercentageOfEquivalence
+                      ) {
+                        return (
+                          <div>{`Congratulations! You are on the Merit List of ${programme.programme.name}`}</div>
+                        );
+                      }
+                    })
+                  // applicant.educationDetails.totalAggregate >=
+                  //   program.criteria.minimumPercentageOfEquivalence &&
+                  // applicant.applicantForwarded ? (
+                  //   isOnMerit && (
+                  //     <div>Congratulations! You are on the Merit List.</div>
+                  //   )
+                  // ) : (
+                  //   <div>
+                  //     You are not on the merit list, check the next merit list for
+                  //     further details. If still your name is not on the merit list
+                  //     refer to the respective Admin or Coordinator.
+                  //   </div>
+                }
               </GridItem>
             </GridContainer>
           </CardBody>
@@ -895,16 +907,16 @@ Dashboard.propTypes = {
   getCurrentApplicant: PropTypes.func.isRequired,
   checkMeritStatus: PropTypes.func.isRequired,
   applicant: PropTypes.object.isRequired,
-  program: PropTypes.object.isRequired
+  program: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   applicant: state.applicant,
   program: state.program,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   getCurrentApplicant,
-  checkMeritStatus
+  checkMeritStatus,
 })(withRouter(Dashboard));
